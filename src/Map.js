@@ -1,10 +1,21 @@
 import React from 'react';
 import {withScriptjs, withGoogleMap, GoogleMap, Marker} from "react-google-maps";
+const styles = require('./GoogleMapStyles.json');
 
 const MapComponent = withScriptjs(withGoogleMap(props =>
   <GoogleMap
       defaultZoom={15}
-      defaultCenter={{ lat: 51.516858, lng: -0.081121 }}
+      defaultCenter={{
+        lat: 51.516858,
+        lng: -0.081121
+      }}
+      defaultOptions={{
+        disableDefaultUI: true,
+        keyboardShortcuts: false,
+        scaleControl: true,
+        scrollWheel: true,
+        styles: styles
+      }}
   >
     <Marker
         position={{ lat: 51.516858, lng: -0.081121 }}
