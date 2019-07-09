@@ -1,14 +1,12 @@
 import React from 'react';
 import Map from "./Map";
-import './App.css';
+import './css/App.css';
 
 class App extends React.Component {
-
   render() {
     return (
         <div>
           <Map />
-          {/*<Sidebar />*/}
         </div>
     );
   }

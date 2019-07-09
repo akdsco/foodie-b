@@ -1,27 +1,30 @@
-import React, {Component} from 'react';
-import {Map, GoogleApiWrapper} from 'google-maps-react';
+import React from 'react';
+import {withScriptjs, withGoogleMap, GoogleMap, Marker} from "react-google-maps";
 
-const mapStyles = {
-  width: '100%',
-  height: '100%'
-};
+const MapComponent = withScriptjs(withGoogleMap(props =>
+  <GoogleMap
+      defaultZoom={15}
+      defaultCenter={{ lat: 51.516858, lng: -0.081121 }}
+  >
+    <Marker
+        position={{ lat: 51.516858, lng: -0.081121 }}
+    />
+  </GoogleMap>
+));
 
-export class MapContainer extends Component {
+
+class Map extends React.PureComponent {
   render() {
-    return (
-        <Map
-            google={this.props.google}
-            zoom={14}
-            style={mapStyles}
-            initialCenter={{
-              lat: 51.514127,
-              lng: -0.081938
-            }}
+    return(
+        <MapComponent
+            googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyBCwca9Qh9sLxHqQisOUHV62-Xth5iH0pI&v=3.exp&libraries=geometry,drawing,places"
+            loadingElement={<div style={{ height: `100%` }} />}
+            containerElement={<div style={{ height: `100vh` }} />}
+            mapElement={<div style={{ height: `100%` }} />}
         />
-    );
+    )
   }
+
 }
 
-export default GoogleApiWrapper({
-  apiKey: 'AIzaSyBtAOP_BJXr8V9i_QzyB1rcPn0phvuq-OA'
-})(MapContainer);
+export default Map
