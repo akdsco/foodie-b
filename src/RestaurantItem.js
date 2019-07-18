@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Button, Menu, Segment } from 'semantic-ui-react'
 import RestaurantItemInfo from "./RestaurantItemInfo";
 import ItemGroup from "semantic-ui-react/dist/commonjs/views/Item/ItemGroup";
+import RestaurantAccordion from "./RestaurantAccordion";
 
 export default class RestaurantItem extends Component {
   state = { activeItem: 'Info' };

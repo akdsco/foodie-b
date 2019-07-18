@@ -1,18 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="a87cdd32-9219-4738-ad77-7b28c1d0a690" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/App.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/RatingComponent.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/RestaurantItem.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/RestaurantItemInfo.js" afterDir="false" />
+    <list default="true" id="a87cdd32-9219-4738-ad77-7b28c1d0a690" name="Default Changelist" comment="add background and color, create RestaurantItem and RestaurantItemInfo,&#10;initially style how the item would look like">
+      <change afterPath="$PROJECT_DIR$/src/RestaurantAccordion.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/ReviewItem.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Reviews.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/public/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Sidebar.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Sidebar.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/css/App.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/RestaurantItem.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/RestaurantItem.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/RestaurantItemInfo.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/RestaurantItemInfo.js" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -58,11 +53,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/RestaurantItem.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="238">
-              <caret line="14" column="13" lean-forward="true" selection-start-line="14" selection-start-column="13" selection-end-line="14" selection-end-column="13" />
+            <state relative-caret-position="374">
+              <caret line="35" column="19" lean-forward="true" selection-start-line="35" selection-start-column="19" selection-end-line="35" selection-end-column="19" />
               <folding>
                 <element signature="e#0#40#0" expanded="true" />
               </folding>
@@ -73,8 +68,32 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/RestaurantItemInfo.js">
           <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="255">
+              <caret line="24" column="23" selection-start-line="24" selection-start-column="23" selection-end-line="24" selection-end-column="23" />
+              <folding>
+                <element signature="e#0#25#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/Reviews.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="204">
+              <caret line="12" column="26" lean-forward="true" selection-start-line="12" selection-start-column="26" selection-end-line="12" selection-end-column="26" />
+              <folding>
+                <element signature="e#0#25#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/ReviewItem.js">
+          <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="119">
-              <caret line="15" column="66" selection-start-line="15" selection-start-column="66" selection-end-line="15" selection-end-column="66" />
+              <caret line="7" column="22" lean-forward="true" selection-start-line="7" selection-start-column="22" selection-end-line="7" selection-end-column="22" />
               <folding>
                 <element signature="e#0#25#0" expanded="true" />
               </folding>
@@ -113,13 +132,16 @@
         <option value="$PROJECT_DIR$/src/Sidebar.js" />
         <option value="$PROJECT_DIR$/src/RatingComponent.js" />
         <option value="$PROJECT_DIR$/src/css/App.css" />
-        <option value="$PROJECT_DIR$/src/RestaurantItem.js" />
         <option value="$PROJECT_DIR$/src/css/Map.css" />
         <option value="$PROJECT_DIR$/src/Map.js" />
         <option value="$PROJECT_DIR$/src/App.css" />
         <option value="$PROJECT_DIR$/src/App.js" />
-        <option value="$PROJECT_DIR$/src/RestaurantItemInfo.js" />
         <option value="$PROJECT_DIR$/src/RestaurantAccordion.js" />
+        <option value="$PROJECT_DIR$/src/RestaurantItem.js" />
+        <option value="$PROJECT_DIR$/src/RestaurantItemInfo.js" />
+        <option value="$PROJECT_DIR$/src/ListOfReviews.js" />
+        <option value="$PROJECT_DIR$/src/ReviewItem.js" />
+        <option value="$PROJECT_DIR$/src/Reviews.js" />
       </list>
     </option>
   </component>
@@ -142,11 +164,6 @@
             <path>
               <item name="f-end-react-restaurant-review-site" type="b2602c69:ProjectViewProjectNode" />
               <item name="f-end-react-restaurant-review-site" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="f-end-react-restaurant-review-site" type="b2602c69:ProjectViewProjectNode" />
-              <item name="f-end-react-restaurant-review-site" type="462c0819:PsiDirectoryNode" />
-              <item name="build" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="f-end-react-restaurant-review-site" type="b2602c69:ProjectViewProjectNode" />
@@ -225,7 +242,7 @@
       <workItem from="1562576542045" duration="26641000" />
       <workItem from="1562964249120" duration="4259000" />
       <workItem from="1563448547098" duration="5679000" />
-      <workItem from="1563457096931" duration="5190000" />
+      <workItem from="1563457096931" duration="8227000" />
     </task>
     <task id="LOCAL-00001" summary="empty App">
       <created>1562577651216</created>
@@ -255,11 +272,18 @@
       <option name="project" value="LOCAL" />
       <updated>1562673131684</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="add background and color, create RestaurantItem and RestaurantItemInfo,&#10;initially style how the item would look like">
+      <created>1563462413910</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1563462413910</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="41769000" />
+    <option name="totallyTimeSpent" value="44806000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -274,7 +298,7 @@
     <frame x="-8" y="-8" width="1382" height="754" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.25" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.25" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="npm" order="2" side_tool="true" />
       <window_info id="Favorites" order="3" side_tool="true" />
@@ -289,7 +313,7 @@
       <window_info anchor="bottom" id="Version Control" order="8" />
       <window_info anchor="bottom" id="Messages" order="9" weight="0.32850242" />
       <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
-      <window_info anchor="bottom" id="Terminal" order="11" visible="true" weight="0.29951692" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="11" visible="true" weight="0.29951692" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -324,7 +348,8 @@
     <MESSAGE value="redo code for google map implementation with react-google-maps" />
     <MESSAGE value="redo code for google map implementation with react-google-maps, simple &#10;implementation of just a map" />
     <MESSAGE value="add custom map design" />
-    <option name="LAST_COMMIT_MESSAGE" value="add custom map design" />
+    <MESSAGE value="add background and color, create RestaurantItem and RestaurantItemInfo,&#10;initially style how the item would look like" />
+    <option name="LAST_COMMIT_MESSAGE" value="add background and color, create RestaurantItem and RestaurantItemInfo,&#10;initially style how the item would look like" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/src/App.test.js" />
@@ -470,25 +495,52 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/RestaurantAccordion.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="34">
+          <caret line="8" column="32" lean-forward="true" selection-start-line="8" selection-start-column="32" selection-end-line="8" selection-end-column="32" />
+          <folding>
+            <element signature="e#0#40#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/RestaurantItem.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="374">
+          <caret line="35" column="19" lean-forward="true" selection-start-line="35" selection-start-column="19" selection-end-line="35" selection-end-column="19" />
+          <folding>
+            <element signature="e#0#40#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/RestaurantItemInfo.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="15" column="66" selection-start-line="15" selection-start-column="66" selection-end-line="15" selection-end-column="66" />
+        <state relative-caret-position="255">
+          <caret line="24" column="23" selection-start-line="24" selection-start-column="23" selection-end-line="24" selection-end-column="23" />
           <folding>
             <element signature="e#0#25#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/RestaurantAccordion.js">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/RestaurantItem.js">
+    <entry file="file://$PROJECT_DIR$/src/ReviewItem.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="14" column="13" lean-forward="true" selection-start-line="14" selection-start-column="13" selection-end-line="14" selection-end-column="13" />
+        <state relative-caret-position="119">
+          <caret line="7" column="22" lean-forward="true" selection-start-line="7" selection-start-column="22" selection-end-line="7" selection-end-column="22" />
           <folding>
-            <element signature="e#0#40#0" expanded="true" />
+            <element signature="e#0#25#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Reviews.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="204">
+          <caret line="12" column="26" lean-forward="true" selection-start-line="12" selection-start-column="26" selection-end-line="12" selection-end-column="26" />
+          <folding>
+            <element signature="e#0#25#0" expanded="true" />
           </folding>
         </state>
       </provider>

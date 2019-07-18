@@ -2,6 +2,7 @@ import React from 'react'
 import { Button, Icon, Image, Item, Label } from 'semantic-ui-react'
 import RatingComponent from "./RatingComponent";
 import Flag from "semantic-ui-react/dist/commonjs/elements/Flag";
+import Reviews from "./Reviews";
 
 // const paragraph = <Image src='/images/wireframe/short-paragraph.png' />
 const paragraph = 'Best place to visit for local dishes with veggies and organic meat.';
@@ -21,13 +22,10 @@ const RestaurantItemInfo = () => (
               <RatingComponent/>
             </Label>
             <Label>vegan</Label>
-            <Button size='tiny' floated='right'>
-              Reviews <Icon name='dropdown' />
-            </Button>
+            <Reviews />
           </Item.Extra>
         </Item.Content>
       </Item>
-
 )
 
 export default RestaurantItemInfo
