@@ -13,18 +13,26 @@ class App extends React.Component {
   render() {
     return (
         <div>
-          <Container>
             <Grid>
-              <Grid.Row>
-                  <GridColumn width={8}>
-                    <RestaurantItem />
-                  </GridColumn>
-                  <GridColumn width={8}>
-                    {/*<Map />*/}
-                  </GridColumn>
+              <Grid.Row centered columns={2} only='computer'>
+                <GridColumn width={7}>
+                  <RestaurantItem />
+                </GridColumn>
+                <GridColumn width={7}>
+                  <Map />
+                </GridColumn>
+              </Grid.Row>
+              <Grid.Row centered columns={1} only='tablet'>
+                <GridColumn>
+                  <Map />
+                </GridColumn>
+              </Grid.Row>
+              <Grid.Row centered columns={1} only='mobile'>
+                <GridColumn>
+                  <Map />
+                </GridColumn>
               </Grid.Row>
             </Grid>
-          </Container>
         </div>
     );
   }
