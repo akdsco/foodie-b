@@ -1,10 +1,7 @@
 import React from 'react';
 import './App.css';
 import Map from "./Map";
-import RestaurantItem from './RestaurantItem';
-import MySidebar from "./Sidebar";
-import {Header, Icon, Image, Menu, Segment, Sidebar} from "semantic-ui-react";
-import {Marker} from "react-google-maps";
+import DataDisplay from './DataDisplay';
 import Container from "semantic-ui-react/dist/commonjs/elements/Container";
 import Grid from "semantic-ui-react/dist/commonjs/collections/Grid";
 import GridColumn from "semantic-ui-react/dist/commonjs/collections/Grid/GridColumn";
@@ -13,18 +10,19 @@ class App extends React.Component {
   render() {
     return (
         <div>
+          <Container>
             <Grid>
               <Grid.Row centered columns={2} only='computer'>
-                <GridColumn width={7}>
-                  <RestaurantItem />
+                <GridColumn width={8}>
+                  <DataDisplay />
                 </GridColumn>
-                <GridColumn width={7}>
+                <GridColumn width={8}>
                   <Map />
                 </GridColumn>
               </Grid.Row>
               <Grid.Row centered columns={1} only='tablet'>
                 <GridColumn>
-                  <Map />
+                  {/*<Map />*/}
                 </GridColumn>
               </Grid.Row>
               <Grid.Row centered columns={1} only='mobile'>
@@ -33,6 +31,7 @@ class App extends React.Component {
                 </GridColumn>
               </Grid.Row>
             </Grid>
+          </Container>
         </div>
     );
   }

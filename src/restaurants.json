@@ -1,0 +1,71 @@
+[
+  {
+    "id": 1,
+    "restaurantName":"Bronco",
+    "address":"39 Rue des Petites Écuries, 75010 Paris",
+    "flag": "fr",
+    "desc": "A relaxed and vibrant afternoon food.",
+    "lat":48.8737815,
+    "long":2.3501649,
+    "ratings":[
+      {
+        "id": 11,
+        "name": "Michael Max",
+        "stars":4,
+        "comment":"Great! But not many veggie options."
+      },
+      {
+        "id": 12,
+        "name": "Paul Histamine",
+        "stars":5,
+        "comment":"My favorite restaurant!"
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "restaurantName":"Pizzano",
+    "address":"4 Stefano, 75018 Italy",
+    "flag": "it",
+    "desc": "Best pizza in the whole Italy.",
+    "lat":48.8865035,
+    "long":2.3442197,
+    "ratings":[
+      {
+        "id": 21,
+        "name": "Miguel Giunno",
+        "stars":5,
+        "comment":"Tiny pizzeria next to Sacre Coeur!"
+      },
+      {
+        "id": 22,
+        "name": "Marco Polo",
+        "stars":1,
+        "comment":"Meh, it was fine."
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "restaurantName":"Farmer J",
+    "address":"120 Leadenhall St, London, UK",
+    "flag": "gb",
+    "desc": "A contemporary place with forks and fieldtrays.",
+    "lat":48.8865035,
+    "long":2.3442197,
+    "ratings":[
+      {
+        "id": 31,
+        "name": "Paulo Mastado",
+        "stars":5,
+        "comment":"Best place for lunch in City."
+      },
+      {
+        "id": 32,
+        "name": "Monica Last",
+        "stars":5,
+        "comment":"Good but not best."
+      }
+    ]
+  }
+]
