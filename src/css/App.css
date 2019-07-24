@@ -2,6 +2,6 @@ body {
     margin: 0;
     padding: 0;
     position: relative;
-    background: #EFEFEA url('./left-bg.png') no-repeat;
+    background: #EFEFEA url('../img/left-bg.png') no-repeat;
     background-size: cover;
 }

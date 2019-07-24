@@ -1,3 +1,4 @@
+// Import Components
 import React from 'react'
 import { Rating } from 'semantic-ui-react'
 

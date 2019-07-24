@@ -1,7 +1,10 @@
+// Import CSS
+import './css/App.css';
+
+// Import Components
 import React from 'react';
-import './App.css';
-import Map from "./Map";
-import DataDisplay from './DataDisplay';
+import Map from "./components/Map";
+import DataDisplay from './components/DataDisplay';
 import Container from "semantic-ui-react/dist/commonjs/elements/Container";
 import Grid from "semantic-ui-react/dist/commonjs/collections/Grid";
 import GridColumn from "semantic-ui-react/dist/commonjs/collections/Grid/GridColumn";
@@ -13,7 +16,7 @@ class App extends React.Component {
           <Container>
             <Grid>
               <Grid.Row centered columns={2} only='computer'>
-                <GridColumn width={8}>
+                <GridColumn width={8} >
                   <DataDisplay />
                 </GridColumn>
                 <GridColumn width={8}>

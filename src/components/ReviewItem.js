@@ -1,6 +1,8 @@
+// Import Components
+
 import React from 'react'
 import { Item } from 'semantic-ui-react'
-import { SingleRatingComponent } from "./AvgRatingComponent";
+import { SingleRatingComponent } from "./RatingComponents";
 
 export default class ReviewItem extends React.Component {
 

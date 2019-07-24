@@ -1,6 +1,8 @@
+// Import Components
 import React from 'react';
 import {withScriptjs, withGoogleMap, GoogleMap, Marker} from "react-google-maps";
-const styles = require('./GoogleMapStyles.json');
+
+const styles = require('../data/GoogleMapStyles.json');
 
 const MapComponent = withScriptjs(withGoogleMap(props =>
   <GoogleMap
@@ -16,9 +18,13 @@ const MapComponent = withScriptjs(withGoogleMap(props =>
         scrollWheel: true,
         styles: styles
       }}
+
   >
     <Marker
         position={{ lat: 51.516858, lng: -0.081121 }}
+    />
+    <Marker
+        position={{ lat: 51.52, lng: -0.082 }}
     />
   </GoogleMap>
 ));

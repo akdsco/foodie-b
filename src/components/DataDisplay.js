@@ -1,11 +1,15 @@
-import React, { Component } from 'react'
-import { Menu, Segment } from 'semantic-ui-react'
-import RestaurantItem from "./RestaurantItem";
-import ItemGroup from "semantic-ui-react/dist/commonjs/views/Item/ItemGroup";
-import SearchRestaurants from "./SearchRestaurants";
-import restaurantsARR from './restaurants'
+// Import Components
+import React from 'react'
+import RestaurantItem from "./RestaurantItem"
+import { Menu , Segment } from "semantic-ui-react";
+import ItemGroup from "semantic-ui-react/dist/commonjs/views/Item/ItemGroup"
+import SearchRestaurants from "./SearchRestaurants"
+import restaurantsARR from '../data/restaurants'
 
-export default class DataDisplay extends Component {
+// Import images
+import logoImg from '../img/logo.png'
+
+export default class DataDisplay extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -35,10 +39,9 @@ export default class DataDisplay extends Component {
           <Segment>
           <Menu stackable size='mini'>
             <Menu.Item>
-              <img src='./logo.png' alt='logo'/>
+              <img src={logoImg} alt='logo'/>
             </Menu.Item>
             <Menu.Item name='Info' active={activeItem === 'Info'} onClick={this.handleItemClick} />
-            {/*<Button active={activeItem === 'Info'} onClick={this.handleItemClick}>Info</Button>*/}
             <Menu.Item
                 name='Filter'
                 active={activeItem === 'Filter'}

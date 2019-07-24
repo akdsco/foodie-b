@@ -1,12 +1,16 @@
+// Import Images
+import fmjImg from '../img/fmj.jpg'
+
+// Import Components
 import React from 'react'
-import {Item, Label } from 'semantic-ui-react'
-import {AvgRatingComponent} from "./AvgRatingComponent";
-import Flag from "semantic-ui-react/dist/commonjs/elements/Flag";
+import { Item , Label } from "semantic-ui-react";
+import {AvgRatingComponent} from "./RatingComponents";
+import Flag from "semantic-ui-react/dist/commonjs/elements/Flag/index";
 import Reviews from "./Reviews";
 
 const RestaurantItem = (props) => (
       <Item>
-        <Item.Image src='./fmj.jpg' />
+        <Item.Image src={fmjImg} />
 
         <Item.Content>
           <Item.Header as='a'>{props.item.restaurantName}</Item.Header> <Flag name={props.item.flag} />

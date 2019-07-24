@@ -2,7 +2,7 @@
   {
     "id": 1,
     "restaurantName":"Bronco",
-    "address":"39 Rue des Petites Écuries, 75010 Paris",
+    "address":"139 Maxim Road, London, UK",
     "flag": "fr",
     "desc": "A relaxed and vibrant afternoon food.",
     "lat":48.8737815,
@@ -25,9 +25,9 @@
   {
     "id": 2,
     "restaurantName":"Pizzano",
-    "address":"4 Stefano, 75018 Italy",
+    "address":"25 Middlesex St, London, UK",
     "flag": "it",
-    "desc": "Best pizza in the whole Italy.",
+    "desc": "Best pizza from Italian ovens.",
     "lat":48.8865035,
     "long":2.3442197,
     "ratings":[
@@ -65,6 +65,52 @@
         "name": "Monica Last",
         "stars":5,
         "comment":"Good but not best."
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "restaurantName":"Bronco",
+    "address":"139 Maxim Road, London, UK",
+    "flag": "fr",
+    "desc": "A relaxed and vibrant afternoon food.",
+    "lat":48.8737815,
+    "long":2.3501649,
+    "ratings":[
+      {
+        "id": 11,
+        "name": "Michael Max",
+        "stars":4,
+        "comment":"Great! But not many veggie options."
+      },
+      {
+        "id": 12,
+        "name": "Paul Histamine",
+        "stars":5,
+        "comment":"My favorite restaurant!"
+      }
+    ]
+  },
+  {
+    "id": 5,
+    "restaurantName":"Bronco",
+    "address":"139 Maxim Road, London, UK",
+    "flag": "fr",
+    "desc": "A relaxed and vibrant afternoon food.",
+    "lat":48.8737815,
+    "long":2.3501649,
+    "ratings":[
+      {
+        "id": 11,
+        "name": "Michael Max",
+        "stars":4,
+        "comment":"Great! But not many veggie options."
+      },
+      {
+        "id": 12,
+        "name": "Paul Histamine",
+        "stars":5,
+        "comment":"My favorite restaurant!"
       }
     ]
   }

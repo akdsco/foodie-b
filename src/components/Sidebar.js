@@ -1,5 +1,7 @@
+// Import Components
+
 import React from 'react'
-import { Header, Icon, Image, Menu, Segment, Sidebar } from 'semantic-ui-react'
+import { Header, Icon, Image, Menu, Segment, Sidebar } from 'semantic-ui-react/index'
 
 class MySidebar extends React.Component {
   render() {
