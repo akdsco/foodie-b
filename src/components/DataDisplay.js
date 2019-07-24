@@ -6,8 +6,12 @@ import ItemGroup from "semantic-ui-react/dist/commonjs/views/Item/ItemGroup"
 import SearchRestaurants from "./SearchRestaurants"
 import restaurantsARR from '../data/restaurants'
 
+// Import CSS
+import '../css/DataDisplay.css'
+
 // Import images
 import logoImg from '../img/logo.png'
+import Sticky from "semantic-ui-react/dist/commonjs/modules/Sticky";
 
 export default class DataDisplay extends React.Component {
   constructor(props) {
@@ -35,25 +39,27 @@ export default class DataDisplay extends React.Component {
     );
 
     return (
-        <div>
-          <Segment>
-          <Menu stackable size='mini'>
-            <Menu.Item>
-              <img src={logoImg} alt='logo'/>
-            </Menu.Item>
-            <Menu.Item name='Info' active={activeItem === 'Info'} onClick={this.handleItemClick} />
-            <Menu.Item
-                name='Filter'
-                active={activeItem === 'Filter'}
-                onClick={this.handleItemClick}
-            />
-            <Menu.Menu position='right'>
+        <div className='left-container-computer'>
+          <Sticky>
+            <Segment>
+            <Menu stackable size='mini'>
               <Menu.Item>
-                <SearchRestaurants />
+                <img src={logoImg} alt='logo'/>
               </Menu.Item>
-            </Menu.Menu>
-          </Menu>
-          </Segment>
+              <Menu.Item name='Info' active={activeItem === 'Info'} onClick={this.handleItemClick} />
+              <Menu.Item
+                  name='Filter'
+                  active={activeItem === 'Filter'}
+                  onClick={this.handleItemClick}
+              />
+              <Menu.Menu position='right'>
+                <Menu.Item>
+                  <SearchRestaurants />
+                </Menu.Item>
+              </Menu.Menu>
+            </Menu>
+            </Segment>
+          </Sticky>
 
           <Segment>
             <ItemGroup divided>
