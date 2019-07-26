@@ -17,7 +17,7 @@
       {
         "id": 12,
         "name": "Paul Histamine",
-        "stars":5,
+        "stars":4,
         "comment":"My favorite restaurant!"
       }
     ]
@@ -109,7 +109,7 @@
       {
         "id": 12,
         "name": "Paul Histamine",
-        "stars":2,
+        "stars":1,
         "comment":"My favorite restaurant!"
       }
     ]

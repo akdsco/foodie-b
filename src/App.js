@@ -8,19 +8,22 @@ import DataDisplay from './components/DataDisplay';
 import Container from "semantic-ui-react/dist/commonjs/elements/Container";
 import Grid from "semantic-ui-react/dist/commonjs/collections/Grid";
 import GridColumn from "semantic-ui-react/dist/commonjs/collections/Grid/GridColumn";
+import MapAlt from './components/MapAlt'
 
 class App extends React.Component {
   render() {
+    const style={height: '100vh'};
     return (
         <div>
           <Container>
             <Grid>
-              <Grid.Row centered columns={2} only='computer'>
+              <Grid.Row centered columns={2} only='computer' style={style}>
                 <GridColumn width={8} >
                   <DataDisplay />
                 </GridColumn>
                 <GridColumn width={8}>
-                  <Map />
+                  {/*<Map />*/}
+                  <MapAlt />
                 </GridColumn>
               </Grid.Row>
               <Grid.Row centered columns={1} only='tablet'>

@@ -4,6 +4,8 @@ import RestaurantItem from "./RestaurantItem"
 import { Menu , Segment } from "semantic-ui-react";
 import ItemGroup from "semantic-ui-react/dist/commonjs/views/Item/ItemGroup"
 import SearchRestaurants from "./SearchRestaurants"
+
+// Import Data
 import restaurantsARR from '../data/restaurants'
 
 // Import CSS
@@ -28,12 +30,8 @@ export default class DataDisplay extends React.Component {
     const { activeItem } = this.state;
     const restaurants = this.state.restaurants.map( restaurant => {
           // find out average rating for each restaurant
-          let avgRating = 0;
-          for(let i = 0; i < restaurant.ratings.length; i++ ) {
-            avgRating += restaurant.ratings[i].stars;
-          }
-          avgRating /= restaurant.ratings.length;
-          // console.log(avgRating);
+          let avgRating = restaurant.ratings.map(rating => rating.stars).reduce((a,b) => a+b) / restaurant.ratings.length;
+          console.log(avgRating);
           return <RestaurantItem key={restaurant.id} item={restaurant} avgRating={avgRating}/>
       }
     );

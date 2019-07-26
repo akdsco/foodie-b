@@ -1,10 +1,14 @@
+// Import Data
+import restaurantsARR from '../data/restaurants'
+
 // Import Components
 import React from 'react';
 import {withScriptjs, withGoogleMap, GoogleMap, Marker} from "react-google-maps";
+import RestaurantItem from "./RestaurantItem";
 
 const styles = require('../data/GoogleMapStyles.json');
 
-const MapComponent = withScriptjs(withGoogleMap(props =>
+const MapComponent = withScriptjs(withGoogleMap(() =>
   <GoogleMap
       defaultZoom={15}
       defaultCenter={{
@@ -18,7 +22,6 @@ const MapComponent = withScriptjs(withGoogleMap(props =>
         scrollWheel: true,
         styles: styles
       }}
-
   >
     <Marker
         position={{ lat: 51.516858, lng: -0.081121 }}
@@ -31,6 +34,13 @@ const MapComponent = withScriptjs(withGoogleMap(props =>
 
 
 class Map extends React.PureComponent {
+  constructor(props) {
+    super(props)
+    this.state = {
+      restaurants: restaurantsARR
+    }
+  }
+
   render() {
     return(
         <MapComponent
