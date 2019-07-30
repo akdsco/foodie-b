@@ -1,8 +1,8 @@
 // Import Components
 
 import React from 'react'
-import {Button, Icon, Image, Modal} from 'semantic-ui-react'
-import ReviewItem from "./ReviewItem";
+import {Button, Icon, Image, Modal} from 'semantic-ui-react/index'
+import ReviewItem from "../ReviewItem";
 import ItemGroup from "semantic-ui-react/dist/commonjs/views/Item/ItemGroup";
 
 export default class Reviews extends React.Component {

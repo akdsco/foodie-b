@@ -9,7 +9,7 @@ export default class ReviewItem extends React.Component {
   render() {
     return(
       <Item>
-        <Item.Image size='tiny' src='https://react.semantic-ui.com/images/avatar/large/stevie.jpg'/>
+        {/*<Item.Image size='tiny' src='https://react.semantic-ui.com/images/avatar/large/stevie.jpg'/>*/}
 
         <Item.Content>
           <Item.Header as='a'>{this.props.item.name}</Item.Header>
