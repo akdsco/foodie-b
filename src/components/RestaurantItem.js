@@ -6,7 +6,6 @@ import React from 'react'
 import {Button, Icon, Item, Label} from "semantic-ui-react";
 import {AvgRatingComponent} from "./RatingComponents";
 import Flag from "semantic-ui-react/dist/commonjs/elements/Flag/index";
-import Reviews from "./old-code/Reviews";
 
 const RestaurantItem = (props) => (
       <Item>

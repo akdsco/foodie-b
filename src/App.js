@@ -21,7 +21,7 @@ class App extends React.Component {
                   <DataDisplay />
                 </GridColumn>
                 <GridColumn width={8}>
-                  <Map />
+                  {/*<Map />*/}
                 </GridColumn>
               </Grid.Row>
               <Grid.Row centered columns={1} only='tablet'>
