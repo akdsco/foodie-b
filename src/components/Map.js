@@ -1,6 +1,3 @@
-// Import Data
-import restaurantsARR from '../data/restaurants'
-
 // Import Components
 import React from 'react';
 import {withScriptjs, withGoogleMap, GoogleMap, Marker} from "react-google-maps";
@@ -8,11 +5,10 @@ import {compose, withProps} from "recompose";
 
 const styles = require('../data/GoogleMapStyles.json');
 
-class Map extends React.Component {
+export default class Map extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      restaurants: restaurantsARR,
       center: {
         lat: 0,
         lng: 0
@@ -55,11 +51,8 @@ class Map extends React.Component {
   };
 
   render() {
-    const restaurantMarkers = this.state.restaurants.map( restaurant => {
-          // find out lat and lng info for each restaurant item
-          // console.log(restaurant);
-          return <Marker key={restaurant.id} position={{ lat: restaurant.lat, lng: restaurant.long}} />
-        }
+    const restaurantMarkers = this.props.restaurantsList.map( restaurant =>
+      <Marker key={restaurant.id} position={{ lat: restaurant.lat, lng: restaurant.long}} />
     );
 
     const Map = compose(
@@ -70,8 +63,8 @@ class Map extends React.Component {
         mapElement: <div style={{ height: `100%` }} />
       }),
       withScriptjs,
-      withGoogleMap
-    )((props) =>
+    withGoogleMap
+  )((props) =>
       <GoogleMap
         defaultZoom={15}
         center={{
@@ -104,5 +97,3 @@ class Map extends React.Component {
   }
 
 }
-
-export default Map

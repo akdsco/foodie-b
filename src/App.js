@@ -115,12 +115,12 @@ class App extends React.Component {
                   />
                 </GridColumn>
                 <GridColumn width={8}>
-                  {/*<Map restaurantsList={restaurantsList}/>*/}
+                  <Map restaurantsList={filteredRestaurants}/>
                 </GridColumn>
               </Grid.Row>
               <Grid.Row centered columns={1} only='tablet'>
                 <GridColumn>
-                  <Map />
+                  {/*<Map />*/}
                 </GridColumn>
               </Grid.Row>
               <Grid.Row centered columns={1} only='mobile'>
