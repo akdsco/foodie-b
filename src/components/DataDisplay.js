@@ -1,5 +1,5 @@
 // Import Data
-import restaurantsARR from '../data/restaurants'
+import restaurantsJSON from '../data/restaurants'
 
 // Import CSS
 import '../css/DataDisplay.css'
@@ -23,10 +23,10 @@ export default class DataDisplay extends React.Component {
     super(props);
     this.state = {
       activeItem: 'Info',
-      restaurants: restaurantsARR,
+      restaurants: restaurantsJSON,
       activeIndex: -1,
-      ratingMin: -1,
-      ratingMax: -1
+      ratingMin: 1,
+      ratingMax: 5
     };
     // this.handleItemClick = this.handleItemClick.bind(this);
     // this.handleAccordionClick = this.handleAccordionClick.bind(this);
@@ -74,28 +74,32 @@ export default class DataDisplay extends React.Component {
     }
   };
 
+  sortRestaurants() {
+    // converts object into array
+    return Object.keys(this.state.restaurants).map((rid) => this.state.restaurants[rid])
+    // you can specify sorting here if you'd like in the future
+  }
+
   render() {
     const { activeItem, activeIndex } = this.state;
 
-    const restaurantsList = this.state.restaurants
-      .map(rsnt => {
+    let filteredRestaurants = [];
+    this.sortRestaurants().forEach( restaurant => {
       // calculate average rating for each restaurant
-        rsnt.avgRating = rsnt.ratings
-          .map(rating => rating.stars)
-          .reduce(( a , b ) => a + b ) / rsnt.ratings.length;
-        return rsnt})
-      .filter(rsnt => () => {
-          if(this.state.ratingFilter.min === -1 && this.state.ratingFilter.max === -1) {
-            console.log('returned first');
-            return rsnt
-          } else {
-            console.log('returned second');
-            return rsnt.avgRating >= this.state.ratingFilter.min && rsnt.avgRating <= this.state.ratingFilter.max }
-          })
-      .map( restaurant => {
-        const reviews = restaurant.ratings.map(review => <ReviewItem key={review.id} item={review} />);
+      restaurant.avgRating = restaurant.ratings.map( rating => rating.stars).reduce( (a , b ) => a + b ) / restaurant.ratings.length;
+      // filter out restaurants based on selected rating range
+      if(restaurant.avgRating <= this.state.ratingMax && restaurant.avgRating >= this.state.ratingMin) {
+        // push qualified restaurants to array
+        filteredRestaurants.push(restaurant)
+      }
+    });
 
-      return (
+    // fill array with react restaurant components
+    let restaurantsList = [];
+    filteredRestaurants.forEach( restaurant => {
+      const reviews = restaurant.ratings.map( review => <ReviewItem key={review.id} item={review} />);
+
+      restaurantsList.push(
         <div key={restaurant.id}>
           <Accordion.Title active={activeIndex === restaurant.id} index={restaurant.id} onClick={this.handleAccordionClick}>
             <RestaurantItem item={restaurant} avgRating={restaurant.avgRating}/>
@@ -105,10 +109,7 @@ export default class DataDisplay extends React.Component {
           </Accordion.Content>
         </div>
         )
-      }
-    );
-
-    console.log(restaurantsList);
+    });
 
     return (
       <div className='left-container-computer'>
