@@ -5,6 +5,7 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/DataDisplay.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/DataDisplay.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Filter.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Filter.js" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -17,13 +18,13 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/App.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="148">
-              <caret line="24" column="25" lean-forward="true" selection-start-line="24" selection-start-column="25" selection-end-line="24" selection-end-column="25" />
+            <state relative-caret-position="2074">
+              <caret line="122" column="25" lean-forward="true" selection-start-line="122" selection-start-column="25" selection-end-line="122" selection-end-column="25" />
               <folding>
-                <element signature="e#60#86#0" expanded="true" />
+                <element signature="e#125#151#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -32,11 +33,23 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/components/DataDisplay.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1649">
-              <caret line="29" column="6" lean-forward="true" selection-start-line="29" selection-start-column="6" selection-end-line="29" selection-end-column="6" />
+            <state relative-caret-position="-719">
+              <caret line="3" column="16" lean-forward="true" selection-start-line="3" selection-start-column="16" selection-end-line="3" selection-end-column="16" />
               <folding>
-                <element signature="e#128#165#0" expanded="true" />
+                <element signature="e#130#167#0" expanded="true" />
                 <element signature="e#370#395#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/components/Map.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="522">
+              <caret line="93" column="27" lean-forward="true" selection-start-line="93" selection-start-column="27" selection-end-line="93" selection-end-column="27" />
+              <folding>
+                <element signature="e#86#112#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -45,8 +58,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/components/Filter.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="352">
-              <caret line="58" column="45" lean-forward="true" selection-start-line="58" selection-start-column="45" selection-end-line="58" selection-end-column="45" />
+            <state relative-caret-position="80">
+              <caret line="42" column="31" lean-forward="true" selection-start-line="42" selection-start-column="31" selection-end-line="42" selection-end-column="31" />
               <folding>
                 <element signature="e#0#25#0" expanded="true" />
               </folding>
@@ -118,7 +131,6 @@
         <option value="$PROJECT_DIR$/src/css/DisplayData.css" />
         <option value="$PROJECT_DIR$/src/css/DataDisplay.css" />
         <option value="$PROJECT_DIR$/src/components/MapAlt.js" />
-        <option value="$PROJECT_DIR$/src/components/Map.js" />
         <option value="$PROJECT_DIR$/src/components/ReviewItem.js" />
         <option value="$PROJECT_DIR$/src/css/AppTest.css" />
         <option value="$PROJECT_DIR$/src/data/restaurants.json" />
@@ -129,6 +141,7 @@
         <option value="$PROJECT_DIR$/src/components/Filter.js" />
         <option value="$PROJECT_DIR$/src/components/DataDisplay.js" />
         <option value="$PROJECT_DIR$/src/App.js" />
+        <option value="$PROJECT_DIR$/src/components/Map.js" />
       </list>
     </option>
   </component>
@@ -261,7 +274,7 @@
       <workItem from="1563457096931" duration="22272000" />
       <workItem from="1563642286915" duration="42908000" />
       <workItem from="1564330723969" duration="23134000" />
-      <workItem from="1564502644931" duration="27297000" />
+      <workItem from="1564502644931" duration="33620000" />
     </task>
     <task id="LOCAL-00001" summary="empty App">
       <created>1562577651216</created>
@@ -361,11 +374,18 @@
       <option name="project" value="LOCAL" />
       <updated>1564589622208</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="- implement rating filter (it does not work together with the map yet)&#10;Rewrite the way react restaurant components are created.">
+      <created>1564644301207</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1564644301207</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="152190000" />
+    <option name="totallyTimeSpent" value="158513000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -443,7 +463,8 @@
     <MESSAGE value="- rewrite Map Component&#10;(add geolocation, locate user when component mounts, if user does not&#10;allow locating, set hard-coded location)&#10;- delete MapAlt.js" />
     <MESSAGE value="- change reviews display from modal to accordion style&#10;- move previously used modal to old-code folder (might need it later)" />
     <MESSAGE value="- add filter tab content (Min and Max Rating Components along with &#10;Submit and reset Buttons)&#10;- create handlers and state properties for min and max filter values" />
-    <option name="LAST_COMMIT_MESSAGE" value="- add filter tab content (Min and Max Rating Components along with &#10;Submit and reset Buttons)&#10;- create handlers and state properties for min and max filter values" />
+    <MESSAGE value="- implement rating filter (it does not work together with the map yet)&#10;Rewrite the way react restaurant components are created." />
+    <option name="LAST_COMMIT_MESSAGE" value="- implement rating filter (it does not work together with the map yet)&#10;Rewrite the way react restaurant components are created." />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/src/App.test.js" />
@@ -576,16 +597,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/Map.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="117">
-          <caret line="87" column="7" lean-forward="true" selection-start-line="87" selection-start-column="7" selection-end-line="87" selection-end-column="7" />
-          <folding>
-            <element signature="e#86#112#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/AppTest.js" />
     <entry file="file://$PROJECT_DIR$/src/components/RestaurantItem.js">
       <provider selected="true" editor-type-id="text-editor">
@@ -625,16 +636,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/Filter.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="352">
-          <caret line="58" column="45" lean-forward="true" selection-start-line="58" selection-start-column="45" selection-end-line="58" selection-end-column="45" />
-          <folding>
-            <element signature="e#0#25#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/data/restaurants.json">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-1314">
@@ -642,12 +643,22 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/Filter.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="80">
+          <caret line="42" column="31" lean-forward="true" selection-start-line="42" selection-start-column="31" selection-end-line="42" selection-end-column="31" />
+          <folding>
+            <element signature="e#0#25#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/components/DataDisplay.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1649">
-          <caret line="29" column="6" lean-forward="true" selection-start-line="29" selection-start-column="6" selection-end-line="29" selection-end-column="6" />
+        <state relative-caret-position="-719">
+          <caret line="3" column="16" lean-forward="true" selection-start-line="3" selection-start-column="16" selection-end-line="3" selection-end-column="16" />
           <folding>
-            <element signature="e#128#165#0" expanded="true" />
+            <element signature="e#130#167#0" expanded="true" />
             <element signature="e#370#395#0" expanded="true" />
           </folding>
         </state>
@@ -655,10 +666,20 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/App.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="148">
-          <caret line="24" column="25" lean-forward="true" selection-start-line="24" selection-start-column="25" selection-end-line="24" selection-end-column="25" />
+        <state relative-caret-position="2074">
+          <caret line="122" column="25" lean-forward="true" selection-start-line="122" selection-start-column="25" selection-end-line="122" selection-end-column="25" />
           <folding>
-            <element signature="e#60#86#0" expanded="true" />
+            <element signature="e#125#151#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/Map.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="522">
+          <caret line="93" column="27" lean-forward="true" selection-start-line="93" selection-start-column="27" selection-end-line="93" selection-end-column="27" />
+          <folding>
+            <element signature="e#86#112#0" expanded="true" />
           </folding>
         </state>
       </provider>

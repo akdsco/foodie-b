@@ -40,7 +40,7 @@ export default class Filter extends React.Component {
 
 
   render() {
-    console.log(this.props);
+    // console.log(this.props);
     return(
         <Container>
           <p>Choose your range:</p>
