@@ -2,6 +2,12 @@ import React from 'react'
 import {Container, Button, Rating} from "semantic-ui-react";
 
 export default class Filter extends React.Component {
+  // handleReset(e) {
+  //   if(e.target.value === 'reset') {
+  //     this.props.handleItemClick;
+  //     this.props.handleReset();
+  //   }
+  // }
 
   render() {
     return(
@@ -23,11 +29,16 @@ export default class Filter extends React.Component {
           />
           <div style={{marginTop: '1.3rem'}}>
             <Button
-              name='Info'
               positive
+              name='Info'
               onClick={this.props.handleItemClick}
             >Filter</Button>
-            <Button negative>Reset</Button>
+            <Button
+              negative
+              name='Info'
+              value='reset'
+              onClick={this.props.handleItemClick}
+            >Reset</Button>
           </div>
         </Container>
     )

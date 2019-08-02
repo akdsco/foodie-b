@@ -50,6 +50,13 @@ class App extends React.Component {
     }
   };
 
+  handleReset = () => {
+    this.setState({
+      ratingMin: 1,
+      ratingMax: 5
+    })
+  };
+
   handleAccordionClick = (e, titleProps) =>  {
     console.log('is this even working?');
     const { index } = titleProps;
@@ -112,6 +119,7 @@ class App extends React.Component {
                       ratingMax={this.state.ratingMax}
                       handleMinRate={this.handleMinRate}
                       handleMaxRate={this.handleMaxRate}
+                      handleReset={this.handleReset}
                   />
                 </GridColumn>
                 <GridColumn width={8}>

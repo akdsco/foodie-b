@@ -22,7 +22,11 @@ export default class DataDisplay extends React.Component {
   }
 
   handleItemClick = (e, { name }) => {
+    console.log(e);
     this.setState({ activeItem: name });
+    if(e.target.value === 'reset') {
+      this.props.handleReset()
+    }
   };
 
   render() {
@@ -68,6 +72,7 @@ export default class DataDisplay extends React.Component {
             handleMinRate={this.props.handleMinRate}
             handleMaxRate={this.props.handleMaxRate}
             handleItemClick={this.handleItemClick}
+            handleReset={this.handleReset}
           />
         </Segment>
         }
