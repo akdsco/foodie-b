@@ -14,6 +14,8 @@ import GridColumn from "semantic-ui-react/dist/commonjs/collections/Grid/GridCol
 import ReviewItem from "./components/ReviewItem";
 import Accordion from "semantic-ui-react/dist/commonjs/modules/Accordion";
 import RestaurantItem from "./components/RestaurantItem";
+import MapAlt from "./components/MapAlt";
+import MapSearch from "./components/MapSearch";
 
 class App extends React.Component {
   constructor(props) {
@@ -133,7 +135,8 @@ class App extends React.Component {
               </Grid.Row>
               <Grid.Row centered columns={1} only='mobile'>
                 <GridColumn>
-                  {/*<Map />*/}
+                  {/*<MapAlt />*/}
+                  <MapSearch />
                 </GridColumn>
               </Grid.Row>
             </Grid>
