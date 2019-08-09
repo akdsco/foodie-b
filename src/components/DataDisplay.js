@@ -4,7 +4,6 @@ import '../css/DataDisplay.css'
 // Import images
 import logoImg from '../img/logo.png'
 import Sticky from "semantic-ui-react/dist/commonjs/modules/Sticky";
-import Accordion from "semantic-ui-react/dist/commonjs/modules/Accordion";
 
 // Import Components
 import React from 'react'
@@ -12,12 +11,15 @@ import {Menu, Segment} from "semantic-ui-react";
 import ItemGroup from "semantic-ui-react/dist/commonjs/views/Item/ItemGroup"
 import SearchRestaurants from "./SearchRestaurants"
 import Filter from './Filter'
+import RestaurantList from "./RestaurantList";
 
 export default class DataDisplay extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       activeItem: 'Info',
+      ratingMin: 1,
+      ratingMax: 5
     };
   }
 
@@ -27,6 +29,36 @@ export default class DataDisplay extends React.Component {
     if(e.target.value === 'reset') {
       this.props.handleReset()
     }
+  };
+
+  handleMinRate = (e, { rating }) => {
+    console.log('min ' + rating);
+    if((this.state.ratingMax > 0) && (rating < this.state.ratingMax)) {
+      this.setState({
+        ratingMin: rating
+      })
+    } else {
+      this.setState({
+        ratingMin: rating,
+        ratingMax: rating
+      })
+    }
+  };
+
+  handleMaxRate = (e, { rating }) => {
+    console.log('max ' + rating);
+    if(this.state.ratingMin <= rating) {
+      this.setState({
+        ratingMax: rating
+      })
+    }
+  };
+
+  handleReset = () => {
+    this.setState({
+      ratingMin: 1,
+      ratingMax: 5
+    })
   };
 
   render() {
@@ -56,21 +88,23 @@ export default class DataDisplay extends React.Component {
         </Sticky>
 
         {activeItem === 'Info' &&
-        <Segment>
-          <ItemGroup divided>
-            <Accordion styled>
-              {this.props.restaurantsList}
-            </Accordion>
-          </ItemGroup>
-        </Segment>
+            <Segment>
+              <ItemGroup divided>
+                <RestaurantList
+                  restaurants={this.props.restaurantsList.filter(restaurant =>
+                    restaurant.avgRating >= this.state.ratingMin &&
+                    restaurant.avgRating <= this.state.ratingMax)}
+                />
+              </ItemGroup>
+            </Segment>
         }
         {activeItem === 'Filter' &&
         <Segment>
           <Filter
-            ratingMax={this.props.ratingMax}
-            ratingMin={this.props.ratingMin}
-            handleMinRate={this.props.handleMinRate}
-            handleMaxRate={this.props.handleMaxRate}
+            ratingMax={this.state.ratingMax}
+            ratingMin={this.state.ratingMin}
+            handleMinRate={this.handleMinRate}
+            handleMaxRate={this.handleMaxRate}
             handleItemClick={this.handleItemClick}
             handleReset={this.handleReset}
           />

@@ -61,13 +61,17 @@ export default class Map extends React.Component {
     this.showCurrentLocation()
   };
 
+
   render() {
     // Sourcing lat and lng from each restaurant in the file and creating map markers
+
+    // TODO write code that will check if restaurants are in bound and generate only ones that are ?
+
     const restaurantMarkers = this.props.restaurantsList.map( restaurant =>
       <Marker key={restaurant.id} position={{ lat: restaurant.lat, lng: restaurant.long}} />
     );
 
-    const Map = compose(
+    const MapConst = compose(
       withProps({
         googleMapURL: "https://maps.googleapis.com/maps/api/js?key=AIzaSyBCwca9Qh9sLxHqQisOUHV62-Xth5iH0pI&v=3.exp&libraries=geometry,drawing,places",
         loadingElement: <div style={{ height: `100%` }} />,
@@ -81,43 +85,59 @@ export default class Map extends React.Component {
           this.setState({
             bounds: null,
             center: {
-              lat: 41.9, lng: -87.624
+              lat: 51.9, lng: -0.08
             },
             markers: [],
             onMapMounted: ref => {
               refs.map = ref;
             },
-            onBoundsChanged: () => {
+            // onBoundsChanged: () => {
+            //   this.setState({
+            //     bounds: refs.map.getBounds(),
+            //     center: refs.map.getCenter(),
+            //   })
+            // },
+            onDragEnd: () => {
+              console.log('before');
+              console.log(refs.map.getCenter().lat());
+              console.log(refs.map.getCenter().lng());
+              let x = refs.map.getCenter().lat();
+              let y = refs.map.getCenter().lng();
               this.setState({
-                bounds: refs.map.getBounds(),
-                center: refs.map.getCenter(),
-              })
+                center: {
+                  lat: x,
+                  lng: y
+                }
+              });
+              console.log('after');
+              console.log(refs.map.getCenter().lat());
+              console.log(refs.map.getCenter().lng());
             },
             onSearchBoxMounted: ref => {
               refs.searchBox = ref;
             },
-            onPlacesChanged: () => {
-              const places = refs.searchBox.getPlaces();
-              const bounds = new google.maps.LatLngBounds();
-
-              places.forEach(place => {
-                if (place.geometry.viewport) {
-                  bounds.union(place.geometry.viewport)
-                } else {
-                  bounds.extend(place.geometry.location)
-                }
-              });
-              const nextMarkers = places.map(place => ({
-                position: place.geometry.location,
-              }));
-              const nextCenter = _.get(nextMarkers, '0.position', this.state.center);
-
-              this.setState({
-                center: nextCenter,
-                markers: nextMarkers,
-              });
-              // refs.map.fitBounds(bounds);
-            },
+            // onPlacesChanged: () => {
+            //   const places = refs.searchBox.getPlaces();
+            //   const bounds = new google.maps.LatLngBounds();
+            //
+            //   places.forEach(place => {
+            //     if (place.geometry.viewport) {
+            //       bounds.union(place.geometry.viewport)
+            //     } else {
+            //       bounds.extend(place.geometry.location)
+            //     }
+            //   });
+            //   const nextMarkers = places.map(place => ({
+            //     position: place.geometry.location,
+            //   }));
+            //   const nextCenter = _.get(nextMarkers, '0.position', this.state.center);
+            //
+            //   this.setState({
+            //     center: nextCenter,
+            //     markers: nextMarkers,
+            //   });
+            //   // refs.map.fitBounds(bounds);
+            // },
           })
         },
       }),
@@ -125,7 +145,8 @@ export default class Map extends React.Component {
     withGoogleMap)((props) =>
       <GoogleMap
         ref={props.onMapMounted}
-        onBoundsChanged={props.onBoundsChanged}
+        // onBoundsChanged={props.onBoundsChanged}
+        onDragEnd={props.onDragEnd}
         defaultZoom={15}
         center={{
           lat: props.currentLocation.lat,
@@ -137,34 +158,34 @@ export default class Map extends React.Component {
           scaleControl: true,
           scrollWheel: true,
           styles: styles,
-          draggable: true,
+          draggable: true
         }}
       >
-        <SearchBox
-            ref={props.onSearchBoxMounted}
-            bounds={props.bounds}
-            controlPosition={google.maps.ControlPosition.TOP_CENTER}
-            onPlacesChanged={props.onPlacesChanged}
-        >
-          <input
-              type="text"
-              placeholder="Search here"
-              style={{
-                boxSizing: `border-box`,
-                border: `1px solid transparent`,
-                width: `240px`,
-                height: `32px`,
-                marginTop: `27px`,
-                padding: `0 12px`,
-                borderRadius: `3px`,
-                boxShadow: `0 2px 6px rgba(0, 0, 0, 0.3)`,
-                fontSize: `14px`,
-                outline: `none`,
-                textOverflow: `ellipses`,
-              }}
-          />
-        </SearchBox>
-        {/* Loading user location if browser locates, else hardcoded value for London, City of */}
+        {/*<SearchBox*/}
+        {/*    ref={props.onSearchBoxMounted}*/}
+        {/*    bounds={props.bounds}*/}
+        {/*    controlPosition={google.maps.ControlPosition.TOP_CENTER}*/}
+        {/*    onPlacesChanged={props.onPlacesChanged}*/}
+        {/*>*/}
+        {/*  <input*/}
+        {/*      type="text"*/}
+        {/*      placeholder="Search here"*/}
+        {/*      style={{*/}
+        {/*        boxSizing: `border-box`,*/}
+        {/*        border: `1px solid transparent`,*/}
+        {/*        width: `240px`,*/}
+        {/*        height: `32px`,*/}
+        {/*        marginTop: `27px`,*/}
+        {/*        padding: `0 12px`,*/}
+        {/*        borderRadius: `3px`,*/}
+        {/*        boxShadow: `0 2px 6px rgba(0, 0, 0, 0.3)`,*/}
+        {/*        fontSize: `14px`,*/}
+        {/*        outline: `none`,*/}
+        {/*        textOverflow: `ellipses`,*/}
+        {/*      }}*/}
+        {/*  />*/}
+        {/*</SearchBox>*/}
+        {/* Loading user location Marker if browser locates, else hardcoded value for London, City of */}
         {props.isMarkerShown &&
           <Marker
               icon={{url: userLocation}}
@@ -183,7 +204,7 @@ export default class Map extends React.Component {
     );
 
     return(
-        <Map
+        <MapConst
           isMarkerShown={this.state.isMarkerShown}
           currentLocation={this.state.center}
         />
