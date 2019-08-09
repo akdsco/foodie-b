@@ -10,6 +10,7 @@ import DataDisplay from './components/DataDisplay';
 import Container from "semantic-ui-react/dist/commonjs/elements/Container";
 import Grid from "semantic-ui-react/dist/commonjs/collections/Grid";
 import GridColumn from "semantic-ui-react/dist/commonjs/collections/Grid/GridColumn";
+import Map from "./components/Map";
 
 // TODO look through the app and see where you can untagle application and create components that pass on information
 // as much as it's possible
@@ -19,6 +20,8 @@ export default class App extends React.Component {
     super(props);
     this.state = {
       restaurants: restaurantsJSON,
+      ratingMin: 1,
+      ratingMax: 5
     }
   }
 
@@ -38,6 +41,36 @@ export default class App extends React.Component {
     this.addAvgRating();
   }
 
+  handleMinRate = (e, { rating }) => {
+    console.log('min ' + rating);
+    if((this.state.ratingMax > 0) && (rating < this.state.ratingMax)) {
+      this.setState({
+        ratingMin: rating
+      })
+    } else {
+      this.setState({
+        ratingMin: rating,
+        ratingMax: rating
+      })
+    }
+  };
+
+  handleMaxRate = (e, { rating }) => {
+    console.log('max ' + rating);
+    if(this.state.ratingMin <= rating) {
+      this.setState({
+        ratingMax: rating
+      })
+    }
+  };
+
+  handleReset = () => {
+    this.setState({
+      ratingMin: 1,
+      ratingMax: 5
+    })
+  };
+
   render() {
 
     const style={height: '100vh'};
@@ -49,11 +82,18 @@ export default class App extends React.Component {
                 <GridColumn width={8} >
                   <DataDisplay
                       restaurantsList={this.state.restaurants}
+                      ratingMax={this.state.ratingMax}
+                      ratingMin={this.state.ratingMin}
+                      handleMinRate={this.handleMinRate}
+                      handleMaxRate={this.handleMaxRate}
+                      handleReset={this.handleReset}
                   />
                 </GridColumn>
                 <GridColumn width={8}>
                   {/*TODO redo this as well*/}
-                  {/*<Map/>*/}
+                  <Map restaurantsList={this.state.restaurants.filter(restaurant =>
+                      restaurant.avgRating >= this.state.ratingMin &&
+                      restaurant.avgRating <= this.state.ratingMax)} />
                 </GridColumn>
               </Grid.Row>
               <Grid.Row centered columns={1} only='tablet'>

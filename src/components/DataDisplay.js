@@ -18,8 +18,6 @@ export default class DataDisplay extends React.Component {
     super(props);
     this.state = {
       activeItem: 'Info',
-      ratingMin: 1,
-      ratingMax: 5
     };
   }
 
@@ -29,36 +27,6 @@ export default class DataDisplay extends React.Component {
     if(e.target.value === 'reset') {
       this.props.handleReset()
     }
-  };
-
-  handleMinRate = (e, { rating }) => {
-    console.log('min ' + rating);
-    if((this.state.ratingMax > 0) && (rating < this.state.ratingMax)) {
-      this.setState({
-        ratingMin: rating
-      })
-    } else {
-      this.setState({
-        ratingMin: rating,
-        ratingMax: rating
-      })
-    }
-  };
-
-  handleMaxRate = (e, { rating }) => {
-    console.log('max ' + rating);
-    if(this.state.ratingMin <= rating) {
-      this.setState({
-        ratingMax: rating
-      })
-    }
-  };
-
-  handleReset = () => {
-    this.setState({
-      ratingMin: 1,
-      ratingMax: 5
-    })
   };
 
   render() {
@@ -92,8 +60,8 @@ export default class DataDisplay extends React.Component {
               <ItemGroup divided>
                 <RestaurantList
                   restaurants={this.props.restaurantsList.filter(restaurant =>
-                    restaurant.avgRating >= this.state.ratingMin &&
-                    restaurant.avgRating <= this.state.ratingMax)}
+                    restaurant.avgRating >= this.props.ratingMin &&
+                    restaurant.avgRating <= this.props.ratingMax)}
                 />
               </ItemGroup>
             </Segment>
@@ -101,12 +69,12 @@ export default class DataDisplay extends React.Component {
         {activeItem === 'Filter' &&
         <Segment>
           <Filter
-            ratingMax={this.state.ratingMax}
-            ratingMin={this.state.ratingMin}
-            handleMinRate={this.handleMinRate}
-            handleMaxRate={this.handleMaxRate}
+            ratingMax={this.props.ratingMax}
+            ratingMin={this.props.ratingMin}
+            handleMinRate={this.props.handleMinRate}
+            handleMaxRate={this.props.handleMaxRate}
             handleItemClick={this.handleItemClick}
-            handleReset={this.handleReset}
+            handleReset={this.props.handleReset}
           />
         </Segment>
         }
