@@ -1,3 +1,5 @@
+/*global google*/
+
 // Import Data
 import restaurantsJSON from './data/restaurants'
 
@@ -11,9 +13,6 @@ import Container from "semantic-ui-react/dist/commonjs/elements/Container";
 import Grid from "semantic-ui-react/dist/commonjs/collections/Grid";
 import GridColumn from "semantic-ui-react/dist/commonjs/collections/Grid/GridColumn";
 import Map from "./components/Map";
-
-// TODO look through the app and see where you can untagle application and create components that pass on information
-// as much as it's possible
 
 export default class App extends React.Component {
   constructor(props) {
@@ -90,10 +89,11 @@ export default class App extends React.Component {
                   />
                 </GridColumn>
                 <GridColumn width={8}>
-                  {/*TODO redo this as well*/}
-                  <Map restaurantsList={this.state.restaurants.filter(restaurant =>
+                  <Map
+                    restaurantsList={this.state.restaurants.filter(restaurant =>
                       restaurant.avgRating >= this.state.ratingMin &&
-                      restaurant.avgRating <= this.state.ratingMax)} />
+                      restaurant.avgRating <= this.state.ratingMax)}
+                  />
                 </GridColumn>
               </Grid.Row>
               <Grid.Row centered columns={1} only='tablet'>

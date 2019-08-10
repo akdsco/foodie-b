@@ -56,27 +56,27 @@ export default class DataDisplay extends React.Component {
         </Sticky>
 
         {activeItem === 'Info' &&
-            <Segment>
-              <ItemGroup divided>
-                <RestaurantList
-                  restaurants={this.props.restaurantsList.filter(restaurant =>
-                    restaurant.avgRating >= this.props.ratingMin &&
-                    restaurant.avgRating <= this.props.ratingMax)}
-                />
-              </ItemGroup>
-            </Segment>
+          <Segment>
+            <ItemGroup divided>
+              <RestaurantList
+                restaurants={this.props.restaurantsList.filter(restaurant =>
+                  restaurant.avgRating >= this.props.ratingMin &&
+                  restaurant.avgRating <= this.props.ratingMax)}
+              />
+            </ItemGroup>
+          </Segment>
         }
         {activeItem === 'Filter' &&
-        <Segment>
-          <Filter
-            ratingMax={this.props.ratingMax}
-            ratingMin={this.props.ratingMin}
-            handleMinRate={this.props.handleMinRate}
-            handleMaxRate={this.props.handleMaxRate}
-            handleItemClick={this.handleItemClick}
-            handleReset={this.props.handleReset}
-          />
-        </Segment>
+          <Segment>
+            <Filter
+              ratingMax={this.props.ratingMax}
+              ratingMin={this.props.ratingMin}
+              handleMinRate={this.props.handleMinRate}
+              handleMaxRate={this.props.handleMaxRate}
+              handleItemClick={this.handleItemClick}
+              handleReset={this.props.handleReset}
+            />
+          </Segment>
         }
       </div>
     )
