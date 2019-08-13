@@ -20,8 +20,21 @@ export default class App extends React.Component {
     this.state = {
       restaurants: restaurantsJSON,
       ratingMin: 1,
-      ratingMax: 5
-    }
+      ratingMax: 5,
+      center: {
+        lat: 1,
+        lng: 1
+      }
+    };
+    this.handleCenterChange = this.handleCenterChange.bind(this);
+  }
+
+  //TODO create method to update center
+  //TODO create method to fetch restaurants
+
+  componentDidMount() {
+    this.addAvgRating();
+    this.locateUser();
   }
 
   addAvgRating() {
@@ -36,8 +49,49 @@ export default class App extends React.Component {
     })
   }
 
-  componentDidMount() {
-    this.addAvgRating();
+  locateUser() {
+    if(navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+          position => {
+      console.log('User Successfully located');
+      this.setState(prevState => ({
+      center: {
+        ...prevState.center,
+        lat: position.coords.latitude,
+        lng: position.coords.longitude
+      },
+      isUserMarkerShown: true
+      }))
+    },
+      (error) => {
+        console.log(error);
+        console.log('Error: The Geolocation service failed.');
+        this.setState(prevState => ({
+          center: {
+            ...prevState.center,
+            lat: 51.516126,
+            lng: -0.081679
+          },
+          isUserMarkerShown: true
+          }))
+        }
+      )
+    }
+  }
+
+  // toggle I'll use for Marker click later on
+
+  // onToggleOpen: (prevState) => {
+  //   console.logb('onToggleOpen fired');
+  //   this.setState({
+  //     isOpen: !prevState.isOpen
+  //   })
+  // }
+
+  handleCenterChange(center) {
+    this.setState({
+      center: center
+    })
   }
 
   handleMinRate = (e, { rating }) => {
@@ -93,6 +147,8 @@ export default class App extends React.Component {
                     restaurantsList={this.state.restaurants.filter(restaurant =>
                       restaurant.avgRating >= this.state.ratingMin &&
                       restaurant.avgRating <= this.state.ratingMax)}
+                    center={this.state.center}
+                    handleCenterChange={this.handleCenterChange}
                   />
                 </GridColumn>
               </Grid.Row>
