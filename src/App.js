@@ -1,4 +1,3 @@
-/*global google*/
 
 // Import Data
 import restaurantsJSON from './data/restaurants'
@@ -19,20 +18,56 @@ export default class App extends React.Component {
     super(props);
     this.state = {
       restaurants: restaurantsJSON,
+      restaurantsAPI: '',
       ratingMin: 1,
       ratingMax: 5,
       center: {
-        lat: 1,
-        lng: 1
+        lat: 51.5,
+        lng: -0.08
       }
     };
     this.handleCenterChange = this.handleCenterChange.bind(this);
+    this.fetchPlacesRestaurants = this.fetchPlacesRestaurants.bind(this);
   }
 
-  //TODO create method to update center
-  //TODO create method to fetch restaurants
+  //TODO update fetchPlaces so that it waits for locateUser before executing
 
-  componentDidMount() {
+  fetchPlacesRestaurants() {
+    let url = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location='+ this.state.center.lat + ',' + this.state.center.lng + '&radius=2000&type=restaurant&key=AIzaSyCj5lxn67K9uOeUpku2rliDNKa68UQ3xfE';
+    // let myH = {
+    //   'Access-Control-Allow-Origin': '*',
+    //   'X-Content-Type-Options': 'nosniff',
+    //   'Content-Type': 'application/json',
+    // };
+
+    // fetch(url).then(function(response) {
+    //   response.text().then(function(text) {
+    //     console.log(text);
+    //     rest = text
+    //
+    //   })
+    //     .catch(function(error) {
+    //       console.log('Looks like there was a problem: \n', error);
+    //     });
+    // });
+
+    const self = this;
+
+    fetch(url, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    }).then(response => {
+      response.json().then( data => {
+        self.setState({
+          restaurantsAPI: data
+        })
+      })
+    })
+  };
+
+  componentWillMount() {
     this.addAvgRating();
     this.locateUser();
   }
@@ -77,12 +112,13 @@ export default class App extends React.Component {
         }
       )
     }
+    this.fetchPlacesRestaurants();
   }
 
   // toggle I'll use for Marker click later on
 
   // onToggleOpen: (prevState) => {
-  //   console.logb('onToggleOpen fired');
+  //   console.log('onToggleOpen fired');
   //   this.setState({
   //     isOpen: !prevState.isOpen
   //   })
@@ -125,6 +161,7 @@ export default class App extends React.Component {
   };
 
   render() {
+    console.log(this.state.restaurantsAPI.results);
 
     const style={height: '100vh'};
     return (
@@ -147,6 +184,9 @@ export default class App extends React.Component {
                     restaurantsList={this.state.restaurants.filter(restaurant =>
                       restaurant.avgRating >= this.state.ratingMin &&
                       restaurant.avgRating <= this.state.ratingMax)}
+                    // restaurantsAPI={this.state.restaurantsAPI.results.filter(restaurant =>
+                    //     restaurant.rating >= this.state.ratingMin &&
+                    //     restaurant.rating <= this.state.ratingMax)}
                     center={this.state.center}
                     handleCenterChange={this.handleCenterChange}
                   />

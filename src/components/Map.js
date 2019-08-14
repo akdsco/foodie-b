@@ -146,11 +146,13 @@ const MapConst = compose(
 export default class Map extends React.PureComponent {
 
   render() {
+    console.log(this.props.restaurantsAPI);
     return(
       <MapConst
         restaurantsList={this.props.restaurantsList}
         center={this.props.center}
         handleCenterChange={this.props.handleCenterChange}
+        restaurantsAPI={this.props.restaurantsAPI}
       />
     )
   }

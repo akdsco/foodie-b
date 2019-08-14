@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="a87cdd32-9219-4738-ad77-7b28c1d0a690" name="Default Changelist" comment="">
+    <list default="true" id="a87cdd32-9219-4738-ad77-7b28c1d0a690" name="Default Changelist" comment="move center to App.js state, use handleCenterChange to update center">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/Map.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Map.js" afterDir="false" />
@@ -20,23 +20,23 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/App.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="17">
-              <caret line="86" column="19" selection-start-line="86" selection-start-column="19" selection-end-line="86" selection-end-column="19" />
+            <state relative-caret-position="272">
+              <caret line="31" selection-start-line="31" selection-end-line="31" />
               <folding>
-                <element signature="n#!!doc" expanded="true" />
+                <element signature="e#126#152#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/components/Map.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="392">
-              <caret line="80" column="21" lean-forward="true" selection-start-line="80" selection-start-column="21" selection-end-line="80" selection-end-column="21" />
+            <state relative-caret-position="372">
+              <caret line="147" column="12" lean-forward="true" selection-start-line="147" selection-start-column="12" selection-end-line="147" selection-end-column="12" />
               <folding>
                 <element signature="n#!!doc" expanded="true" />
               </folding>
@@ -47,8 +47,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/components/DataDisplay.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="850">
-              <caret line="55" column="17" selection-start-line="55" selection-start-column="17" selection-end-line="55" selection-end-column="17" />
+            <state relative-caret-position="17">
+              <caret line="33" lean-forward="true" selection-start-line="33" selection-end-line="33" />
               <folding>
                 <element signature="e#64#101#0" expanded="true" />
               </folding>
@@ -59,8 +59,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/components/RestaurantList.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="357">
-              <caret line="21" selection-start-line="21" selection-end-line="21" />
+            <state relative-caret-position="204">
+              <caret line="12" lean-forward="true" selection-start-line="12" selection-end-line="12" />
               <folding>
                 <element signature="e#0#25#0" expanded="true" />
               </folding>
@@ -157,8 +157,8 @@
         <option value="$PROJECT_DIR$/src/components/RestaurantItem.js" />
         <option value="$PROJECT_DIR$/src/components/RestaurantList.js" />
         <option value="$PROJECT_DIR$/src/components/DataDisplay.js" />
-        <option value="$PROJECT_DIR$/src/App.js" />
         <option value="$PROJECT_DIR$/src/components/Map.js" />
+        <option value="$PROJECT_DIR$/src/App.js" />
       </list>
     </option>
   </component>
@@ -174,8 +174,8 @@
     </layout>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="142" />
-    <option name="y" value="46" />
+    <option name="x" value="27" />
+    <option name="y" value="47" />
     <option name="width" value="1346" />
     <option name="height" value="698" />
   </component>
@@ -197,6 +197,12 @@
               <item name="f-end-react-restaurant-review-site" type="b2602c69:ProjectViewProjectNode" />
               <item name="f-end-react-restaurant-review-site" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="f-end-react-restaurant-review-site" type="b2602c69:ProjectViewProjectNode" />
+              <item name="f-end-react-restaurant-review-site" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="components" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -282,7 +288,8 @@
       <workItem from="1564502644931" duration="27297000" />
       <workItem from="1565015847569" duration="13908000" />
       <workItem from="1565106274537" duration="35865000" />
-      <workItem from="1565685812462" duration="9895000" />
+      <workItem from="1565685812462" duration="25516000" />
+      <workItem from="1565772164426" duration="7504000" />
     </task>
     <task id="LOCAL-00001" summary="empty App">
       <created>1562577651216</created>
@@ -424,11 +431,18 @@
       <option name="project" value="LOCAL" />
       <updated>1565458439630</updated>
     </task>
-    <option name="localTasksCounter" value="21" />
+    <task id="LOCAL-00021" summary="move center to App.js state, use handleCenterChange to update center">
+      <created>1565713415902</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1565713415903</updated>
+    </task>
+    <option name="localTasksCounter" value="22" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="230271000" />
+    <option name="totallyTimeSpent" value="253396000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -552,7 +566,8 @@
     <MESSAGE value="- remake the way list of Restaurants (Accordion Components) were created&#10;(Now each Component is separated, receives props accordingly and each&#10;Component has local handlers following React specifications)&#10;* Map and Markers not working yet" />
     <MESSAGE value="- lift state of ratings back to App.js and re-supply Map.js with filtered&#10;restaurant items accordingly with current filter assigned" />
     <MESSAGE value="Redo Map.js Component&#10;- Separate const MapConst from Map Class&#10;- move user location method tp MapConst&#10;- add Labels to JSON file Markers" />
-    <option name="LAST_COMMIT_MESSAGE" value="Redo Map.js Component&#10;- Separate const MapConst from Map Class&#10;- move user location method tp MapConst&#10;- add Labels to JSON file Markers" />
+    <MESSAGE value="move center to App.js state, use handleCenterChange to update center" />
+    <option name="LAST_COMMIT_MESSAGE" value="move center to App.js state, use handleCenterChange to update center" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/src/App.test.js" />
@@ -679,13 +694,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/package.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="697">
-          <caret line="41" column="3" lean-forward="true" selection-start-line="41" selection-start-column="3" selection-end-line="41" selection-end-column="3" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/data/restaurants.json">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-1314">
@@ -763,10 +771,17 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/package.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="221">
+          <caret line="13" column="34" lean-forward="true" selection-start-line="13" selection-start-column="34" selection-end-line="13" selection-end-column="34" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/components/RestaurantList.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="357">
-          <caret line="21" selection-start-line="21" selection-end-line="21" />
+        <state relative-caret-position="204">
+          <caret line="12" lean-forward="true" selection-start-line="12" selection-end-line="12" />
           <folding>
             <element signature="e#0#25#0" expanded="true" />
           </folding>
@@ -775,30 +790,30 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/components/DataDisplay.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="850">
-          <caret line="55" column="17" selection-start-line="55" selection-start-column="17" selection-end-line="55" selection-end-column="17" />
+        <state relative-caret-position="17">
+          <caret line="33" lean-forward="true" selection-start-line="33" selection-end-line="33" />
           <folding>
             <element signature="e#64#101#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/App.js">
+    <entry file="file://$PROJECT_DIR$/src/components/Map.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17">
-          <caret line="86" column="19" selection-start-line="86" selection-start-column="19" selection-end-line="86" selection-end-column="19" />
+        <state relative-caret-position="372">
+          <caret line="147" column="12" lean-forward="true" selection-start-line="147" selection-start-column="12" selection-end-line="147" selection-end-column="12" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/Map.js">
+    <entry file="file://$PROJECT_DIR$/src/App.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="392">
-          <caret line="80" column="21" lean-forward="true" selection-start-line="80" selection-start-column="21" selection-end-line="80" selection-end-column="21" />
+        <state relative-caret-position="272">
+          <caret line="31" selection-start-line="31" selection-end-line="31" />
           <folding>
-            <element signature="n#!!doc" expanded="true" />
+            <element signature="e#126#152#0" expanded="true" />
           </folding>
         </state>
       </provider>
