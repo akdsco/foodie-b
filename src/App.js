@@ -33,7 +33,7 @@ export default class App extends React.Component {
   //TODO update fetchPlaces so that it waits for locateUser before executing
 
   fetchPlacesRestaurants() {
-    let url = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location='+ this.state.center.lat + ',' + this.state.center.lng + '&radius=2000&type=restaurant&key=AIzaSyCj5lxn67K9uOeUpku2rliDNKa68UQ3xfE';
+    let url = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location='+ this.state.center.lat + ',' + this.state.center.lng + '&radius=2000&type=restaurant&key=' + process.env.REACT_APP_GOOGLE_API_KEY;
     // let myH = {
     //   'Access-Control-Allow-Origin': '*',
     //   'X-Content-Type-Options': 'nosniff',
