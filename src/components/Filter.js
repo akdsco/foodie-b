@@ -8,6 +8,12 @@ export default class Filter extends React.Component {
   //     this.props.handleReset();
   //   }
   // }
+  handleRestAPI = () => {
+    console.log(this.props.restaurantsAPI);
+  };
+  handleProps = () => {
+    console.log(this.props);
+  };
 
   render() {
     return(
@@ -39,6 +45,12 @@ export default class Filter extends React.Component {
               value='reset'
               onClick={this.props.handleItemClick}
             >Reset</Button>
+            <Button
+              onClick={this.handleRestAPI}
+            >RestAPI</Button>
+            <Button
+              onClick={this.handleProps}
+            >Props</Button>
           </div>
         </Container>
     )

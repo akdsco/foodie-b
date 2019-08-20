@@ -31,7 +31,12 @@ export default class RestaurantList extends React.Component {
     let restaurantsList = [];
 
     this.sortRestaurants().forEach(restaurant => {
-      const reviews = restaurant.ratings.map( review => <ReviewItem key={review.id} item={review} />);
+      let reviews;
+      if(restaurant.ratings) {
+        reviews = restaurant.ratings.map( review => <ReviewItem key={review.id} item={review} />);
+      } else {
+        reviews = null
+      }
 
       restaurantsList.push(
         <Accordion styled key={restaurant.id}>

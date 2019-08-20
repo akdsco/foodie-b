@@ -13,59 +13,46 @@ import Grid from "semantic-ui-react/dist/commonjs/collections/Grid";
 import GridColumn from "semantic-ui-react/dist/commonjs/collections/Grid/GridColumn";
 import Map from "./components/Map";
 
+//TODO disconnect user location from center of the map (not same thing)
+
 export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       restaurants: restaurantsJSON,
-      restaurantsAPI: '',
+      restaurantsAPI: 'empty',
       ratingMin: 1,
       ratingMax: 5,
+      isUserMarkerShown: false,
       center: {
-        lat: 51.5,
-        lng: -0.08
+        lat: 1,
+        lng: 1
       }
     };
-    this.handleCenterChange = this.handleCenterChange.bind(this);
+    // this.handleCenterChange = this.handleCenterChange.bind(this);
     this.fetchPlacesRestaurants = this.fetchPlacesRestaurants.bind(this);
   }
 
-  //TODO update fetchPlaces so that it waits for locateUser before executing
-
-  fetchPlacesRestaurants() {
+  async fetchPlacesRestaurants() {
     let url = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location='+ this.state.center.lat + ',' + this.state.center.lng + '&radius=2000&type=restaurant&key=' + process.env.REACT_APP_G_API;
-    // let myH = {
-    //   'Access-Control-Allow-Origin': '*',
-    //   'X-Content-Type-Options': 'nosniff',
-    //   'Content-Type': 'application/json',
-    // };
-
-    // fetch(url).then(function(response) {
-    //   response.text().then(function(text) {
-    //     console.log(text);
-    //     rest = text
-    //
-    //   })
-    //     .catch(function(error) {
-    //       console.log('Looks like there was a problem: \n', error);
-    //     });
-    // });
-
     const self = this;
 
-    fetch(url, {
+    await fetch(url, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
       },
     }).then(response => {
       response.json().then( data => {
+        console.log('successful response');
         self.setState({
           restaurantsAPI: data
         })
       })
     })
   };
+
+  //TODO update fetchPlaces so that it waits for locateUser before executing
 
   componentWillMount() {
     this.addAvgRating();
@@ -96,7 +83,8 @@ export default class App extends React.Component {
         lng: position.coords.longitude
       },
       isUserMarkerShown: true
-      }))
+      }));
+      this.fetchPlacesRestaurants(  );
     },
       (error) => {
         console.log(error);
@@ -108,12 +96,14 @@ export default class App extends React.Component {
             lng: -0.081679
           },
           isUserMarkerShown: true
-          }))
+          }));
+        this.fetchPlacesRestaurants();
         }
       )
     }
-    this.fetchPlacesRestaurants();
   }
+
+
 
   // toggle I'll use for Marker click later on
 
@@ -124,11 +114,11 @@ export default class App extends React.Component {
   //   })
   // }
 
-  handleCenterChange(center) {
+  handleCenterChange = (center) => {
     this.setState({
       center: center
     })
-  }
+  };
 
   handleMinRate = (e, { rating }) => {
     console.log('min ' + rating);
@@ -161,8 +151,6 @@ export default class App extends React.Component {
   };
 
   render() {
-    console.log(this.state.restaurantsAPI.results);
-
     const style={height: '100vh'};
     return (
         <div>
@@ -177,6 +165,7 @@ export default class App extends React.Component {
                       handleMinRate={this.handleMinRate}
                       handleMaxRate={this.handleMaxRate}
                       handleReset={this.handleReset}
+                      restaurantsAPI={this.state.restaurantsAPI}
                   />
                 </GridColumn>
                 <GridColumn width={8}>
@@ -184,10 +173,13 @@ export default class App extends React.Component {
                     restaurantsList={this.state.restaurants.filter(restaurant =>
                       restaurant.avgRating >= this.state.ratingMin &&
                       restaurant.avgRating <= this.state.ratingMax)}
-                    // restaurantsAPI={this.state.restaurantsAPI.results.filter(restaurant =>
-                    //     restaurant.rating >= this.state.ratingMin &&
-                    //     restaurant.rating <= this.state.ratingMax)}
+                    restaurantsAPI={this.state.restaurantsAPI.results !== undefined ?
+                      this.state.restaurantsAPI.results.filter(restaurant =>
+                        restaurant.rating >= this.state.ratingMin &&
+                        restaurant.rating <= this.state.ratingMax) : {}
+                    }
                     center={this.state.center}
+                    userMarker={this.state.isUserMarkerShown}
                     handleCenterChange={this.handleCenterChange}
                   />
                 </GridColumn>

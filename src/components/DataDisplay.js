@@ -63,6 +63,12 @@ export default class DataDisplay extends React.Component {
                   restaurant.avgRating >= this.props.ratingMin &&
                   restaurant.avgRating <= this.props.ratingMax)}
               />
+              <RestaurantList
+                restaurants={this.props.restaurantsAPI.results !== undefined ?
+                  this.props.restaurantsAPI.results.filter( rest =>
+                    rest.rating >= this.props.ratingMin &&
+                    rest.rating <= this.props.ratingMax) : {} }
+              />
             </ItemGroup>
           </Segment>
         }
@@ -71,6 +77,7 @@ export default class DataDisplay extends React.Component {
             <Filter
               ratingMax={this.props.ratingMax}
               ratingMin={this.props.ratingMin}
+              restaurantsAPI={this.props.restaurantsAPI}
               handleMinRate={this.props.handleMinRate}
               handleMaxRate={this.props.handleMaxRate}
               handleItemClick={this.handleItemClick}

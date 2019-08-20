@@ -5,7 +5,7 @@ import userLocation from '../img/user.png'
 
 // Import Components
 import React from 'react';
-import {withScriptjs, withGoogleMap, GoogleMap, Marker, InfoWindow} from "react-google-maps";
+import {withScriptjs, withGoogleMap, GoogleMap, Marker} from "react-google-maps";
 import {compose, lifecycle, withProps} from "recompose";
 
 const _ = require("lodash");
@@ -36,7 +36,10 @@ const MapConst = compose(
           refs.map = ref;
         },
         onDragEnd: () => {
-          this.props.handleCenterChange(refs.map.getCenter());
+          this.props.handleCenterChange( {
+            lat: refs.map.getCenter().lat(),
+            lng: refs.map.getCenter().lng()
+          });
           this.setState({
             bounds: refs.map.getBounds()
           });
@@ -71,7 +74,7 @@ const MapConst = compose(
     },
   }),
   withScriptjs,
-  withGoogleMap)((props) =>
+  withGoogleMap)( (props) =>
   <GoogleMap
     ref={props.onMapMounted}
     // onBoundsChanged={props.onBoundsChanged}
@@ -112,8 +115,8 @@ const MapConst = compose(
       />
     </SearchBox>
 
-    {/* Loading user location Marker if browser locates, else hardcoded value for London, City of */}
-    {props.isUserMarkerShown &&
+    {/*Loading user location Marker if browser locates, else hardcoded value for London, City of*/}
+    {props.userMarker &&
       <Marker
         icon={{url: userLocation}}
         position={{lat: props.center.lat, lng: props.center.lng}}
@@ -127,28 +130,30 @@ const MapConst = compose(
       <Marker
         key={id}
         position={{lat: r.lat, lng: r.long}}
-        onClick={props.onToggleOpen}
+        // onClick={props.onToggleOpen}
       >
         {/*{console.log(props.isOpen)}*/}
-        {props.isOpen && <InfoWindow onCloseClick={props.onToggleOpen}>
-          <div>Test</div>
-        </InfoWindow>}
+        {/*{props.isOpen && <InfoWindow onCloseClick={props.onToggleOpen}>*/}
+        {/*  <div>Test</div>*/}
+        {/*</InfoWindow>}*/}
       </Marker>
     )}
 
     {/* Loading Google Places restaurants */}
-    {props.markers.map((marker, index) =>
-      <Marker key={index} position={marker.position} />
-    )}
+    {/*{console.log(props.restaurantsAPI)}*/}
+    {/*{props.restaurantsAPI !== undefined ? props.restaurantsAPI.map((marker, index) =>*/}
+    {/*  <Marker key={index} position={marker.position} />*/}
+    {/*) : []}*/}
+    {props.restaurantsAPI === undefined ? [] : console.log(props.restaurantsAPI)}
   </GoogleMap>
 );
 
 export default class Map extends React.PureComponent {
 
   render() {
-    console.log(this.props.restaurantsAPI);
     return(
       <MapConst
+        userMarker={this.props.userMarker}
         restaurantsList={this.props.restaurantsList}
         center={this.props.center}
         handleCenterChange={this.props.handleCenterChange}
@@ -156,5 +161,4 @@ export default class Map extends React.PureComponent {
       />
     )
   }
-
 }
