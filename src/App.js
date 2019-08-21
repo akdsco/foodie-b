@@ -1,6 +1,5 @@
-
 // Import Data
-import restaurantsJSON from './data/restaurants'
+import restaurantsFromFile from './data/restaurants'
 
 // Import CSS
 import './css/App.css';
@@ -15,12 +14,15 @@ import Map from "./components/Map";
 
 //TODO disconnect user location from center of the map (not same thing)
 
+//TODO merge restaurants and restaurantsAPI into one array
+//TODO create separate methods to process file and API - concat result into merged restaurants (in state)
+
 export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      restaurants: restaurantsJSON,
-      restaurantsAPI: 'empty',
+      restaurants: [],
+      restaurantsAPI: [],
       ratingMin: 1,
       ratingMax: 5,
       isUserMarkerShown: false,
@@ -29,11 +31,9 @@ export default class App extends React.Component {
         lng: 1
       }
     };
-    // this.handleCenterChange = this.handleCenterChange.bind(this);
-    this.fetchPlacesRestaurants = this.fetchPlacesRestaurants.bind(this);
   }
 
-  async fetchPlacesRestaurants() {
+  fetchPlacesRestaurants = async () => {
     let url = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location='+ this.state.center.lat + ',' + this.state.center.lng + '&radius=2000&type=restaurant&key=' + process.env.REACT_APP_G_API;
     const self = this;
 
@@ -55,20 +55,21 @@ export default class App extends React.Component {
   //TODO update fetchPlaces so that it waits for locateUser before executing
 
   componentWillMount() {
-    this.addAvgRating();
+    this.loadFileRestaurants(restaurantsFromFile);
     this.locateUser();
   }
 
-  addAvgRating() {
+  loadFileRestaurants(restaurants) {
     let withAvgRating = [];
-    Object.keys(this.state.restaurants).map((rid) => this.state.restaurants[rid]).forEach(restaurant => {
-      // calculate average rating for each restaurant
+    // calculate average rating for each restaurant
+    Object.keys(restaurants).map((id) => restaurants[id]).forEach(restaurant => {
       restaurant.avgRating = restaurant.ratings.map( rating => rating.stars).reduce( (a , b ) => a + b ) / restaurant.ratings.length;
       withAvgRating.push(restaurant)
     });
     this.setState({
-      restaurants: withAvgRating
-    })
+      restaurants: this.state.restaurants.concat(withAvgRating)
+    });
+    console.log('withAvgRating',withAvgRating);
   }
 
   locateUser() {
@@ -84,11 +85,12 @@ export default class App extends React.Component {
       },
       isUserMarkerShown: true
       }));
-      this.fetchPlacesRestaurants(  );
+      this.fetchPlacesRestaurants();
     },
       (error) => {
         console.log(error);
         console.log('Error: The Geolocation service failed.');
+        console.log('states', this.state.restaurants);
         this.setState(prevState => ({
           center: {
             ...prevState.center,
