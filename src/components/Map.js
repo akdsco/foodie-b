@@ -24,7 +24,7 @@ const MapConst = compose(
     mapElement: <div style={{ height: `100%` }} />
   }),
   lifecycle({
-    componentWillMount() {
+    componentDidMount() {
       const refs = {};
 
       this.setState({
@@ -119,14 +119,14 @@ const MapConst = compose(
     {props.userMarker &&
       <Marker
         icon={{url: userLocation}}
-        position={{lat: props.center.lat, lng: props.center.lng}}
+        position={{lat: props.userLocation.lat, lng: props.userLocation.lng}}
       />
     }
 
     {/* TODO how can I create 'isOpen' switch for every Marker here (+ handler) ???? */}
 
     {/* Loading Restaurants from a JSON file - Hardcoded */}
-    {props.restaurantsList.map( (r, id) =>
+    {props.restaurants.map( (r, id) =>
       <Marker
         key={id}
         position={{lat: r.lat, lng: r.long}}
@@ -139,12 +139,8 @@ const MapConst = compose(
       </Marker>
     )}
 
-    {/* Loading Google Places restaurants */}
-    {/*{console.log(props.restaurantsAPI)}*/}
-    {/*{props.restaurantsAPI !== undefined ? props.restaurantsAPI.map((marker, index) =>*/}
-    {/*  <Marker key={index} position={marker.position} />*/}
-    {/*) : []}*/}
-    {props.restaurantsAPI === undefined ? [] : console.log(props.restaurantsAPI)}
+    {/* Load normalized Markers */}
+
   </GoogleMap>
 );
 
@@ -154,10 +150,11 @@ export default class Map extends React.PureComponent {
     return(
       <MapConst
         userMarker={this.props.userMarker}
-        restaurantsList={this.props.restaurantsList}
+        userLocation={this.props.userLocation}
+        restaurants={this.props.restaurants}
+        normalizedRest={this.props.normalizedRest}
         center={this.props.center}
         handleCenterChange={this.props.handleCenterChange}
-        restaurantsAPI={this.props.restaurantsAPI}
       />
     )
   }

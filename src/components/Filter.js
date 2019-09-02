@@ -2,15 +2,7 @@ import React from 'react'
 import {Container, Button, Rating} from "semantic-ui-react";
 
 export default class Filter extends React.Component {
-  // handleReset(e) {
-  //   if(e.target.value === 'reset') {
-  //     this.props.handleItemClick;
-  //     this.props.handleReset();
-  //   }
-  // }
-  handleRestAPI = () => {
-    console.log(this.props.restaurantsAPI);
-  };
+
   handleProps = () => {
     console.log(this.props);
   };

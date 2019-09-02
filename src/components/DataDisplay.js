@@ -23,10 +23,16 @@ export default class DataDisplay extends React.Component {
 
   handleItemClick = (e, { name }) => {
     console.log(e);
+    console.log(this.props.restaurants);
     this.setState({ activeItem: name });
     if(e.target.value === 'reset') {
       this.props.handleReset()
     }
+  };
+
+  // Testing Google Places API Fetch
+  handleRestaurants = () => {
+    console.log(this.props.restaurants)
   };
 
   render() {
@@ -46,6 +52,10 @@ export default class DataDisplay extends React.Component {
               active={activeItem === 'Filter'}
               onClick={this.handleItemClick}
             />
+            <Menu.Item
+              name='log.rest'
+              onClick={this.handleRestaurants}
+            />
             <Menu.Menu position='right'>
               <Menu.Item>
                 <SearchRestaurants />
@@ -59,16 +69,16 @@ export default class DataDisplay extends React.Component {
           <Segment>
             <ItemGroup divided>
               <RestaurantList
-                restaurants={this.props.restaurantsList.filter(restaurant =>
+                restaurants={this.props.restaurants.filter(restaurant =>
                   restaurant.avgRating >= this.props.ratingMin &&
                   restaurant.avgRating <= this.props.ratingMax)}
               />
-              <RestaurantList
-                restaurants={this.props.restaurantsAPI.results !== undefined ?
-                  this.props.restaurantsAPI.results.filter( rest =>
-                    rest.rating >= this.props.ratingMin &&
-                    rest.rating <= this.props.ratingMax) : {} }
-              />
+              {/*<RestaurantList*/}
+              {/*  restaurants={this.props.normalizedRest.results !== undefined ?*/}
+              {/*    this.props.normalizedRest.results.filter( rest =>*/}
+              {/*      rest.rating >= this.props.ratingMin &&*/}
+              {/*      rest.rating <= this.props.ratingMax) : {} }*/}
+              {/*/>*/}
             </ItemGroup>
           </Segment>
         }
@@ -77,7 +87,6 @@ export default class DataDisplay extends React.Component {
             <Filter
               ratingMax={this.props.ratingMax}
               ratingMin={this.props.ratingMin}
-              restaurantsAPI={this.props.restaurantsAPI}
               handleMinRate={this.props.handleMinRate}
               handleMaxRate={this.props.handleMaxRate}
               handleItemClick={this.handleItemClick}

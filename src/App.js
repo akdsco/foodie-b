@@ -12,8 +12,6 @@ import Grid from "semantic-ui-react/dist/commonjs/collections/Grid";
 import GridColumn from "semantic-ui-react/dist/commonjs/collections/Grid/GridColumn";
 import Map from "./components/Map";
 
-//TODO disconnect user location from center of the map (not same thing)
-
 //TODO merge restaurants and restaurantsAPI into one array
 //TODO create separate methods to process file and API - concat result into merged restaurants (in state)
 
@@ -22,10 +20,14 @@ export default class App extends React.Component {
     super(props);
     this.state = {
       restaurants: [],
-      restaurantsAPI: [],
+      normalizedRest: [],
       ratingMin: 1,
       ratingMax: 5,
       isUserMarkerShown: false,
+      userLocation: {
+        lat: 1,
+        lng: 1
+      },
       center: {
         lat: 1,
         lng: 1
@@ -33,34 +35,67 @@ export default class App extends React.Component {
     };
   }
 
-  fetchPlacesRestaurants = async () => {
-    let url = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location='+ this.state.center.lat + ',' + this.state.center.lng + '&radius=2000&type=restaurant&key=' + process.env.REACT_APP_G_API;
+  loadGooglePlacesRestaurants = () => {
+    let url = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=' + this.state.center.lat + ',' + this.state.center.lng + '&radius=2000&type=restaurant&key=' + process.env.REACT_APP_G_API;
+    let restaurants = [];
     const self = this;
+    let newRestaurants = self.state.restaurants.slice();
 
-    await fetch(url, {
+    fetch(url, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-      },
+      }
     }).then(response => {
-      response.json().then( data => {
-        console.log('successful response');
-        self.setState({
-          restaurantsAPI: data
-        })
-      })
+      response.json().then(data => {
+        console.log('Google Places Restaurants (raw api data)', data);
+        let count = self.state.restaurants.length - 1;
+        data.results.forEach( r => {
+          count++;
+          let tempObject = {
+            "id": count,
+            "place_id": r.place_id,
+            "avgRating": r.rating,
+            "restaurantName": r.name,
+            "address": r.vicinity,
+            "flag": "gb",
+            "desc": "generic description",
+            "lat": r.geometry.location.lat,
+            "long": r.geometry.location.lng,
+            "ratings":[
+              {
+                "id": 11,
+                "name": "generic name",
+                "stars":1,
+                "comment":"generic comment"
+              },
+              {
+                "id": 12,
+                "name": "generic name",
+                "stars":4,
+                "comment":"generic comment"
+              }
+            ]
+          };
+          restaurants.push(tempObject);
+          newRestaurants.push(tempObject);
+        }
+        );
+      });
+      self.setState(() => ({
+        restaurants: newRestaurants,
+        normalizedRest: restaurants
+        }));
     })
   };
 
-  //TODO update fetchPlaces so that it waits for locateUser before executing
-
-  componentWillMount() {
+  componentDidMount() {
     this.loadFileRestaurants(restaurantsFromFile);
     this.locateUser();
   }
 
-  loadFileRestaurants(restaurants) {
-    let withAvgRating = [];
+  loadFileRestaurants = (restaurants) => {
+    const withAvgRating = [];
     // calculate average rating for each restaurant
     Object.keys(restaurants).map((id) => restaurants[id]).forEach(restaurant => {
       restaurant.avgRating = restaurant.ratings.map( rating => rating.stars).reduce( (a , b ) => a + b ) / restaurant.ratings.length;
@@ -69,8 +104,7 @@ export default class App extends React.Component {
     this.setState({
       restaurants: this.state.restaurants.concat(withAvgRating)
     });
-    console.log('withAvgRating',withAvgRating);
-  }
+  };
 
   locateUser() {
     if(navigator.geolocation) {
@@ -78,6 +112,10 @@ export default class App extends React.Component {
           position => {
       console.log('User Successfully located');
       this.setState(prevState => ({
+      userLocation: {
+        lat: position.coords.latitude,
+        lng: position.coords.longitude
+      },
       center: {
         ...prevState.center,
         lat: position.coords.latitude,
@@ -85,13 +123,16 @@ export default class App extends React.Component {
       },
       isUserMarkerShown: true
       }));
-      this.fetchPlacesRestaurants();
+      // this.fetchPlacesRestaurants();
     },
       (error) => {
         console.log(error);
         console.log('Error: The Geolocation service failed.');
-        console.log('states', this.state.restaurants);
         this.setState(prevState => ({
+          userLocation: {
+            lat: 51.516126,
+            lng: -0.081679
+          },
           center: {
             ...prevState.center,
             lat: 51.516126,
@@ -99,13 +140,12 @@ export default class App extends React.Component {
           },
           isUserMarkerShown: true
           }));
-        this.fetchPlacesRestaurants();
-        }
+        // fetching Google Places Restaurants after locating user
+        this.loadGooglePlacesRestaurants();
+      }
       )
     }
   }
-
-
 
   // toggle I'll use for Marker click later on
 
@@ -161,27 +201,27 @@ export default class App extends React.Component {
               <Grid.Row centered columns={2} only='computer' style={style}>
                 <GridColumn width={8} >
                   <DataDisplay
-                      restaurantsList={this.state.restaurants}
+                      restaurants={this.state.restaurants}
+                      normalizedRest={this.state.normalizedRest}
                       ratingMax={this.state.ratingMax}
                       ratingMin={this.state.ratingMin}
                       handleMinRate={this.handleMinRate}
                       handleMaxRate={this.handleMaxRate}
                       handleReset={this.handleReset}
-                      restaurantsAPI={this.state.restaurantsAPI}
                   />
                 </GridColumn>
                 <GridColumn width={8}>
                   <Map
-                    restaurantsList={this.state.restaurants.filter(restaurant =>
+                    normalizedRest={this.state.normalizedRest === undefined ? {} :
+                      this.state.normalizedRest.filter(restaurant =>
                       restaurant.avgRating >= this.state.ratingMin &&
                       restaurant.avgRating <= this.state.ratingMax)}
-                    restaurantsAPI={this.state.restaurantsAPI.results !== undefined ?
-                      this.state.restaurantsAPI.results.filter(restaurant =>
-                        restaurant.rating >= this.state.ratingMin &&
-                        restaurant.rating <= this.state.ratingMax) : {}
-                    }
+                    restaurants={this.state.restaurants.filter(restaurant =>
+                      restaurant.avgRating >= this.state.ratingMin &&
+                      restaurant.avgRating <= this.state.ratingMax)}
                     center={this.state.center}
                     userMarker={this.state.isUserMarkerShown}
+                    userLocation={this.state.userLocation}
                     handleCenterChange={this.handleCenterChange}
                   />
                 </GridColumn>
