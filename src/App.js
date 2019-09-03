@@ -15,6 +15,8 @@ import Map from "./components/Map";
 //TODO merge restaurants and restaurantsAPI into one array
 //TODO create separate methods to process file and API - concat result into merged restaurants (in state)
 
+//TODO investigate, react only loading all restaurant items after moving map (why not straight after updating state?)
+
 export default class App extends React.Component {
   constructor(props) {
     super(props);
@@ -52,7 +54,7 @@ export default class App extends React.Component {
         let count = self.state.restaurants.length - 1;
         data.results.forEach( r => {
           count++;
-          let tempObject = {
+          let restaurantObject = {
             "id": count,
             "place_id": r.place_id,
             "avgRating": r.rating,
@@ -77,8 +79,8 @@ export default class App extends React.Component {
               }
             ]
           };
-          restaurants.push(tempObject);
-          newRestaurants.push(tempObject);
+          restaurants.push(restaurantObject);
+          newRestaurants.push(restaurantObject);
         }
         );
       });
@@ -146,15 +148,6 @@ export default class App extends React.Component {
       )
     }
   }
-
-  // toggle I'll use for Marker click later on
-
-  // onToggleOpen: (prevState) => {
-  //   console.log('onToggleOpen fired');
-  //   this.setState({
-  //     isOpen: !prevState.isOpen
-  //   })
-  // }
 
   handleCenterChange = (center) => {
     this.setState({
