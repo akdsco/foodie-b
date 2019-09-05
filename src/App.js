@@ -11,6 +11,7 @@ import Container from "semantic-ui-react/dist/commonjs/elements/Container";
 import Grid from "semantic-ui-react/dist/commonjs/collections/Grid";
 import GridColumn from "semantic-ui-react/dist/commonjs/collections/Grid/GridColumn";
 import Map from "./components/Map";
+import {Dimmer, Loader} from "semantic-ui-react";
 
 //TODO merge restaurants and restaurantsAPI into one array
 //TODO create separate methods to process file and API - concat result into merged restaurants (in state)
@@ -23,6 +24,7 @@ export default class App extends React.Component {
     this.state = {
       restaurants: [],
       normalizedRest: [],
+      loading: true,
       ratingMin: 1,
       ratingMax: 5,
       isUserMarkerShown: false,
@@ -33,12 +35,20 @@ export default class App extends React.Component {
       center: {
         lat: 1,
         lng: 1
-      }
+      },
+      activeRest: -1,
+      updatingItem: false
     };
+
+  }
+
+  componentDidMount() {
+    this.loadFileRestaurants(restaurantsFromFile);
+    this.locateUser();
   }
 
   loadGooglePlacesRestaurants = () => {
-    let url = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=' + this.state.center.lat + ',' + this.state.center.lng + '&radius=2000&type=restaurant&key=' + process.env.REACT_APP_G_API;
+    let url = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=' + this.state.center.lat + ',' + this.state.center.lng + '&radius=700&type=restaurant&key=' + process.env.REACT_APP_G_API;
     let restaurants = [];
     const self = this;
     let newRestaurants = self.state.restaurants.slice();
@@ -84,16 +94,33 @@ export default class App extends React.Component {
         }
         );
       });
-      self.setState(() => ({
+      self.setState({
         restaurants: newRestaurants,
-        normalizedRest: restaurants
-        }));
-    })
+        loading: false,
+        // normalizedRest: restaurants,
+      }, () => {
+        debugger;
+        console.log(this.state.restaurants);
+        return '1'
+      });
+      // TODO find how to triger data fetch every time center updates
+      // fill in missing details by checking each fetched place using place_id
+      // this.getDetailsAboutRestaurants(newRestaurants);
+    });
   };
 
-  componentDidMount() {
-    this.loadFileRestaurants(restaurantsFromFile);
-    this.locateUser();
+  // Tried this as well -> , () => self.updatingItem() as a callback and didn't help
+
+  updatingItem(){
+    console.log('inside updating Item');
+    this.setState(() => ({
+      updatingItem: true
+    }))
+  }
+
+  getDetailsAboutRestaurants(array) {
+    // let array.map()
+    return array;
   }
 
   loadFileRestaurants = (restaurants) => {
@@ -124,10 +151,9 @@ export default class App extends React.Component {
         lng: position.coords.longitude
       },
       isUserMarkerShown: true
-      }));
+      }), () => this.loadGooglePlacesRestaurants());
       // this.fetchPlacesRestaurants();
-    },
-      (error) => {
+    }, (error) => {
         console.log(error);
         console.log('Error: The Geolocation service failed.');
         this.setState(prevState => ({
@@ -141,10 +167,9 @@ export default class App extends React.Component {
             lng: -0.081679
           },
           isUserMarkerShown: true
-          }));
-        // fetching Google Places Restaurants after locating user
-        this.loadGooglePlacesRestaurants();
-      }
+          }), () => this.loadGooglePlacesRestaurants());
+        console.log('from locate user', this.state.restaurants);
+        }
       )
     }
   }
@@ -185,8 +210,19 @@ export default class App extends React.Component {
     })
   };
 
+  handleActiveRest = (index) => {
+    // console.log('in app', index);
+    const { activeRest } = this.state;
+    console.log('index',index,'activeRest', activeRest);
+    const newIndex = activeRest === index ? -1 : index;
+    this.setState({
+      activeRest: newIndex
+    })
+  };
+
   render() {
     const style={height: '100vh'};
+    const { restaurants, ratingMin, ratingMax, center, userLocation, isUserMarkerShown, loading } = this.state;
     return (
         <div>
           <Container>
@@ -194,29 +230,41 @@ export default class App extends React.Component {
               <Grid.Row centered columns={2} only='computer' style={style}>
                 <GridColumn width={8} >
                   <DataDisplay
-                      restaurants={this.state.restaurants}
+                      restaurants={restaurants}
                       normalizedRest={this.state.normalizedRest}
-                      ratingMax={this.state.ratingMax}
-                      ratingMin={this.state.ratingMin}
+                      ratingMax={ratingMax}
+                      ratingMin={ratingMin}
+                      activeRest={this.state.activeRest}
+                      handleActiveRest={this.handleActiveRest}
                       handleMinRate={this.handleMinRate}
                       handleMaxRate={this.handleMaxRate}
                       handleReset={this.handleReset}
                   />
                 </GridColumn>
                 <GridColumn width={8}>
-                  <Map
-                    normalizedRest={this.state.normalizedRest === undefined ? {} :
-                      this.state.normalizedRest.filter(restaurant =>
-                      restaurant.avgRating >= this.state.ratingMin &&
-                      restaurant.avgRating <= this.state.ratingMax)}
-                    restaurants={this.state.restaurants.filter(restaurant =>
-                      restaurant.avgRating >= this.state.ratingMin &&
-                      restaurant.avgRating <= this.state.ratingMax)}
-                    center={this.state.center}
-                    userMarker={this.state.isUserMarkerShown}
-                    userLocation={this.state.userLocation}
-                    handleCenterChange={this.handleCenterChange}
-                  />
+                  <Dimmer.Dimmable dimmed={loading}>
+                    <Dimmer active={loading} inverted>
+                      <Loader>Loading</Loader>
+                    </Dimmer>
+
+                    <Map
+                      normalizedRest={this.state.normalizedRest === undefined ? {} :
+                        this.state.normalizedRest.filter(restaurant =>
+                          restaurant.avgRating >= ratingMin &&
+                          restaurant.avgRating <= ratingMax)
+                      }
+                      restaurants={restaurants.filter(restaurant =>
+                        restaurant.avgRating >= ratingMin &&
+                        restaurant.avgRating <= ratingMax)
+                      }
+                      center={center}
+                      userMarker={isUserMarkerShown}
+                      userLocation={userLocation}
+                      activeRest={this.state.activeRest}
+                      handleActiveRest={this.handleActiveRest}
+                      handleCenterChange={this.handleCenterChange}
+                    />
+                  </Dimmer.Dimmable>
                 </GridColumn>
               </Grid.Row>
               <Grid.Row centered columns={1} only='tablet'>

@@ -35,6 +35,10 @@ export default class DataDisplay extends React.Component {
     console.log(this.props.restaurants)
   };
 
+  handleActiveRest = (e) => {
+
+  }
+
   render() {
     const { activeItem } = this.state;
 
@@ -72,13 +76,9 @@ export default class DataDisplay extends React.Component {
                 restaurants={this.props.restaurants.filter(restaurant =>
                   restaurant.avgRating >= this.props.ratingMin &&
                   restaurant.avgRating <= this.props.ratingMax)}
+                activeRest={this.props.activeRest}
+                handleActiveRest={this.props.handleActiveRest}
               />
-              {/*<RestaurantList*/}
-              {/*  restaurants={this.props.normalizedRest.results !== undefined ?*/}
-              {/*    this.props.normalizedRest.results.filter( rest =>*/}
-              {/*      rest.rating >= this.props.ratingMin &&*/}
-              {/*      rest.rating <= this.props.ratingMax) : {} }*/}
-              {/*/>*/}
             </ItemGroup>
           </Segment>
         }

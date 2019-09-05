@@ -8,6 +8,7 @@ import React from 'react';
 import {withScriptjs, withGoogleMap, GoogleMap, Marker} from "react-google-maps";
 import {compose, lifecycle, withProps} from "recompose";
 import MapMarker from "./MapMarker";
+import DataDisplay from "./DataDisplay";
 
 const _ = require("lodash");
 const styles = require('../data/GoogleMapStyles.json');
@@ -74,7 +75,7 @@ const MapConst = compose(
     },
   }),
   withScriptjs,
-  withGoogleMap)( (props) =>
+  withGoogleMap)((props) =>
   <GoogleMap
     ref={props.onMapMounted}
     // onBoundsChanged={props.onBoundsChanged}
@@ -105,6 +106,8 @@ const MapConst = compose(
         key={id}
         position={{lat: r.lat, lng: r.long}}
         restaurant={r}
+        activeRest={props.activeRest}
+        handleActiveRest={props.handleActiveRest}
       />)
     }
 
@@ -121,6 +124,8 @@ export default class Map extends React.PureComponent {
         restaurants={this.props.restaurants}
         normalizedRest={this.props.normalizedRest}
         center={this.props.center}
+        activeRest={this.props.activeRest}
+        handleActiveRest={this.props.handleActiveRest}
         handleCenterChange={this.props.handleCenterChange}
       />
     )
