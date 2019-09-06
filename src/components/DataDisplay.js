@@ -9,7 +9,6 @@ import Sticky from "semantic-ui-react/dist/commonjs/modules/Sticky";
 import React from 'react'
 import {Menu, Segment} from "semantic-ui-react";
 import ItemGroup from "semantic-ui-react/dist/commonjs/views/Item/ItemGroup"
-import SearchRestaurants from "./SearchRestaurants"
 import Filter from './Filter'
 import RestaurantList from "./RestaurantList";
 
@@ -22,8 +21,6 @@ export default class DataDisplay extends React.Component {
   }
 
   handleItemClick = (e, { name }) => {
-    console.log(e);
-    console.log(this.props.restaurants);
     this.setState({ activeItem: name });
     if(e.target.value === 'reset') {
       this.props.handleReset()
@@ -35,9 +32,9 @@ export default class DataDisplay extends React.Component {
     console.log(this.props.restaurants)
   };
 
-  handleActiveRest = (e) => {
+  handleActiveRest = () => {
 
-  }
+  };
 
   render() {
     const { activeItem } = this.state;
@@ -56,15 +53,11 @@ export default class DataDisplay extends React.Component {
               active={activeItem === 'Filter'}
               onClick={this.handleItemClick}
             />
-            <Menu.Item
-              name='log.rest'
-              onClick={this.handleRestaurants}
-            />
-            <Menu.Menu position='right'>
-              <Menu.Item>
-                <SearchRestaurants />
-              </Menu.Item>
-            </Menu.Menu>
+            {/*<Menu.Menu position='right'>*/}
+            {/*  <Menu.Item>*/}
+            {/*    <SearchRestaurants />*/}
+            {/*  </Menu.Item>*/}
+            {/*</Menu.Menu>*/}
           </Menu>
           </Segment>
         </Sticky>

@@ -2,6 +2,8 @@ import React from 'react'
 import Accordion from "semantic-ui-react/dist/commonjs/modules/Accordion";
 import RestaurantItem from "./RestaurantItem";
 import ReviewItem from "./ReviewItem";
+import Flag from "semantic-ui-react/dist/commonjs/elements/Flag";
+import {Item} from "semantic-ui-react";
 
 export default class RestaurantList extends React.Component {
 
@@ -33,6 +35,8 @@ export default class RestaurantList extends React.Component {
             <RestaurantItem item={restaurant} avgRating={restaurant.avgRating}/>
           </Accordion.Title>
           <Accordion.Content active={this.props.activeRest === restaurant.id}>
+            <Flag name={restaurant.flag} />
+            <Item.Description>{restaurant.desc}</Item.Description>
             {reviews}
           </Accordion.Content>
         </Accordion>

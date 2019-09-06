@@ -13,14 +13,11 @@ import GridColumn from "semantic-ui-react/dist/commonjs/collections/Grid/GridCol
 import Map from "./components/Map";
 import {Dimmer, Loader} from "semantic-ui-react";
 
-//TODO investigate, react only loading all restaurant items after moving map (why not straight after updating state?)
-
 export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       restaurants: [],
-      normalizedRest: [],
       loading: true,
       ratingMin: 1,
       ratingMax: 5,
@@ -39,84 +36,21 @@ export default class App extends React.Component {
 
   }
 
+  /* =====================
+   *   Lifecycle Methods
+  _* =====================
+*/
+
+
   componentDidMount() {
     this.loadFileRestaurants(restaurantsFromFile);
     this.locateUser();
   }
 
-  loadGooglePlacesRestaurants = () => {
-    let url = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=' + this.state.center.lat + ',' + this.state.center.lng + '&radius=700&type=restaurant&key=' + process.env.REACT_APP_G_API;
-    // let restaurants = [];
-    const self = this;
-    let newRestaurants = self.state.restaurants.slice();
-
-    fetch(url, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      }
-    }).then(response => {
-      response.json().then(data => {
-        console.log('Google Places Restaurants (raw api data)', data);
-        let count = self.state.restaurants.length - 1;
-        data.results.forEach( r => {
-          count++;
-          let restaurantObject = {
-            "id": count,
-            "place_id": r.place_id,
-            "avgRating": r.rating,
-            "restaurantName": r.name,
-            "address": r.vicinity,
-            "flag": "gb",
-            "desc": "generic description",
-            "lat": r.geometry.location.lat,
-            "long": r.geometry.location.lng,
-            "ratings":[
-              {
-                "id": 11,
-                "name": "generic name",
-                "stars":1,
-                "comment":"generic comment"
-              },
-              {
-                "id": 12,
-                "name": "generic name",
-                "stars":4,
-                "comment":"generic comment"
-              }
-            ]
-          };
-          // restaurants.push(restaurantObject);
-          newRestaurants.push(restaurantObject);
-        }
-        );
-      });
-      self.setState({
-        restaurants: newRestaurants,
-        loading: false,
-        // normalizedRest: restaurants,
-      }, () => {
-        console.log('callback', self.state.restaurants);
-      });
-      // TODO find how to triger data fetch every time center updates
-      // fill in missing details by checking each fetched place using place_id
-      // this.getDetailsAboutRestaurants(newRestaurants);
-    });
-  };
-
-  // Tried this as well -> , () => self.updatingItem() as a callback and didn't help
-
-  updatingItem(){
-    console.log('inside updating Item');
-    this.setState(() => ({
-      updatingItem: true
-    }))
-  }
-
-  getDetailsAboutRestaurants(array) {
-    // let array.map()
-    return array;
-  }
+  /* ==================
+   *   Custom Methods
+  _* ==================
+*/
 
   loadFileRestaurants = (restaurants) => {
     const withAvgRating = [];
@@ -147,7 +81,6 @@ export default class App extends React.Component {
       },
       isUserMarkerShown: true
       }), () => this.loadGooglePlacesRestaurants());
-      // this.fetchPlacesRestaurants();
     }, (error) => {
         console.log(error);
         console.log('Error: The Geolocation service failed.');
@@ -169,6 +102,62 @@ export default class App extends React.Component {
     }
   }
 
+  // TODO find how to triger data fetch every time center updates
+
+  loadGooglePlacesRestaurants = () => {
+    let url = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=' + this.state.center.lat + ',' + this.state.center.lng + '&radius=700&type=restaurant&key=' + process.env.REACT_APP_G_API;
+    const self = this;
+    let newRestaurants = self.state.restaurants.slice();
+
+    fetch(url, {
+      method: 'GET',
+    }).then(response => {
+      response.json().then(data => {
+        console.log('Google Places Restaurants (raw api data)', data);
+        let count = self.state.restaurants.length - 1;
+        data.results.forEach( r => {
+            count++;
+            let restaurantObject = {
+              "id": count,
+              "place_id": r.place_id,
+              "avgRating": r.rating,
+              "restaurantName": r.name,
+              "address": r.vicinity,
+              "flag": "gb",
+              "desc": "generic description",
+              "lat": r.geometry.location.lat,
+              "long": r.geometry.location.lng,
+              "ratings":[
+                {
+                  "id": 11,
+                  "name": "generic name",
+                  "stars":1,
+                  "comment":"generic comment"
+                },
+                {
+                  "id": 12,
+                  "name": "generic name",
+                  "stars":4,
+                  "comment":"generic comment"
+                }
+              ]
+            };
+            newRestaurants.push(restaurantObject);
+          }
+        );
+        self.setState({
+          restaurants: newRestaurants,
+          loading: false,
+        })
+      });
+    });
+  };
+
+  /* ===================
+   *   Handler Methods
+  _* ===================
+*/
+
   handleCenterChange = (center) => {
     this.setState({
       center: center
@@ -176,7 +165,6 @@ export default class App extends React.Component {
   };
 
   handleMinRate = (e, { rating }) => {
-    console.log('min ' + rating);
     if((this.state.ratingMax > 0) && (rating < this.state.ratingMax)) {
       this.setState({
         ratingMin: rating
@@ -190,7 +178,6 @@ export default class App extends React.Component {
   };
 
   handleMaxRate = (e, { rating }) => {
-    console.log('max ' + rating);
     if(this.state.ratingMin <= rating) {
       this.setState({
         ratingMax: rating
@@ -225,7 +212,6 @@ export default class App extends React.Component {
               <GridColumn width={8} >
                 <DataDisplay
                   restaurants={restaurants}
-                  normalizedRest={this.state.normalizedRest}
                   ratingMax={ratingMax}
                   ratingMin={ratingMin}
                   activeRest={activeRest}
@@ -233,7 +219,7 @@ export default class App extends React.Component {
                   handleMinRate={handleMinRate}
                   handleMaxRate={handleMaxRate}
                   handleReset={handleReset}
-                />4
+                />
               </GridColumn>
               <GridColumn width={8}>
                 <Dimmer.Dimmable dimmed={loading}>
@@ -242,11 +228,6 @@ export default class App extends React.Component {
                   </Dimmer>
 
                   <Map
-                    normalizedRest={this.state.normalizedRest === undefined ? {} :
-                      this.state.normalizedRest.filter(restaurant =>
-                        restaurant.avgRating >= ratingMin &&
-                        restaurant.avgRating <= ratingMax)
-                    }
                     restaurants={restaurants.filter(restaurant =>
                       restaurant.avgRating >= ratingMin &&
                       restaurant.avgRating <= ratingMax)

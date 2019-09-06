@@ -30,7 +30,7 @@ export default class MapAlt extends React.Component {
               refs.map = ref
             },
             fetchPlaces: ({ updatePlaces }) => {
-              let places;
+              // let places;
               const bounds = refs.map.getBounds();
               const service = new google.maps.places.PlacesService(refs.map.context.__SECRET_MAP_DO_NOT_USE_OR_YOU_WILL_BE_FIRED);
               const request = {
