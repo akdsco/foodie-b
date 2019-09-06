@@ -13,9 +13,6 @@ import GridColumn from "semantic-ui-react/dist/commonjs/collections/Grid/GridCol
 import Map from "./components/Map";
 import {Dimmer, Loader} from "semantic-ui-react";
 
-//TODO merge restaurants and restaurantsAPI into one array
-//TODO create separate methods to process file and API - concat result into merged restaurants (in state)
-
 //TODO investigate, react only loading all restaurant items after moving map (why not straight after updating state?)
 
 export default class App extends React.Component {
@@ -49,7 +46,7 @@ export default class App extends React.Component {
 
   loadGooglePlacesRestaurants = () => {
     let url = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=' + this.state.center.lat + ',' + this.state.center.lng + '&radius=700&type=restaurant&key=' + process.env.REACT_APP_G_API;
-    let restaurants = [];
+    // let restaurants = [];
     const self = this;
     let newRestaurants = self.state.restaurants.slice();
 
@@ -89,7 +86,7 @@ export default class App extends React.Component {
               }
             ]
           };
-          restaurants.push(restaurantObject);
+          // restaurants.push(restaurantObject);
           newRestaurants.push(restaurantObject);
         }
         );
@@ -99,9 +96,7 @@ export default class App extends React.Component {
         loading: false,
         // normalizedRest: restaurants,
       }, () => {
-        debugger;
-        console.log(this.state.restaurants);
-        return '1'
+        console.log('callback', self.state.restaurants);
       });
       // TODO find how to triger data fetch every time center updates
       // fill in missing details by checking each fetched place using place_id
@@ -211,9 +206,7 @@ export default class App extends React.Component {
   };
 
   handleActiveRest = (index) => {
-    // console.log('in app', index);
     const { activeRest } = this.state;
-    console.log('index',index,'activeRest', activeRest);
     const newIndex = activeRest === index ? -1 : index;
     this.setState({
       activeRest: newIndex
@@ -222,64 +215,65 @@ export default class App extends React.Component {
 
   render() {
     const style={height: '100vh'};
-    const { restaurants, ratingMin, ratingMax, center, userLocation, isUserMarkerShown, loading } = this.state;
+    const { restaurants, ratingMin, ratingMax, center, userLocation, isUserMarkerShown, loading, activeRest } = this.state;
+    const { handleMaxRate, handleMinRate, handleReset, handleActiveRest, handleCenterChange } = this;
     return (
-        <div>
-          <Container>
-            <Grid>
-              <Grid.Row centered columns={2} only='computer' style={style}>
-                <GridColumn width={8} >
-                  <DataDisplay
-                      restaurants={restaurants}
-                      normalizedRest={this.state.normalizedRest}
-                      ratingMax={ratingMax}
-                      ratingMin={ratingMin}
-                      activeRest={this.state.activeRest}
-                      handleActiveRest={this.handleActiveRest}
-                      handleMinRate={this.handleMinRate}
-                      handleMaxRate={this.handleMaxRate}
-                      handleReset={this.handleReset}
-                  />
-                </GridColumn>
-                <GridColumn width={8}>
-                  <Dimmer.Dimmable dimmed={loading}>
-                    <Dimmer active={loading} inverted>
-                      <Loader>Loading</Loader>
-                    </Dimmer>
+      <div>
+        <Container>
+          <Grid>
+            <Grid.Row centered columns={2} only='computer' style={style}>
+              <GridColumn width={8} >
+                <DataDisplay
+                  restaurants={restaurants}
+                  normalizedRest={this.state.normalizedRest}
+                  ratingMax={ratingMax}
+                  ratingMin={ratingMin}
+                  activeRest={activeRest}
+                  handleActiveRest={handleActiveRest}
+                  handleMinRate={handleMinRate}
+                  handleMaxRate={handleMaxRate}
+                  handleReset={handleReset}
+                />4
+              </GridColumn>
+              <GridColumn width={8}>
+                <Dimmer.Dimmable dimmed={loading}>
+                  <Dimmer active={loading} inverted>
+                    <Loader>Loading</Loader>
+                  </Dimmer>
 
-                    <Map
-                      normalizedRest={this.state.normalizedRest === undefined ? {} :
-                        this.state.normalizedRest.filter(restaurant =>
-                          restaurant.avgRating >= ratingMin &&
-                          restaurant.avgRating <= ratingMax)
-                      }
-                      restaurants={restaurants.filter(restaurant =>
+                  <Map
+                    normalizedRest={this.state.normalizedRest === undefined ? {} :
+                      this.state.normalizedRest.filter(restaurant =>
                         restaurant.avgRating >= ratingMin &&
                         restaurant.avgRating <= ratingMax)
-                      }
-                      center={center}
-                      userMarker={isUserMarkerShown}
-                      userLocation={userLocation}
-                      activeRest={this.state.activeRest}
-                      handleActiveRest={this.handleActiveRest}
-                      handleCenterChange={this.handleCenterChange}
-                    />
-                  </Dimmer.Dimmable>
-                </GridColumn>
-              </Grid.Row>
-              <Grid.Row centered columns={1} only='tablet'>
-                <GridColumn>
-                  {/*<Map />*/}
-                </GridColumn>
-              </Grid.Row>
-              <Grid.Row centered columns={1} only='mobile'>
-                <GridColumn>
-                  {/*<MapAlt />*/}
-                </GridColumn>
-              </Grid.Row>
-            </Grid>
-          </Container>
-        </div>
+                    }
+                    restaurants={restaurants.filter(restaurant =>
+                      restaurant.avgRating >= ratingMin &&
+                      restaurant.avgRating <= ratingMax)
+                    }
+                    center={center}
+                    userMarker={isUserMarkerShown}
+                    userLocation={userLocation}
+                    activeRest={activeRest}
+                    handleActiveRest={handleActiveRest}
+                    handleCenterChange={handleCenterChange}
+                  />
+                </Dimmer.Dimmable>
+              </GridColumn>
+            </Grid.Row>
+            <Grid.Row centered columns={1} only='tablet'>
+              <GridColumn>
+                {/*<Map />*/}
+              </GridColumn>
+            </Grid.Row>
+            <Grid.Row centered columns={1} only='mobile'>
+              <GridColumn>
+                {/*<MapAlt />*/}
+              </GridColumn>
+            </Grid.Row>
+          </Grid>
+        </Container>
+      </div>
     );
   }
 }
