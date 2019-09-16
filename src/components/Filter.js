@@ -3,46 +3,39 @@ import {Container, Button, Rating} from "semantic-ui-react";
 
 export default class Filter extends React.Component {
 
-  handleProps = () => {
-    console.log(this.props);
-  };
-
   render() {
+    // Component Props
+    const {ratingMin, ratingMax, handleMinRate, handleMaxRate, handleItemClick} = this.props;
+
     return(
         <Container>
           <p>Choose your range:</p>
           <h5>Minimum rating</h5>
           <Rating
-            rating={this.props.ratingMin}
+            rating={ratingMin}
             size="huge"
             maxRating={5}
-            onRate={this.props.handleMinRate}
+            onRate={handleMinRate}
           />
           <h5>Maximum rating</h5>
           <Rating
-            rating={this.props.ratingMax}
+            rating={ratingMax}
             size="huge"
             maxRating={5}
-            onRate={this.props.handleMaxRate}
+            onRate={handleMaxRate}
           />
           <div style={{marginTop: '1.3rem'}}>
             <Button
               positive
-              name='Info'
-              onClick={this.props.handleItemClick}
+              name='Restaurants'
+              onClick={handleItemClick}
             >Filter</Button>
             <Button
               negative
-              name='Info'
+              name='Restaurants'
               value='reset'
-              onClick={this.props.handleItemClick}
+              onClick={handleItemClick}
             >Reset</Button>
-            <Button
-              onClick={this.handleRestAPI}
-            >RestAPI</Button>
-            <Button
-              onClick={this.handleProps}
-            >Props</Button>
           </div>
         </Container>
     )

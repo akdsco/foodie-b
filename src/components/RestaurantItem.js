@@ -20,9 +20,7 @@ const RestaurantItem = (props) => {
           <span className='restaurant'>{props.item.address}</span>
         </Item.Meta>
         <Item.Extra>
-          {/*<Label>*/}
           <AvgRatingComponent avgRating={props.avgRating}/>
-          {/*</Label>*/}
           <Button size='mini' floated='right'>More Info <Icon name='dropdown'/></Button>
         </Item.Extra>
       </Item.Content>

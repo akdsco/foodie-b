@@ -16,7 +16,7 @@ export default class DataDisplay extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      activeItem: 'Info',
+      activeItem: 'Restaurants',
     };
   }
 
@@ -27,17 +27,9 @@ export default class DataDisplay extends React.Component {
     }
   };
 
-  // Testing Google Places API Fetch
-  handleRestaurants = () => {
-    console.log(this.props.restaurants)
-  };
-
-  handleActiveRest = () => {
-
-  };
-
   render() {
     const { activeItem } = this.state;
+    const { restaurants, ratingMin, ratingMax, activeRest, handleActiveRest, handleMinRate, handleMaxRate, handleReset} = this.props;
 
     return (
       <div className='left-container-computer'>
@@ -47,12 +39,17 @@ export default class DataDisplay extends React.Component {
             <Menu.Item>
               <img src={logoImg} alt='logo'/>
             </Menu.Item>
-            <Menu.Item name='Info' active={activeItem === 'Info'} onClick={this.handleItemClick} />
             <Menu.Item
-              name='Filter'
-              active={activeItem === 'Filter'}
-              onClick={this.handleItemClick}
-            />
+              name='Restaurants'
+              active={activeItem === 'Restaurants'}
+              onClick={this.handleItemClick} />
+            <Menu.Menu position='right'>
+              <Menu.Item
+                name='Settings'
+                active={activeItem === 'Settings'}
+                onClick={this.handleItemClick}
+              />
+            </Menu.Menu>
             {/*<Menu.Menu position='right'>*/}
             {/*  <Menu.Item>*/}
             {/*    <SearchRestaurants />*/}
@@ -62,28 +59,30 @@ export default class DataDisplay extends React.Component {
           </Segment>
         </Sticky>
 
-        {activeItem === 'Info' &&
+        {activeItem === 'Restaurants' &&
           <Segment>
             <ItemGroup divided>
               <RestaurantList
-                restaurants={this.props.restaurants.filter(restaurant =>
-                  restaurant.avgRating >= this.props.ratingMin &&
-                  restaurant.avgRating <= this.props.ratingMax)}
-                activeRest={this.props.activeRest}
-                handleActiveRest={this.props.handleActiveRest}
+                restaurants={restaurants.filter(restaurant =>
+                  restaurant.avgRating >= ratingMin &&
+                  restaurant.avgRating <= ratingMax)}
+                activeRest={activeRest}
+
+                handleActiveRest={handleActiveRest}
               />
             </ItemGroup>
           </Segment>
         }
-        {activeItem === 'Filter' &&
+        {activeItem === 'Settings' &&
           <Segment>
             <Filter
-              ratingMax={this.props.ratingMax}
-              ratingMin={this.props.ratingMin}
-              handleMinRate={this.props.handleMinRate}
-              handleMaxRate={this.props.handleMaxRate}
+              ratingMax={ratingMax}
+              ratingMin={ratingMin}
+
+              handleMinRate={handleMinRate}
+              handleMaxRate={handleMaxRate}
+              handleReset={handleReset}
               handleItemClick={this.handleItemClick}
-              handleReset={this.props.handleReset}
             />
           </Segment>
         }

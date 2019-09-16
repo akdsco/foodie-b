@@ -5,7 +5,6 @@ const MapMarker = (props) =>  {
   const { index } = props;
 
   const handleMarkerClick = () =>  {
-    // console.log('index', index);
     props.handleActiveRest(index);
   };
 

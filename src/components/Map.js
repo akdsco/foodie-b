@@ -44,9 +44,6 @@ const MapConst = compose(
             bounds: refs.map.getBounds()
           });
         },
-        onSearchBoxMounted: ref => {
-          refs.searchBox = ref;
-        },
         onPlacesChanged: () => {
           const places = refs.searchBox.getPlaces();
           const bounds = new google.maps.LatLngBounds();
@@ -77,7 +74,6 @@ const MapConst = compose(
   withGoogleMap)((props) =>
   <GoogleMap
     ref={props.onMapMounted}
-    // onBoundsChanged={props.onBoundsChanged}
     onDragEnd={props.onDragEnd}
     defaultZoom={15}
     center={props.center}
@@ -117,16 +113,17 @@ const MapConst = compose(
 export default class Map extends React.PureComponent {
 
   render() {
+    const {userMarker, userLocation, restaurants, center, activeRest, handleActiveRest, handleCenterChange } = this.props;
     return(
       <MapConst
-        userMarker={this.props.userMarker}
-        userLocation={this.props.userLocation}
-        restaurants={this.props.restaurants}
-        normalizedRest={this.props.normalizedRest}
-        center={this.props.center}
-        activeRest={this.props.activeRest}
-        handleActiveRest={this.props.handleActiveRest}
-        handleCenterChange={this.props.handleCenterChange}
+        userMarker={userMarker}
+        userLocation={userLocation}
+        restaurants={restaurants}
+        center={center}
+        activeRest={activeRest}
+
+        handleActiveRest={handleActiveRest}
+        handleCenterChange={handleCenterChange}
       />
     )
   }

@@ -13,6 +13,27 @@ import GridColumn from "semantic-ui-react/dist/commonjs/collections/Grid/GridCol
 import Map from "./components/Map";
 import {Dimmer, Loader} from "semantic-ui-react";
 
+/*
+ * TODO implement below:
+ *
+ * Steps:
+ * 1  - Locate user
+ * 2  - Get current map bounds
+ * 3  - Load restaurants from file if they are inside map bounds
+ * 4  - Load restaurants from Google Places
+ * 4.5- switch loading to false
+ * 5  - Display fetched data
+ * 6  - Allow user to disable automatic new search onDragEnd()
+ * 7  - If user let's automatic search on and drags map:
+ * 8  - switch loading to true
+ * 9  - clean up current restaurant state
+ * 10 - Get current map bounds
+ * 11 - Load restaurants from file if they are inside map bounds
+ * 12 - Load restaurants from Google Places
+ * 13 - switch loading to false
+ *
+ */
+
 export default class App extends React.Component {
   constructor(props) {
     super(props);
@@ -40,7 +61,6 @@ export default class App extends React.Component {
    *   Lifecycle Methods
   _* =====================
 */
-
 
   componentDidMount() {
     this.loadFileRestaurants(restaurantsFromFile);
@@ -80,7 +100,7 @@ export default class App extends React.Component {
         lng: position.coords.longitude
       },
       isUserMarkerShown: true
-      }), () => this.loadGooglePlacesRestaurants());
+      })/*, () => this.loadGooglePlacesRestaurants()*/);
     }, (error) => {
         console.log(error);
         console.log('Error: The Geolocation service failed.');
@@ -94,8 +114,10 @@ export default class App extends React.Component {
             lat: 51.516126,
             lng: -0.081679
           },
-          isUserMarkerShown: true
-          }), () => this.loadGooglePlacesRestaurants());
+          isUserMarkerShown: true,
+          // delete this in normal mode
+          loading: false
+          })/*, () => this.loadGooglePlacesRestaurants()*/);
         console.log('from locate user', this.state.restaurants);
         }
       )
@@ -105,7 +127,7 @@ export default class App extends React.Component {
   // TODO find how to triger data fetch every time center updates
 
   loadGooglePlacesRestaurants = () => {
-    let url = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=' + this.state.center.lat + ',' + this.state.center.lng + '&radius=700&type=restaurant&key=' + process.env.REACT_APP_G_API;
+    let url = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=' + this.state.center.lat + ',' + this.state.center.lng + '&radius=600&type=restaurant&key=' + process.env.REACT_APP_G_API;
     const self = this;
     let newRestaurants = self.state.restaurants.slice();
 
@@ -161,7 +183,7 @@ export default class App extends React.Component {
   handleCenterChange = (center) => {
     this.setState({
       center: center
-    })
+    }, () => this.loadGooglePlacesRestaurants())
   };
 
   handleMinRate = (e, { rating }) => {
@@ -209,19 +231,26 @@ export default class App extends React.Component {
         <Container>
           <Grid>
             <Grid.Row centered columns={2} only='computer' style={style}>
-              <GridColumn width={8} >
-                <DataDisplay
-                  restaurants={restaurants}
-                  ratingMax={ratingMax}
-                  ratingMin={ratingMin}
-                  activeRest={activeRest}
-                  handleActiveRest={handleActiveRest}
-                  handleMinRate={handleMinRate}
-                  handleMaxRate={handleMaxRate}
-                  handleReset={handleReset}
-                />
+              <GridColumn width={9} >
+                <Dimmer.Dimmable dimmed={loading}>
+                  <Dimmer active={loading} inverted>
+                    <Loader>Loading</Loader>
+                  </Dimmer>
+
+                  <DataDisplay
+                    restaurants={restaurants}
+                    ratingMax={ratingMax}
+                    ratingMin={ratingMin}
+                    activeRest={activeRest}
+
+                    handleActiveRest={handleActiveRest}
+                    handleMinRate={handleMinRate}
+                    handleMaxRate={handleMaxRate}
+                    handleReset={handleReset}
+                  />
+                </Dimmer.Dimmable>
               </GridColumn>
-              <GridColumn width={8}>
+              <GridColumn width={7}>
                 <Dimmer.Dimmable dimmed={loading}>
                   <Dimmer active={loading} inverted>
                     <Loader>Loading</Loader>
@@ -236,6 +265,7 @@ export default class App extends React.Component {
                     userMarker={isUserMarkerShown}
                     userLocation={userLocation}
                     activeRest={activeRest}
+
                     handleActiveRest={handleActiveRest}
                     handleCenterChange={handleCenterChange}
                   />
@@ -249,7 +279,7 @@ export default class App extends React.Component {
             </Grid.Row>
             <Grid.Row centered columns={1} only='mobile'>
               <GridColumn>
-                {/*<MapAlt />*/}
+
               </GridColumn>
             </Grid.Row>
           </Grid>

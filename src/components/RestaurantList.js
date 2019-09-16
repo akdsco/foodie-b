@@ -18,7 +18,12 @@ export default class RestaurantList extends React.Component {
     // you can specify sorting here if you'd like in the future
   }
 
+
   render() {
+
+    // Component Props
+    const {activeRest} = this.props;
+
     let restaurantsList = [];
 
     this.sortRestaurants().forEach(restaurant => {
@@ -31,10 +36,10 @@ export default class RestaurantList extends React.Component {
 
       restaurantsList.push(
         <Accordion styled key={restaurant.id}>
-          <Accordion.Title active={this.props.activeRest === restaurant.id} index={restaurant.id} onClick={this.handleAccordionClick}>
+          <Accordion.Title active={activeRest === restaurant.id} index={restaurant.id} onClick={this.handleAccordionClick}>
             <RestaurantItem item={restaurant} avgRating={restaurant.avgRating}/>
           </Accordion.Title>
-          <Accordion.Content active={this.props.activeRest === restaurant.id}>
+          <Accordion.Content active={activeRest === restaurant.id}>
             <Flag name={restaurant.flag} />
             <Item.Description>{restaurant.desc}</Item.Description>
             {reviews}
