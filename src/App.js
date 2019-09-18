@@ -100,7 +100,7 @@ export default class App extends React.Component {
         lng: position.coords.longitude
       },
       isUserMarkerShown: true
-      })/*, () => this.loadGooglePlacesRestaurants()*/);
+      }), () => this.loadGooglePlacesRestaurants());
     }, (error) => {
         console.log(error);
         console.log('Error: The Geolocation service failed.');
@@ -115,16 +115,14 @@ export default class App extends React.Component {
             lng: -0.081679
           },
           isUserMarkerShown: true,
-          // delete this in normal mode
-          loading: false
-          })/*, () => this.loadGooglePlacesRestaurants()*/);
+          }), () => this.loadGooglePlacesRestaurants());
         console.log('from locate user', this.state.restaurants);
         }
       )
     }
   }
 
-  // TODO find how to triger data fetch every time center updates
+  // TODO find how to trigger data fetch every time center updates
 
   loadGooglePlacesRestaurants = () => {
     let url = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=' + this.state.center.lat + ',' + this.state.center.lng + '&radius=600&type=restaurant&key=' + process.env.REACT_APP_G_API;
@@ -141,6 +139,7 @@ export default class App extends React.Component {
             count++;
             let restaurantObject = {
               "id": count,
+              "photo": 'https://maps.googleapis.com/maps/api/streetview?size=300x200&location='+ r.geometry.location.lat +','+ r.geometry.location.lng +'&heading=151.78&pitch=-0.76&key='+ process.env.REACT_APP_G_API,
               "place_id": r.place_id,
               "avgRating": r.rating,
               "restaurantName": r.name,

@@ -7,12 +7,11 @@ import {Button, Icon, Item } from "semantic-ui-react";
 import {AvgRatingComponent} from "./RatingComponents";
 
 const RestaurantItem = (props) => {
-  // TODO develop photo fetch
-  const photo = props.item.imageUrl;
+  const photo = props.item.photo ? props.item.photo : fmjImg;
 
   return(
     <Item>
-      <Item.Image src={fmjImg} size='tiny' floated='left'/>
+      <Item.Image src={photo} size='tiny' floated='left'/>
 
       <Item.Content>
         <Item.Header as='a'>{props.item.restaurantName}</Item.Header>
