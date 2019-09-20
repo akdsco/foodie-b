@@ -28,11 +28,7 @@ export default class RestaurantList extends React.Component {
 
     this.sortRestaurants().forEach(restaurant => {
       let reviews;
-      if(restaurant.ratings) {
-        reviews = restaurant.ratings.map( review => <ReviewItem key={review.id} item={review} />);
-      } else {
-        reviews = null
-      }
+      restaurant.ratings ? reviews = restaurant.ratings.map(review => <ReviewItem key={review.id} item={review} />) : reviews = null;
 
       restaurantsList.push(
         <Accordion styled key={restaurant.id}>
@@ -40,8 +36,8 @@ export default class RestaurantList extends React.Component {
             <RestaurantItem item={restaurant} avgRating={restaurant.avgRating}/>
           </Accordion.Title>
           <Accordion.Content active={activeRest === restaurant.id}>
-            <Flag name={restaurant.flag} />
-            <Item.Description>{restaurant.desc}</Item.Description>
+            {/*<Flag name={restaurant.flag} />*/}
+            {/*<Item.Description>{restaurant.desc}</Item.Description>*/}
             {reviews}
           </Accordion.Content>
         </Accordion>

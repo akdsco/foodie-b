@@ -6,8 +6,10 @@ import React from 'react'
 import {Button, Icon, Item } from "semantic-ui-react";
 import {AvgRatingComponent} from "./RatingComponents";
 
+// TODO think how to improve and provide solution to add specific photo to specific restaurant from file
+
 const RestaurantItem = (props) => {
-  const photo = props.item.photo ? props.item.photo : fmjImg;
+  const photo = props.item.streetViewURL ? props.item.streetViewURL : fmjImg;
 
   return(
     <Item>

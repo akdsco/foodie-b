@@ -13,7 +13,8 @@ import GridColumn from "semantic-ui-react/dist/commonjs/collections/Grid/GridCol
 import Map from "./components/Map";
 import {Dimmer, Loader} from "semantic-ui-react";
 
-/*
+/* TODO think how to let user add custom thumbnail picture to new restaurant (manual creation)
+ *
  * TODO implement below:
  *
  * Steps:
@@ -139,30 +140,18 @@ export default class App extends React.Component {
             count++;
             let restaurantObject = {
               "id": count,
-              "photo": 'https://maps.googleapis.com/maps/api/streetview?size=300x200&location='+ r.geometry.location.lat +','+ r.geometry.location.lng +'&heading=151.78&pitch=-0.76&key='+ process.env.REACT_APP_G_API,
+              "streetViewURL": 'https://maps.googleapis.com/maps/api/streetview?size=300x200&location='+ r.geometry.location.lat +','+ r.geometry.location.lng +'&heading=151.78&pitch=-0.76&key='+ process.env.REACT_APP_G_API,
+              "streetViewImgBig": 'https://maps.googleapis.com/maps/api/streetview?size=500x300&location='+ r.geometry.location.lat +','+ r.geometry.location.lng +'&heading=151.78&pitch=-0.76&key='+ process.env.REACT_APP_G_API,
               "place_id": r.place_id,
+              "numberOfReviews": r.user_ratings_total,
               "avgRating": r.rating,
               "restaurantName": r.name,
               "address": r.vicinity,
-              "flag": "gb",
-              "desc": "generic description",
               "lat": r.geometry.location.lat,
               "long": r.geometry.location.lng,
-              "ratings":[
-                {
-                  "id": 11,
-                  "name": "generic name",
-                  "stars":1,
-                  "comment":"generic comment"
-                },
-                {
-                  "id": 12,
-                  "name": "generic name",
-                  "stars":4,
-                  "comment":"generic comment"
-                }
-              ]
+              "open": r.opening_hours.open_now,
             };
+            // TODO check 'Cannot read property 'open_now' of undefined' after onDragEnd event
             newRestaurants.push(restaurantObject);
           }
         );
