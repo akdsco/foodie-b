@@ -1,6 +1,6 @@
 import React from "react";
 import { Marker, InfoWindow } from "react-google-maps";
-import {Button, Card, Header, Icon, Image, Label, LabelDetail} from "semantic-ui-react";
+import {Card, Header, Icon, Image, Label} from "semantic-ui-react";
 
 // TODO develop how the map InfoWindow should look like
 
@@ -28,7 +28,7 @@ const MapMarker = (props) =>  {
             <Image src={props.restaurant.streetViewImgBig} wrapped ui={false} />
             <Card.Content>
               <Card.Meta>
-                  <Label color={props.restaurant.open ? 'green' : 'red'} size='small'>
+                  <Label tag color={props.restaurant.open ? 'green' : 'red'} size='small'>
                     {props.restaurant.open ? 'Open' : 'Closed'}
                   </Label>
               </Card.Meta>
@@ -37,10 +37,8 @@ const MapMarker = (props) =>  {
               </Card.Description>
             </Card.Content>
             <Card.Content extra>
-              <a>
                 <Icon name='users' />
                 {props.restaurant.numberOfReviews} Reviews
-              </a>
             </Card.Content>
           </Card>
         </div>
