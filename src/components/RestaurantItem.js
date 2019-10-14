@@ -7,6 +7,7 @@ import {Button, Icon, Item } from "semantic-ui-react";
 import {AvgRatingComponent} from "./RatingComponents";
 
 // TODO think how to improve and provide solution to add specific photo to specific restaurant from file
+// TODO implement ADD Review feature here
 
 const RestaurantItem = (props) => {
   const photo = props.item.streetViewURL ? props.item.streetViewURL : fmjImg;

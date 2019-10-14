@@ -19,18 +19,19 @@ import {Dimmer, Loader} from "semantic-ui-react";
  *
  * Steps:
  * 1  - Locate user
- * 2  - Get current map bounds
- * 3  - Load restaurants from file if they are inside map bounds
+ * 2  - Get current map bounds / Not doable, api works with radius -> make the view square
+ * 3  - Load restaurants from file if they are inside map bounds / Don't write it perfect.
  * 4  - Load restaurants from Google Places
  * 4.5- switch loading to false
  * 5  - Display fetched data
- * 6  - Allow user to disable automatic new search onDragEnd()
+ * 6  - Allow user to disable automatic new search onDragEnd() -> postpone this feature
  * 7  - If user let's automatic search on and drags map:
  * 8  - switch loading to true
  * 9  - clean up current restaurant state
  * 10 - Get current map bounds
  * 11 - Load restaurants from file if they are inside map bounds
  * 12 - Load restaurants from Google Places
+ * 13 - switch loading to false
  * 13 - switch loading to false
  *
  */
@@ -40,7 +41,7 @@ export default class App extends React.Component {
     super(props);
     this.state = {
       restaurants: [],
-      loading: true,
+      loadingRestaurants: true,
       ratingMin: 1,
       ratingMax: 5,
       isUserMarkerShown: false,
@@ -140,8 +141,8 @@ export default class App extends React.Component {
             count++;
             let restaurantObject = {
               "id": count,
-              "streetViewURL": 'https://maps.googleapis.com/maps/api/streetview?size=300x200&location='+ r.geometry.location.lat +','+ r.geometry.location.lng +'&heading=151.78&pitch=-0.76&key='+ process.env.REACT_APP_G_API,
-              "streetViewImgBig": 'https://maps.googleapis.com/maps/api/streetview?size=500x300&location='+ r.geometry.location.lat +','+ r.geometry.location.lng +'&heading=151.78&pitch=-0.76&key='+ process.env.REACT_APP_G_API,
+              // "streetViewURL": 'https://maps.googleapis.com/maps/api/streetview?size=300x200&location='+ r.geometry.location.lat +','+ r.geometry.location.lng +'&heading=151.78&pitch=-0.76&key='+ process.env.REACT_APP_G_API,
+              // "streetViewImgBig": 'https://maps.googleapis.com/maps/api/streetview?size=500x300&location='+ r.geometry.location.lat +','+ r.geometry.location.lng +'&heading=151.78&pitch=-0.76&key='+ process.env.REACT_APP_G_API,
               "place_id": r.place_id,
               "numberOfReviews": r.user_ratings_total,
               "avgRating": r.rating,
@@ -150,6 +151,7 @@ export default class App extends React.Component {
               "lat": r.geometry.location.lat,
               "long": r.geometry.location.lng,
               "open": r.opening_hours.open_now,
+              "loadedDetails": false,
             };
             // TODO check 'Cannot read property 'open_now' of undefined' after onDragEnd event
             newRestaurants.push(restaurantObject);
@@ -157,7 +159,7 @@ export default class App extends React.Component {
         );
         self.setState({
           restaurants: newRestaurants,
-          loading: false,
+          loadingRestaurants: false,
         })
       });
     });
@@ -205,14 +207,66 @@ export default class App extends React.Component {
   handleActiveRest = (index) => {
     const { activeRest } = this.state;
     const newIndex = activeRest === index ? -1 : index;
+    if(newIndex !== -1) {
+      this.loadGooglePlaceDetails(newIndex);
+    }
     this.setState({
       activeRest: newIndex
     })
   };
 
+  loadGooglePlaceDetails = (index) => {
+    const self = this;
+    const currentRestaurantsState = [...self.state.restaurants];
+    const placeID = this.state.restaurants[index].place_id;
+
+    // if details already fetched previously --> don't fetch again, otherwise yes
+    if(!currentRestaurantsState[index].details) {
+      console.log('First time query, fetching placeID data now');
+
+      if(placeID) {
+        // console.log(placeID);
+        let url = 'https://maps.googleapis.com/maps/api/place/details/json?placeid=' + placeID + '&key=' + process.env.REACT_APP_G_API;
+        console.log(url);
+
+        fetch(url, {
+          method: 'GET',
+        }).then(response => {
+          response.json().then(data => {
+            if(data.status === 'OK') {
+              console.log('PlaceID details ', data);
+
+              const details = {
+                'full-address': data.result.address_components,
+                'reviews' : data.result.reviews,
+                'services' : data.result.types,
+                'photos': data.result.photos,
+                'url-link': data.result.website,
+                'opening-hours': data.result.opening_hours,
+              };
+
+              const updatedRestaurants = [...self.state.restaurants];
+              updatedRestaurants[index].loadedDetails = true;
+              updatedRestaurants[index].details = details;
+              self.setState({
+                restaurants :updatedRestaurants
+              });
+            } else {
+              console.log('API call unsuccessful');
+            }
+          })
+        })
+      } else {
+        console.log('Sorry no placeID supplied.');
+      }
+    } else {
+      console.log('Consecutive placeID query, load denied');
+    }
+  };
+
   render() {
     const style={height: '100vh'};
-    const { restaurants, ratingMin, ratingMax, center, userLocation, isUserMarkerShown, loading, activeRest } = this.state;
+    const { restaurants, ratingMin, ratingMax, center, userLocation, isUserMarkerShown, loadingRestaurants, activeRest } = this.state;
     const { handleMaxRate, handleMinRate, handleReset, handleActiveRest, handleCenterChange } = this;
     return (
       <div>
@@ -220,9 +274,9 @@ export default class App extends React.Component {
           <Grid>
             <Grid.Row centered columns={2} only='computer' style={style}>
               <GridColumn width={9} >
-                <Dimmer.Dimmable dimmed={loading}>
-                  <Dimmer active={loading} inverted>
-                    <Loader>Loading</Loader>
+                <Dimmer.Dimmable dimmed={loadingRestaurants}>
+                  <Dimmer active={loadingRestaurants} inverted>
+                    <Loader>LoadingRestaurants</Loader>
                   </Dimmer>
 
                   <DataDisplay
@@ -239,9 +293,9 @@ export default class App extends React.Component {
                 </Dimmer.Dimmable>
               </GridColumn>
               <GridColumn width={7}>
-                <Dimmer.Dimmable dimmed={loading}>
-                  <Dimmer active={loading} inverted>
-                    <Loader>Loading</Loader>
+                <Dimmer.Dimmable dimmed={loadingRestaurants}>
+                  <Dimmer active={loadingRestaurants} inverted>
+                    <Loader>LoadingRestaurants</Loader>
                   </Dimmer>
 
                   <Map
