@@ -13,6 +13,7 @@ const MapMarker = (props) =>  {
 
   return (
     <Marker
+
       position={{lat: props.position.lat, lng: props.position.lng}}
       onClick={handleMarkerClick}
       {...props}

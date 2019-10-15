@@ -1,7 +1,7 @@
 import React from 'react'
 import Accordion from "semantic-ui-react/dist/commonjs/modules/Accordion";
 import RestaurantItem from "./RestaurantItem";
-import ReviewItem from "./ReviewItem";
+import GooglePlaceContent from "./GooglePlaceContent";
 
 export default class RestaurantList extends React.Component {
 
@@ -29,17 +29,6 @@ export default class RestaurantList extends React.Component {
     let restaurantsList = [];
 
     this.sortRestaurants().forEach(restaurant => {
-      let reviews;
-      let counter = 0;
-      let googleReviews;
-      console.log(restaurant.details);
-      restaurant.ratings ? reviews = restaurant.ratings.map(review => <ReviewItem key={review.id} item={review} />) : reviews = null;
-
-      // TODO create react component from array to be displaye in Accordion Content
-      restaurant.details === [] ? googleReviews = restaurant.details.reviews.map(review => <ReviewItem key={counter} item={review} />) : googleReviews = null;
-      if(googleReviews) {
-        console.log(googleReviews);
-      }
 
       restaurantsList.push(
         <Accordion styled key={restaurant.id}>
@@ -47,12 +36,7 @@ export default class RestaurantList extends React.Component {
             <RestaurantItem item={restaurant} avgRating={restaurant.avgRating}/>
           </Accordion.Title>
           <Accordion.Content active={activeRest === restaurant.id}>
-            {reviews}
-            {restaurant.loadedDetails ?
-              <div>
-                {googleReviews}
-              </div>
-            : ''}
+            <GooglePlaceContent restaurant={restaurant} />
           </Accordion.Content>
         </Accordion>
       )

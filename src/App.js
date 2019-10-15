@@ -236,14 +236,73 @@ export default class App extends React.Component {
             if(data.status === 'OK') {
               console.log('PlaceID details ', data);
 
+              const revs = () => {
+                let array = [];
+
+                data.result.reviews.forEach( (r, id) =>
+                  array.push({
+                    "id": id + 10,
+                    "name": r.author_name,
+                    "stars": r.rating,
+                    "comment": r.text
+                  })
+                );
+                return array;
+              };
+
+            //   0
+            // :
+            //   {long_name: "132-135", short_name: "132-135", types: Array(1)}
+            //   1
+            // :
+            //   {long_name: "Minories", short_name: "Minories", types: Array(1)}
+            //   2
+            // :
+            //   {long_name: "London", short_name: "London", types: Array(1)}
+            //   3
+            // :
+            //   {long_name: "Greater London", short_name: "Greater London", types: Array(2)}
+            //   4
+            // :
+            //   {long_name: "England", short_name: "England", types: Array(2)}
+            //   5
+            // :
+            //   {long_name: "United Kingdom", short_name: "GB", types: Array(2)}
+            //   6
+            // :
+            //   {long_name: "EC3N 1NU", short_name: "EC3N 1NU", types: Array(1)}
+
               const details = {
                 'full-address': data.result.address_components,
-                'reviews' : data.result.reviews,
+                'reviews' : revs(),
                 'services' : data.result.types,
                 'photos': data.result.photos,
                 'url-link': data.result.website,
                 'opening-hours': data.result.opening_hours,
               };
+              // {
+              //   "id": 0,
+              //   "restaurantName":"Bronco",
+              //   "address":"139 Maxim Road, London, UK",
+              //   "flag": "fr",
+              //   "desc": "A relaxed and vibrant afternoon food.",
+              //   "lat":51.5138101,
+              //   "long":-0.0819491,
+              //   "ratings":[
+              //   {
+              //     "id": 11,
+              //     "name": "Michael Max",
+              //     "stars":4,
+              //     "comment":"Great! But not many veggie options."
+              //   },
+              //   {
+              //     "id": 12,
+              //     "name": "Paul Histamine",
+              //     "stars":4,
+              //     "comment":"My favorite restaurant!"
+              //   }
+              // ]
+              // }
 
               const updatedRestaurants = [...self.state.restaurants];
               updatedRestaurants[index].loadedDetails = true;

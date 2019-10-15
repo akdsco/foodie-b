@@ -7,6 +7,22 @@
     "desc": "A relaxed and vibrant afternoon food.",
     "lat":51.5138101,
     "long":-0.0819491,
+    "details": {
+      "reviews": [
+        {
+          "id": 11,
+          "name": "Michael Max",
+          "stars":4,
+          "comment":"Great! But not many veggie options."
+        },
+        {
+          "id": 12,
+          "name": "Paul Histamine",
+          "stars":4,
+          "comment":"My favorite restaurant!"
+        }
+      ]
+    },
     "ratings":[
       {
         "id": 11,
