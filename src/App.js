@@ -78,7 +78,7 @@ export default class App extends React.Component {
     const withAvgRating = [];
     // calculate average rating for each restaurant
     Object.keys(restaurants).map((id) => restaurants[id]).forEach(restaurant => {
-      restaurant.avgRating = restaurant.ratings.map( rating => rating.stars).reduce( (a , b ) => a + b ) / restaurant.ratings.length;
+      restaurant.avgRating = restaurant.details.reviews.map( rating => rating.stars).reduce( (a , b ) => a + b ) / restaurant.details.reviews.length;
       withAvgRating.push(restaurant)
     });
     this.setState({
@@ -127,7 +127,7 @@ export default class App extends React.Component {
   // TODO find how to trigger data fetch every time center updates
 
   loadGooglePlacesRestaurants = () => {
-    let url = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=' + this.state.center.lat + ',' + this.state.center.lng + '&radius=600&type=restaurant&key=' + process.env.REACT_APP_G_API;
+    let url = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=' + this.state.center.lat + ',' + this.state.center.lng + '&radius=750&type=restaurant&key=' + process.env.REACT_APP_G_API;
     const self = this;
     let newRestaurants = self.state.restaurants.slice();
 
@@ -227,7 +227,6 @@ export default class App extends React.Component {
       if(placeID) {
         // console.log(placeID);
         let url = 'https://maps.googleapis.com/maps/api/place/details/json?placeid=' + placeID + '&key=' + process.env.REACT_APP_G_API;
-        console.log(url);
 
         fetch(url, {
           method: 'GET',
@@ -244,7 +243,8 @@ export default class App extends React.Component {
                     "id": id + 10,
                     "name": r.author_name,
                     "stars": r.rating,
-                    "comment": r.text
+                    "comment": r.text,
+                    "photo_url": r.profile_photo_url
                   })
                 );
                 return array;
@@ -273,12 +273,13 @@ export default class App extends React.Component {
             //   {long_name: "EC3N 1NU", short_name: "EC3N 1NU", types: Array(1)}
 
               const details = {
-                'full-address': data.result.address_components,
+                'fullAddress': data.result.adr_address,
                 'reviews' : revs(),
                 'services' : data.result.types,
                 'photos': data.result.photos,
-                'url-link': data.result.website,
-                'opening-hours': data.result.opening_hours,
+                'link': data.result.website,
+                'openingHours': data.result.opening_hours,
+                'phoneNumber': data.result.international_phone_number,
               };
               // {
               //   "id": 0,

@@ -22,21 +22,7 @@
           "comment":"My favorite restaurant!"
         }
       ]
-    },
-    "ratings":[
-      {
-        "id": 11,
-        "name": "Michael Max",
-        "stars":4,
-        "comment":"Great! But not many veggie options."
-      },
-      {
-        "id": 12,
-        "name": "Paul Histamine",
-        "stars":4,
-        "comment":"My favorite restaurant!"
-      }
-    ]
+    }
   },
   {
     "id": 1,
@@ -46,20 +32,22 @@
     "desc": "Best pizza from Italian ovens.",
     "lat":51.514798,
     "long":-0.0839187,
-    "ratings":[
-      {
-        "id": 21,
-        "name": "Miguel Giunno",
-        "stars":5,
-        "comment":"Tiny pizzeria next to Sacre Coeur!"
-      },
-      {
-        "id": 22,
-        "name": "Marco Polo",
-        "stars":1,
-        "comment":"Meh, it was fine."
-      }
-    ]
+    "details": {
+      "reviews": [
+        {
+          "id": 21,
+          "name": "Miguel Giunno",
+          "stars":5,
+          "comment":"Tiny pizzeria next to Sacre Coeur!"
+        },
+        {
+          "id": 22,
+          "name": "Marco Polo",
+          "stars":1,
+          "comment":"Meh, it was fine."
+        }
+      ]
+    }
   },
   {
     "id": 2,
@@ -69,20 +57,22 @@
     "desc": "A contemporary place with forks and fieldtrays.",
     "lat":51.5135129,
     "long":-0.0832604,
-    "ratings":[
-      {
-        "id": 31,
-        "name": "Paulo Mastado",
-        "stars":5,
-        "comment":"Best place for lunch in City."
-      },
-      {
-        "id": 32,
-        "name": "Monica Last",
-        "stars":5,
-        "comment":"Good but not best."
-      }
-    ]
+    "details": {
+      "reviews": [
+        {
+          "id": 31,
+          "name": "Paulo Mastado",
+          "stars":5,
+          "comment":"Best place for lunch in City."
+        },
+        {
+          "id": 32,
+          "name": "Monica Last",
+          "stars":5,
+          "comment":"Good but not best."
+        }
+      ]
+    }
   },
   {
     "id": 3,
@@ -92,20 +82,22 @@
     "desc": "Spanish food from the best.",
     "lat":51.5106176,
     "long":-0.0813318,
-    "ratings":[
-      {
-        "id": 11,
-        "name": "Michael Max",
-        "stars":1,
-        "comment":"Great! But not many veggie options."
-      },
-      {
-        "id": 12,
-        "name": "Paul Histamine",
-        "stars":3,
-        "comment":"My favorite restaurant!"
-      }
-    ]
+    "details": {
+      "reviews": [
+        {
+          "id": 11,
+          "name": "Michael Max",
+          "stars":1,
+          "comment":"Great! But not many veggie options."
+        },
+        {
+          "id": 12,
+          "name": "Paul Histamine",
+          "stars":3,
+          "comment":"My favorite restaurant!"
+        }
+      ]
+    }
   },
   {
     "id": 4,
@@ -115,19 +107,21 @@
     "desc": "Best for cocktails and drinks.",
     "lat":51.5114317,
     "long":-0.0863146,
-    "ratings":[
-      {
-        "id": 11,
-        "name": "Michael Max",
-        "stars":1,
-        "comment":"Great! But not many veggie options."
-      },
-      {
-        "id": 12,
-        "name": "Paul Histamine",
-        "stars":1,
-        "comment":"My favorite restaurant!"
-      }
-    ]
+    "details": {
+      "reviews": [
+        {
+          "id": 11,
+          "name": "Michael Max",
+          "stars":1,
+          "comment":"Great! But not many veggie options."
+        },
+        {
+          "id": 12,
+          "name": "Paul Histamine",
+          "stars":1,
+          "comment":"My favorite restaurant!"
+        }
+      ]
+    }
   }
 ]

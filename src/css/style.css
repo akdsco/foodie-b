@@ -2,6 +2,14 @@
     padding: .3em .5em;
 }
 
-.opening-hours-column {
+.center-text {
     text-align: center !important;
+}
+
+.ui.styled.accordion .accordion .content, .ui.styled.accordion .content {
+    padding: 0 !important;
+}
+
+.mb-2 {
+    margin-bottom: .4em;
 }
