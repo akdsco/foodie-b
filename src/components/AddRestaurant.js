@@ -1,5 +1,5 @@
 import React from 'react';
-import {Form, Checkbox, Button} from 'semantic-ui-react';
+import {Form, Checkbox} from 'semantic-ui-react';
 
 export default class AddRestaurant extends React.Component {
   constructor(props) {
@@ -9,7 +9,7 @@ export default class AddRestaurant extends React.Component {
       address: '',
       latitude: '',
       longitude: '',
-      imageUrl: ''
+      imageUrl: '',
     };
   }
 
@@ -26,6 +26,7 @@ export default class AddRestaurant extends React.Component {
       "desc": "A relaxed and vibrant afternoon food.",
       "lat": latitude,
       "long": longitude,
+      "avgRating": 5,
       "details": {
         "reviews": [],
         "photoUrl": imageUrl
@@ -33,9 +34,7 @@ export default class AddRestaurant extends React.Component {
     };
 
     console.log(newRestaurant);
-
-
-
+    this.props.handleRestaurantAddition(newRestaurant);
   };
 
   render() {
@@ -92,7 +91,10 @@ export default class AddRestaurant extends React.Component {
         <Form.Field required>
           <Checkbox label='I agree to the Terms and Conditions' />
         </Form.Field>
-        <Button type='submit'>Submit</Button>
+        <Form.Button content='Submit' />
+        {/*<Button type='submit'*/}
+        {/*        name='Explore Restaurants'*/}
+        {/*>Submit</Button>*/}
       </Form>
     )
   }

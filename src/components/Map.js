@@ -9,7 +9,7 @@ import {withScriptjs, withGoogleMap, GoogleMap, Marker} from "react-google-maps"
 import {compose, lifecycle, withProps} from "recompose";
 import MapMarker from "./MapMarker";
 
-const _ = require("lodash");
+// const _ = require("lodash");
 const styles = require('../data/GoogleMapStyles.json');
 
 // TODO implement - search that returns both new markers and updates DataDisplay with new records and 'holds' JSON file records
@@ -29,8 +29,6 @@ const MapConst = compose(
 
       this.setState({
         bounds: null,
-        isUserMarkerShown: false,
-        isOpen: false,
         markers: [],
         onMapMounted: ref => {
           refs.map = ref;
@@ -43,29 +41,6 @@ const MapConst = compose(
           this.setState({
             bounds: refs.map.getBounds()
           });
-        },
-        onPlacesChanged: () => {
-          const places = refs.searchBox.getPlaces();
-          const bounds = new google.maps.LatLngBounds();
-
-          places.forEach(place => {
-            if (place.geometry.viewport) {
-              bounds.union(place.geometry.viewport)
-            } else {
-              bounds.extend(place.geometry.location)
-            }
-          });
-          const nextMarkers = places.map(place => ({
-            position: place.geometry.location,
-          }));
-          const nextCenter = _.get(nextMarkers, '0.position', this.state.center);
-
-          this.props.handleCenterChange(nextCenter);
-          this.setState({
-            // center: nextCenter,
-            markers: nextMarkers,
-          });
-          // refs.map.fitBounds(bounds);
         },
       })
     },

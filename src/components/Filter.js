@@ -27,12 +27,12 @@ export default class Filter extends React.Component {
           <div style={{marginTop: '1.3rem'}}>
             <Button
               positive
-              name='Restaurants'
+              name='Explore Restaurants'
               onClick={handleItemClick}
             >Filter</Button>
             <Button
               negative
-              name='Restaurants'
+              name='Explore Restaurants'
               value='reset'
               onClick={handleItemClick}
             >Reset</Button>

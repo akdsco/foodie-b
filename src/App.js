@@ -151,7 +151,7 @@ export default class App extends React.Component {
               "address": r.vicinity,
               "lat": r.geometry.location.lat,
               "long": r.geometry.location.lng,
-              "open": r.opening_hours.open_now,
+              "open": r.opening_hours ? r.opening_hours.open_now : true,
               "loadedDetails": false,
             };
             // TODO check 'Cannot read property 'open_now' of undefined' after onDragEnd event
@@ -164,6 +164,70 @@ export default class App extends React.Component {
         })
       });
     });
+  };
+
+  loadGooglePlaceDetails = (index) => {
+    const self = this;
+    const currentRestaurantsState = [...self.state.restaurants];
+    const placeID = this.state.restaurants[index].place_id;
+
+    // if details already fetched previously --> don't fetch again, otherwise yes
+    if(!currentRestaurantsState[index].details) {
+      console.log('First time query, fetching placeID data now');
+
+      if(placeID) {
+        // console.log(placeID);
+        let url = 'https://maps.googleapis.com/maps/api/place/details/json?placeid=' + placeID + '&key=' + process.env.REACT_APP_G_API;
+
+        fetch(url, {
+          method: 'GET',
+        }).then(response => {
+          response.json().then(data => {
+            if(data.status === 'OK') {
+              console.log('PlaceID details ', data);
+
+              const revs = () => {
+                let array = [];
+
+                data.result.reviews.forEach( (r, id) =>
+                  array.push({
+                    "id": id + 10,
+                    "name": r.author_name,
+                    "stars": r.rating,
+                    "comment": r.text,
+                    "image_url": r.profile_photo_url
+                  })
+                );
+                return array;
+              };
+
+              const details = {
+                'fullAddress': data.result.adr_address,
+                'reviews' : revs(),
+                'services' : data.result.types,
+                'photos': data.result.photos,
+                'link': data.result.website,
+                'openingHours': data.result.opening_hours ? data.result.opening_hours : {"weekday_text" : ["Open 24 / 7"]},
+                'phoneNumber': data.result.international_phone_number,
+              };
+
+              const updatedRestaurants = [...self.state.restaurants];
+              updatedRestaurants[index].loadedDetails = true;
+              updatedRestaurants[index].details = details;
+              self.setState({
+                restaurants :updatedRestaurants
+              });
+            } else {
+              console.log('API call unsuccessful');
+            }
+          })
+        })
+      } else {
+        console.log('Sorry no placeID supplied.');
+      }
+    } else {
+      console.log('Consecutive placeID query, load denied');
+    }
   };
 
   /* ===================
@@ -216,119 +280,22 @@ export default class App extends React.Component {
     })
   };
 
-  loadGooglePlaceDetails = (index) => {
-    const self = this;
-    const currentRestaurantsState = [...self.state.restaurants];
-    const placeID = this.state.restaurants[index].place_id;
+  handleRestaurantAddition = (newRest) => {
+    console.log('working');
+    const restaurants = [...this.state.restaurants];
+    restaurants.push(newRest);
 
-    // if details already fetched previously --> don't fetch again, otherwise yes
-    if(!currentRestaurantsState[index].details) {
-      console.log('First time query, fetching placeID data now');
-
-      if(placeID) {
-        // console.log(placeID);
-        let url = 'https://maps.googleapis.com/maps/api/place/details/json?placeid=' + placeID + '&key=' + process.env.REACT_APP_G_API;
-
-        fetch(url, {
-          method: 'GET',
-        }).then(response => {
-          response.json().then(data => {
-            if(data.status === 'OK') {
-              console.log('PlaceID details ', data);
-
-              const revs = () => {
-                let array = [];
-
-                data.result.reviews.forEach( (r, id) =>
-                  array.push({
-                    "id": id + 10,
-                    "name": r.author_name,
-                    "stars": r.rating,
-                    "comment": r.text,
-                    "image_url": r.profile_photo_url
-                  })
-                );
-                return array;
-              };
-
-            //   0
-            // :
-            //   {long_name: "132-135", short_name: "132-135", types: Array(1)}
-            //   1
-            // :
-            //   {long_name: "Minories", short_name: "Minories", types: Array(1)}
-            //   2
-            // :
-            //   {long_name: "London", short_name: "London", types: Array(1)}
-            //   3
-            // :
-            //   {long_name: "Greater London", short_name: "Greater London", types: Array(2)}
-            //   4
-            // :
-            //   {long_name: "England", short_name: "England", types: Array(2)}
-            //   5
-            // :
-            //   {long_name: "United Kingdom", short_name: "GB", types: Array(2)}
-            //   6
-            // :
-            //   {long_name: "EC3N 1NU", short_name: "EC3N 1NU", types: Array(1)}
-
-              const details = {
-                'fullAddress': data.result.adr_address,
-                'reviews' : revs(),
-                'services' : data.result.types,
-                'photos': data.result.photos,
-                'link': data.result.website,
-                'openingHours': data.result.opening_hours,
-                'phoneNumber': data.result.international_phone_number,
-              };
-              // {
-              //   "id": 0,
-              //   "restaurantName":"Bronco",
-              //   "address":"139 Maxim Road, London, UK",
-              //   "flag": "fr",
-              //   "desc": "A relaxed and vibrant afternoon food.",
-              //   "lat":51.5138101,
-              //   "long":-0.0819491,
-              //   "ratings":[
-              //   {
-              //     "id": 11,
-              //     "name": "Michael Max",
-              //     "stars":4,
-              //     "comment":"Great! But not many veggie options."
-              //   },
-              //   {
-              //     "id": 12,
-              //     "name": "Paul Histamine",
-              //     "stars":4,
-              //     "comment":"My favorite restaurant!"
-              //   }
-              // ]
-              // }
-
-              const updatedRestaurants = [...self.state.restaurants];
-              updatedRestaurants[index].loadedDetails = true;
-              updatedRestaurants[index].details = details;
-              self.setState({
-                restaurants :updatedRestaurants
-              });
-            } else {
-              console.log('API call unsuccessful');
-            }
-          })
-        })
-      } else {
-        console.log('Sorry no placeID supplied.');
-      }
-    } else {
-      console.log('Consecutive placeID query, load denied');
-    }
+    this.setState({
+      restaurants: restaurants,
+    })
   };
 
   render() {
     const style={height: '100vh'};
-    const { restaurants, ratingMin, ratingMax, center, userLocation, isUserMarkerShown, loadingRestaurants, activeRest } = this.state;
-    const { handleMaxRate, handleMinRate, handleReset, handleActiveRest, handleCenterChange } = this;
+    const { restaurants, ratingMin, ratingMax, center, userLocation,
+            isUserMarkerShown, loadingRestaurants, activeRest } = this.state;
+    const { handleMaxRate, handleMinRate, handleReset, handleActiveRest,
+            handleCenterChange, handleRestaurantAddition } = this;
     return (
       <div>
         <Container>
@@ -346,10 +313,11 @@ export default class App extends React.Component {
                     ratingMin={ratingMin}
                     activeRest={activeRest}
 
-                    handleActiveRest={handleActiveRest}
+                    handleReset={handleReset}
                     handleMinRate={handleMinRate}
                     handleMaxRate={handleMaxRate}
-                    handleReset={handleReset}
+                    handleActiveRest={handleActiveRest}
+                    handleRestaurantAddition={handleRestaurantAddition}
                   />
                 </Dimmer.Dimmable>
               </GridColumn>

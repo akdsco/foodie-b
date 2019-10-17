@@ -22,16 +22,18 @@ export default class DataDisplay extends React.Component {
   }
 
   handleItemClick = (e, { name }) => {
-    console.log(name);
+    console.log(e, name);
     this.setState({ activeItem: name });
     if(e.target.value === 'reset') {
       this.props.handleReset()
     }
+    console.log(this.state.activeItem);
   };
 
   render() {
     const { activeItem } = this.state;
-    const { restaurants, ratingMin, ratingMax, activeRest, handleActiveRest, handleMinRate, handleMaxRate, handleReset} = this.props;
+    const { restaurants, ratingMin, ratingMax, activeRest, handleActiveRest,
+            handleRestaurantAddition, handleMinRate, handleMaxRate, handleReset} = this.props;
 
     return (
       <div className='left-container-computer'>
@@ -91,6 +93,9 @@ export default class DataDisplay extends React.Component {
         <Segment>
           <AddRestaurant
             restaurants={restaurants}
+
+            handleRestaurantAddition={handleRestaurantAddition}
+            handleItemClick={this.handleItemClick}
           />
         </Segment>
         }
