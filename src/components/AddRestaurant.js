@@ -2,18 +2,14 @@ import React from 'react';
 import {Form, Checkbox} from 'semantic-ui-react';
 
 export default class AddRestaurant extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      restName: '',
-      address: '',
-      latitude: '',
-      longitude: '',
-      imageUrl: '',
-    };
-  }
+  state = {
+    restName: '',
+    address: '',
+    latitude: '',
+    longitude: '',
+    imageUrl: '',
+  };
 
-  // 2. create handler that will pass array with json object back to restaurants state in App.js
   handleChange = (e, { name, value }) => this.setState({ [name]: value });
 
   handleSubmit = () => {

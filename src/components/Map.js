@@ -12,8 +12,6 @@ import MapMarker from "./MapMarker";
 // const _ = require("lodash");
 const styles = require('../data/GoogleMapStyles.json');
 
-// TODO implement - search that returns both new markers and updates DataDisplay with new records and 'holds' JSON file records
-// TODO implement - DataDisplay only shows records that are visible as Markers on Map
 // TODO implement - records in DataDisplay and on Map update as you drag map around
 
 const MapConst = compose(

@@ -138,6 +138,9 @@ export default class App extends React.Component {
       response.json().then(data => {
         console.log('Google Places Restaurants (raw api data)', data);
         let count = self.state.restaurants.length - 1;
+        let repeatedRestaurants = 0;
+        let flag = false;
+
         data.results.forEach( r => {
             count++;
             let restaurantObject = {
@@ -154,10 +157,27 @@ export default class App extends React.Component {
               "open": r.opening_hours ? r.opening_hours.open_now : true,
               "loadedDetails": false,
             };
-            // TODO check 'Cannot read property 'open_now' of undefined' after onDragEnd event
-            newRestaurants.push(restaurantObject);
-          }
+
+            // Making sure that if API returns same restaurants, they won't double up on list
+            this.state.restaurants.forEach( r => {
+                if(r.place_id === restaurantObject.place_id)  {
+                  flag = true;
+                  repeatedRestaurants++;
+                  // TODO !Ask Mentor! is there a better way to 'continue' ?
+                  return
+                }
+            });
+
+            if(flag) {
+              // TODO !Ask Mentor! is there a better way to 'continue' ?
+              return
+            } else {
+              newRestaurants.push(restaurantObject);
+            }
+          },
         );
+        console.log(repeatedRestaurants);
+
         self.setState({
           restaurants: newRestaurants,
           loadingRestaurants: false,
