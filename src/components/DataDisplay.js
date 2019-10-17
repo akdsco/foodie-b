@@ -11,6 +11,7 @@ import {Menu, Segment} from "semantic-ui-react";
 import ItemGroup from "semantic-ui-react/dist/commonjs/views/Item/ItemGroup"
 import Filter from './Filter'
 import RestaurantList from "./RestaurantList";
+import AddRestaurant from "./AddRestaurant";
 
 export default class DataDisplay extends React.Component {
   constructor(props) {
@@ -88,7 +89,9 @@ export default class DataDisplay extends React.Component {
         }
         {activeItem === 'Add Restaurant' &&
         <Segment>
-          <div>test</div>
+          <AddRestaurant
+            restaurants={restaurants}
+          />
         </Segment>
         }
       </div>
