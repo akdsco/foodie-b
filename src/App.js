@@ -41,7 +41,7 @@ export default class App extends React.Component {
     super(props);
     this.state = {
       restaurants: [],
-      loadingRestaurants: true,
+      loadingRestaurants: false,
       ratingMin: 1,
       ratingMax: 5,
       isUserMarkerShown: false,
@@ -103,7 +103,7 @@ export default class App extends React.Component {
         lng: position.coords.longitude
       },
       isUserMarkerShown: true
-      }), () => this.loadGooglePlacesRestaurants());
+       })/*, () => this.loadGooglePlacesRestaurants()*/);
     }, (error) => {
         console.log(error);
         // console.log('Error: The Geolocation service failed.');
@@ -117,8 +117,8 @@ export default class App extends React.Component {
             lat: 51.516126,
             lng: -0.081679
           },
-          isUserMarkerShown: true,
-          }), () => this.loadGooglePlacesRestaurants());
+          isUserMarkerShown: false,
+          })/*, () => this.loadGooglePlacesRestaurants()*/);
         // console.log('from locate user', this.state.restaurants);
         }
       )
@@ -160,16 +160,18 @@ export default class App extends React.Component {
 
             // Making sure that if API returns same restaurants, they won't double up on list
             this.state.restaurants.forEach( r => {
-                if(r.place_id === restaurantObject.place_id)  {
+              if(r.place_id === restaurantObject.place_id)  {
                   flag = true;
                   repeatedRestaurants++;
                   // TODO !Ask Mentor! is there a better way to 'continue' ?
+                  // noinspection UnnecessaryReturnStatementJS
                   return
                 }
             });
 
             if(flag) {
               // TODO !Ask Mentor! is there a better way to 'continue' ?
+              // noinspection UnnecessaryReturnStatementJS
               return
             } else {
               newRestaurants.push(restaurantObject);

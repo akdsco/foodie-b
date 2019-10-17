@@ -1,12 +1,14 @@
 import React from 'react';
 import ReviewItem from "./ReviewItem";
-import {Container, GridColumn, List, Image} from "semantic-ui-react";
+import {Container, GridColumn, List, Image, Button, Icon} from "semantic-ui-react";
 
 // Import CSS
 import '../css/style.css';
 import Grid from "semantic-ui-react/dist/commonjs/collections/Grid";
 
 export default class AccordionContent extends React.Component {
+
+  //TODO add a functionality that will query more than 5 reviews if user demands more
 
   getRestReviews = () => {
     let reviews = [];
@@ -63,6 +65,7 @@ export default class AccordionContent extends React.Component {
       let data = this.props.restaurant.details;
 
       if(data.photos) {
+        // noinspection JSUnusedLocalSymbols
         let photoRef = data.photos[0].photo_reference;
         // url = 'https://maps.googleapis.com/maps/api/place/photo?maxwidth=800&photoreference=' + photoRef + '&key=' + process.env.REACT_APP_G_API;
       } else if (typeof data.photoUrl !== 'undefined' && data.photoUrl !== '') {
@@ -82,16 +85,11 @@ export default class AccordionContent extends React.Component {
             <GridColumn width={7}>
               {/*  Left Column - Data  */}
               <List>
-                {/*<List.Item key='0'>*/}
-                {/*  <List.Icon name='marker' />*/}
-                {/*  <List.Content>{this.props.restaurant.details && this.props.restaurant.details.fullAddress}</List.Content>*/}
-                {/*</List.Item>*/}
-                <List.Item key='1'>
+                <List.Item key='0'>
                   <List.Icon name='phone' />
                   <List.Content><a href={this.getRestPhoneNum()}>Call us</a></List.Content>
-
                 </List.Item>
-                <List.Item key='2'>
+                <List.Item key='1'>
                   <List.Icon name='linkify' />
                   <List.Content>
                     <a href={this.props.restaurant.details && this.props.restaurant.details.link}>
@@ -99,25 +97,13 @@ export default class AccordionContent extends React.Component {
                     </a>
                   </List.Content>
                 </List.Item>
-                {/*<List.Item key='3'>*/}
-                {/*  <div class='mb-2'>*/}
-                {/*    <Label color='blue' tag>*/}
-                {/*      Restaurant*/}
-                {/*    </Label>*/}
-                {/*  </div>*/}
-                {/*  <Label className='mb-2' color='blue' tag>*/}
-                {/*    Hotel*/}
-                {/*  </Label>*/}
-                {/*  <Label className='mb-2' color='blue' tag>*/}
-                {/*    Police Station*/}
-                {/*  </Label>*/}
-                {/*</List.Item>*/}
               </List>
               <div>
                 <h4 className='mb-2'>Opening Times</h4>
                 {this.getRestOpenTime()}
               </div>
             </GridColumn>
+
             <GridColumn width={9}>
               {/*Right Column - Photo */}
                 <Image
@@ -132,14 +118,34 @@ export default class AccordionContent extends React.Component {
                   }}
                 />
             </GridColumn>
+
           </Grid.Row>
+
           <Grid.Row>
             <GridColumn>
               <h4>Reviews</h4>
               {this.getRestReviews()}
-              <a href='#'>Load more reviews?</a>
             </GridColumn>
           </Grid.Row>
+
+          <Grid.Row>
+            <GridColumn className='restaurant-item-buttons'>
+              <Button compact animated='vertical' color='blue'>
+                <Button.Content hidden>
+                  <Icon name='arrow down'/>
+                </Button.Content>
+                <Button.Content visible>Load more reviews</Button.Content>
+              </Button>
+              {/*<a href='#'>Load more reviews?</a>*/}
+              <Button animated compact color='green'>
+                <Button.Content hidden>Write it now!</Button.Content>
+                <Button.Content visible>
+                  <Icon name='write'/>Add a Review
+                </Button.Content>
+              </Button>
+            </GridColumn>
+          </Grid.Row>
+
         </Grid>
       </Container>
     )

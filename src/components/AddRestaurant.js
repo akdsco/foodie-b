@@ -1,5 +1,5 @@
 import React from 'react';
-import {Form, Checkbox} from 'semantic-ui-react';
+import {Form, Checkbox, Button} from 'semantic-ui-react';
 
 export default class AddRestaurant extends React.Component {
   state = {
@@ -20,8 +20,8 @@ export default class AddRestaurant extends React.Component {
       "restaurantName": restName,
       "address": address,
       "desc": "A relaxed and vibrant afternoon food.",
-      "lat": latitude,
-      "long": longitude,
+      "lat": parseFloat(latitude),
+      "long": parseFloat(longitude),
       "avgRating": 5,
       "details": {
         "reviews": [],
@@ -35,6 +35,7 @@ export default class AddRestaurant extends React.Component {
 
   render() {
     const { restName, address, latitude, longitude, imageUrl } = this.state;
+    const { handleItemClick } = this.props;
 
     return(
       <Form onSubmit={this.handleSubmit}>
@@ -61,6 +62,7 @@ export default class AddRestaurant extends React.Component {
           <Form.Input
             placeholder='e.g. 51.516126'
             name='latitude'
+            type='number'
             value={latitude}
             onChange={this.handleChange}
           />
@@ -70,6 +72,7 @@ export default class AddRestaurant extends React.Component {
           <Form.Input
             placeholder='e.g. -0.081679'
             name='longitude'
+            type='number'
             value={longitude}
             onChange={this.handleChange}
           />
@@ -87,7 +90,12 @@ export default class AddRestaurant extends React.Component {
         <Form.Field required>
           <Checkbox label='I agree to the Terms and Conditions' />
         </Form.Field>
-        <Form.Button content='Submit' />
+        <Button.Group>
+          <Button content='Submit' positive>Submit</Button>
+          <Button.Or />
+          <Button onClick={handleItemClick} name='Explore Restaurants'>Cancel</Button>
+        </Button.Group>
+        {/*<Form.Button content='Submit' />*/}
         {/*<Button type='submit'*/}
         {/*        name='Explore Restaurants'*/}
         {/*>Submit</Button>*/}

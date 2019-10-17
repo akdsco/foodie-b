@@ -5,9 +5,6 @@ import AccordionContent from "./AccordionContent";
 
 export default class RestaurantList extends React.Component {
 
-  // ----- DONE ------
-  // TODO make this component stateful and think how to implement placedID call and how to obtain details about each restaurant Item
-
   handleAccordionClick = (e, titleProps) =>  {
     const { index } = titleProps;
     this.props.handleActiveRest(index);
@@ -37,6 +34,7 @@ export default class RestaurantList extends React.Component {
 
     return(
       <div>
+        <p> Shortlisted Restaurants: {this.props.restaurants.length} </p>
         {restaurantsList}
       </div>
     )

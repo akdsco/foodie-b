@@ -13,3 +13,8 @@
 .mb-2 {
     margin-bottom: .4em;
 }
+
+.restaurant-item-buttons {
+    text-align: center;
+    margin-bottom: 1em !important;
+}
