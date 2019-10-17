@@ -20,10 +20,16 @@ export default class ReviewItem extends React.Component {
   render() {
     // Component Props
     const { item } = this.props;
-    const genericPhotoUrl = 'https://react.semantic-ui.com/images/avatar/large/stevie.jpg';
+    const genericReviewImgUrl = 'https://bit.ly/2VPaipa';
+
     return(
       <Item>
-        <Item.Image floated='left' size='tiny' src={item.photo_url ? item.photo_url : genericPhotoUrl}/>
+        {this.props.fromFile ?
+          <Item.Image floated='left' size='tiny'
+                      src={item.image_url ? item.image_url : genericReviewImgUrl} circular /> :
+          <Item.Image floated='left' size='tiny'
+                      src={item.image_url ? item.image_url : genericReviewImgUrl}/>
+        }
 
         <Item.Content>
           <Item.Header as='a'>{item.name}</Item.Header>

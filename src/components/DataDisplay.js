@@ -16,11 +16,12 @@ export default class DataDisplay extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      activeItem: 'Restaurants',
+      activeItem: 'Explore Restaurants',
     };
   }
 
   handleItemClick = (e, { name }) => {
+    console.log(name);
     this.setState({ activeItem: name });
     if(e.target.value === 'reset') {
       this.props.handleReset()
@@ -40,26 +41,25 @@ export default class DataDisplay extends React.Component {
               <img src={logoImg} alt='logo'/>
             </Menu.Item>
             <Menu.Item
-              name='Restaurants'
-              active={activeItem === 'Restaurants'}
+              name='Explore Restaurants'
+              active={activeItem === 'Explore Restaurants'}
+              onClick={this.handleItemClick} />
+            <Menu.Item
+              name='Add Restaurant'
+              active={activeItem === 'Add Restaurant'}
               onClick={this.handleItemClick} />
             <Menu.Menu position='right'>
               <Menu.Item
-                name='Settings'
-                active={activeItem === 'Settings'}
+                name='Filter'
+                active={activeItem === 'Filter'}
                 onClick={this.handleItemClick}
               />
             </Menu.Menu>
-            {/*<Menu.Menu position='right'>*/}
-            {/*  <Menu.Item>*/}
-            {/*    <SearchRestaurants />*/}
-            {/*  </Menu.Item>*/}
-            {/*</Menu.Menu>*/}
           </Menu>
           </Segment>
         </Sticky>
 
-        {activeItem === 'Restaurants' &&
+        {activeItem === 'Explore Restaurants' &&
           <Segment>
             <ItemGroup divided>
               <RestaurantList
@@ -73,7 +73,7 @@ export default class DataDisplay extends React.Component {
             </ItemGroup>
           </Segment>
         }
-        {activeItem === 'Settings' &&
+        {activeItem === 'Filter' &&
           <Segment>
             <Filter
               ratingMax={ratingMax}
@@ -85,6 +85,11 @@ export default class DataDisplay extends React.Component {
               handleItemClick={this.handleItemClick}
             />
           </Segment>
+        }
+        {activeItem === 'Add Restaurant' &&
+        <Segment>
+          <div>test</div>
+        </Segment>
         }
       </div>
     )

@@ -8,7 +8,7 @@ import Grid from "semantic-ui-react/dist/commonjs/collections/Grid";
 
 export default class AccordionContent extends React.Component {
 
-  loadReviews = () => {
+  getRestReviews = () => {
     let reviews = [];
     let counter = -1;
 
@@ -20,7 +20,7 @@ export default class AccordionContent extends React.Component {
             <Grid>
               <Grid.Row centered only='computer'>
                 <GridColumn width={15}>
-                  <ReviewItem key={counter} item={review} />
+                  <ReviewItem key={counter} item={review} fromFile={this.props.restaurant.isFromFile} />
                 </GridColumn>
               </Grid.Row>
             </Grid>)
@@ -30,7 +30,7 @@ export default class AccordionContent extends React.Component {
     return reviews;
   };
 
-  loadOpeningTimes = () => {
+  getRestOpenTime = () => {
     let openingTimes = [];
 
     if(this.props.restaurant.details) {
@@ -43,16 +43,7 @@ export default class AccordionContent extends React.Component {
     return openingTimes;
   };
 
-  cleanUrl = (str) => {
-    // erase https = > ^https?\:\/\/
-    let strCopy = (' ' + str).slice(1);
-    let result = strCopy.replace(/^https?:\/\/+/g, '');
-    // clean after first '/' -> [^\/]*
-    result = result.replace(/^(.*?)\/+/g, '$&').slice(0, result.length - 1);
-    return result;
-  };
-
-  generateNumber = () => {
+  getRestPhoneNum = () => {
     let number = 'tel:';
 
     if(this.props.restaurant.details) {
@@ -65,21 +56,24 @@ export default class AccordionContent extends React.Component {
   };
 
 
-  getPhotoUrl = () => {
-    let url = '';
+  getRestPhotoUrl = () => {
+    let url = 'https://react.semantic-ui.com/images/wireframe/image.png';
 
     if(this.props.restaurant.details) {
-      if(this.props.restaurant.details.photos) {
-        let photoRef = this.props.restaurant.details.photos[0].photo_reference;
+      let data = this.props.restaurant.details;
+
+      if(data.photos) {
+        let photoRef = data.photos[0].photo_reference;
         // url = 'https://maps.googleapis.com/maps/api/place/photo?maxwidth=800&photoreference=' + photoRef + '&key=' + process.env.REACT_APP_G_API;
+      } else if (typeof data.photoUrl !== 'undefined' && data.photoUrl !== '') {
+        url = data.photoUrl;
       }
     }
-    return url;
+
+    return url
   };
 
   render() {
-
-    // const {restaurant} = this.props.restaurant.details ?;
 
     return(
       <Container className='container-accordion'>
@@ -94,7 +88,7 @@ export default class AccordionContent extends React.Component {
                 {/*</List.Item>*/}
                 <List.Item key='1'>
                   <List.Icon name='phone' />
-                  <List.Content><a href={this.generateNumber()}>Call us</a></List.Content>
+                  <List.Content><a href={this.getRestPhoneNum()}>Call us</a></List.Content>
 
                 </List.Item>
                 <List.Item key='2'>
@@ -120,29 +114,29 @@ export default class AccordionContent extends React.Component {
                 {/*</List.Item>*/}
               </List>
               <div>
-                <h4 class='mb-2'>Opening Times</h4>
-                {this.loadOpeningTimes()}
+                <h4 className='mb-2'>Opening Times</h4>
+                {this.getRestOpenTime()}
               </div>
             </GridColumn>
             <GridColumn width={9}>
-            {/*  Right Column - Photo */}
-              <Image /*src='https://react.semantic-ui.com/images/wireframe/image.png'*/
-                     src={this.getPhotoUrl() ? this.getPhotoUrl : 'https://react.semantic-ui.com/images/wireframe/image.png'}
-                     fluid
-                     label={{
-                       as: 'a',
-                       color: 'green',
-                       content: 'Book Table',
-                       icon: 'food',
-                       ribbon: true,
-                     }}
-              />
+              {/*Right Column - Photo */}
+                <Image
+                  src={this.getRestPhotoUrl()}
+                  fluid
+                  label={{
+                    as: 'a',
+                    color: 'green',
+                    content: 'Book Table',
+                    icon: 'food',
+                    ribbon: true,
+                  }}
+                />
             </GridColumn>
           </Grid.Row>
           <Grid.Row>
             <GridColumn>
               <h4>Reviews</h4>
-              {this.loadReviews()}
+              {this.getRestReviews()}
               <a href='#'>Load more reviews?</a>
             </GridColumn>
           </Grid.Row>

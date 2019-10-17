@@ -79,6 +79,7 @@ export default class App extends React.Component {
     // calculate average rating for each restaurant
     Object.keys(restaurants).map((id) => restaurants[id]).forEach(restaurant => {
       restaurant.avgRating = restaurant.details.reviews.map( rating => rating.stars).reduce( (a , b ) => a + b ) / restaurant.details.reviews.length;
+      restaurant.isFromFile = true;
       withAvgRating.push(restaurant)
     });
     this.setState({
@@ -105,7 +106,7 @@ export default class App extends React.Component {
       }), () => this.loadGooglePlacesRestaurants());
     }, (error) => {
         console.log(error);
-        console.log('Error: The Geolocation service failed.');
+        // console.log('Error: The Geolocation service failed.');
         this.setState(prevState => ({
           userLocation: {
             lat: 51.516126,
@@ -118,7 +119,7 @@ export default class App extends React.Component {
           },
           isUserMarkerShown: true,
           }), () => this.loadGooglePlacesRestaurants());
-        console.log('from locate user', this.state.restaurants);
+        // console.log('from locate user', this.state.restaurants);
         }
       )
     }
@@ -244,7 +245,7 @@ export default class App extends React.Component {
                     "name": r.author_name,
                     "stars": r.rating,
                     "comment": r.text,
-                    "photo_url": r.profile_photo_url
+                    "image_url": r.profile_photo_url
                   })
                 );
                 return array;
