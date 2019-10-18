@@ -17,17 +17,27 @@ export default class RestaurantList extends React.Component {
 
   render() {
     // Component Props
-    const {activeRest} = this.props;
+    const {activeRest, handleNewData} = this.props;
     let restaurantsList = [];
 
     this.sortRestaurants().forEach(restaurant => {
       restaurantsList.push(
         <Accordion styled key={restaurant.id}>
-          <Accordion.Title active={activeRest === restaurant.id} index={restaurant.id} onClick={this.handleAccordionClick}>
-            <RestaurantItem item={restaurant} avgRating={restaurant.avgRating}/>
+          <Accordion.Title
+            active={activeRest === restaurant.id}
+            index={restaurant.id}
+            onClick={this.handleAccordionClick}>
+              <RestaurantItem
+                item={restaurant}
+                avgRating={restaurant.avgRating}
+              />
           </Accordion.Title>
           <Accordion.Content active={activeRest === restaurant.id}>
-            <AccordionContent restaurant={restaurant} />
+            <AccordionContent
+              restaurant={restaurant}
+
+              handleNewData={handleNewData}
+            />
           </Accordion.Content>
         </Accordion>)
     });

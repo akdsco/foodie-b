@@ -3,15 +3,6 @@ import {Button, Form} from "semantic-ui-react";
 import {AddReviewRatingComponent} from './RatingComponents';
 
 export default class AddReview extends React.Component {
-
-// {
-//   "id": 11,
-//   "name": "Michael Max",
-//   "stars":4,
-//   "comment":"Great! But not many veggie options.",
-//   "image_url": ""
-// }
-
   state = {
     reviewStars: '',
     reviewContent: '',
@@ -25,22 +16,22 @@ export default class AddReview extends React.Component {
     const { reviewStars, reviewContent, reviewersName, reviewersImgUrl } = this.state;
 
     const newReview = {
-      "id": 'rev' + (this.props.restaurant.details.reviews.length + this.props.addedRestaurants.length),
+      "id": 'rev' + this.props.restaurant.details.reviews.length,
       "name": reviewersName,
       "stars": reviewStars,
       "comment": reviewContent,
       "image_url": reviewersImgUrl
     };
 
-    console.log(newReview);
-    this.props.handleNewReview(newReview);
+    this.props.handleNewData(newReview, 'review');
   };
 
   render() {
     const { reviewContent, reviewersName } = this.state;
+    const { handleClose } = this.props;
 
     return(
-      <Form onSubmit={this.props.handleClose}>
+      <Form onSubmit={handleClose}>
         <Form.Field required>
           <label>How many stars?</label>
           <AddReviewRatingComponent handleChange={this.handleChange} />

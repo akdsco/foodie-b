@@ -32,7 +32,7 @@ export default class AddRestaurant extends React.Component {
     };
 
     console.log(newRestaurant);
-    this.props.handleNewData(newRestaurant);
+    this.props.handleNewData(newRestaurant, 'restaurant');
   };
 
   render() {

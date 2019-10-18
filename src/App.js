@@ -13,9 +13,12 @@ import GridColumn from "semantic-ui-react/dist/commonjs/collections/Grid/GridCol
 import Map from "./components/Map";
 import {Dimmer, Loader} from "semantic-ui-react";
 
-/* TODO think how to let user add custom thumbnail picture to new restaurant (manual creation)
- *
- * TODO implement below:
+// TODO check max and min values for longitude and latitude and enforce in add restaurant form
+// TODO when users adds new review, make sure to re-evaluate avgRating for the restaurant
+// TODO add 'add Restaurant' feature which works when clicking on the map (sources lat + lng automatically from map)
+
+
+/* TODO implement below:
  *
  * Steps:
  * 1  - Locate user
@@ -302,9 +305,14 @@ export default class App extends React.Component {
     })
   };
 
-  handleNewData = (dataObject) => {
+  handleNewData = (dataObject, type) => {
     const restaurants = [...this.state.restaurants];
-    restaurants.push(dataObject);
+
+    if(type === 'restaurant') {
+      restaurants.push(dataObject);
+    } else if (type === 'review') {
+      restaurants[this.state.activeRest].details.reviews.push(dataObject);
+    }
 
     this.setState({
       restaurants: restaurants,
@@ -337,8 +345,8 @@ export default class App extends React.Component {
                     handleReset={handleReset}
                     handleMinRate={handleMinRate}
                     handleMaxRate={handleMaxRate}
-                    handleActiveRest={handleActiveRest}
                     handleNewData={handleNewData}
+                    handleActiveRest={handleActiveRest}
                   />
                 </Dimmer.Dimmable>
               </GridColumn>

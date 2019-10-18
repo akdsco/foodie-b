@@ -16,7 +16,7 @@ import AddReview from "./AddReview";
 export default class AccordionContent extends React.Component {
   state = {
     modalOpen: false,
-    addedRestaurants: []
+    // addedRestaurants: []
   };
 
   handleOpen = () => this.setState({ modalOpen: true });
@@ -27,13 +27,13 @@ export default class AccordionContent extends React.Component {
     this.setState({ modalOpen: false });
   };
 
-  handleNewReview = (review) => {
-    const prevState = [...this.state.addedRestaurants];
-    console.log('handleNewReview, prevState:', prevState);
-    prevState.push(review);
-
-    this.setState({addedRestaurants: prevState});
-  };
+  // handleNewReview = (review) => {
+  //   const prevState = [...this.state.addedRestaurants];
+  //   console.log('handleNewReview, prevState:', prevState);
+  //   prevState.push(review);
+  //
+  //   this.setState({addedRestaurants: prevState});
+  // };
 
   getRestReviews = () => {
     let reviews = [];
@@ -56,19 +56,19 @@ export default class AccordionContent extends React.Component {
         : null;
     }
 
-    if (this.state.addedRestaurants.length > 0) {
-      this.state.addedRestaurants.map(review => {
-        reviews.push(
-          <Grid key={review.id}>
-            <Grid.Row centered only='computer'>
-              <GridColumn width={15}>
-                <ReviewItem item={review} fromFile={restaurant.isFromFile} />
-              </GridColumn>
-            </Grid.Row>
-          </Grid>
-        )
-      })
-    }
+    // if (this.state.addedRestaurants.length > 0) {
+    //   this.state.addedRestaurants.map(review => {
+    //     reviews.push(
+    //       <Grid key={review.id}>
+    //         <Grid.Row centered only='computer'>
+    //           <GridColumn width={15}>
+    //             <ReviewItem item={review} fromFile={restaurant.isFromFile} />
+    //           </GridColumn>
+    //         </Grid.Row>
+    //       </Grid>
+    //     )
+    //   })
+    // }
 
     return reviews;
   };
@@ -122,7 +122,7 @@ export default class AccordionContent extends React.Component {
 
   render() {
 
-    const { restaurant } = this.props;
+    const { restaurant, handleNewData } = this.props;
 
     return(
       <Container className='container-accordion'>
@@ -214,7 +214,8 @@ export default class AccordionContent extends React.Component {
 
                       addedRestaurants={this.state.addedRestaurants}
                       handleClose={this.handleClose}
-                      handleNewReview={this.handleNewReview}
+                      handleNewData={handleNewData}
+                      // handleNewReview={this.handleNewReview}
                     />
                   </Modal.Description>
                 </Modal.Content>
