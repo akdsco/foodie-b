@@ -10,10 +10,8 @@ import {AvgRatingComponent} from "./RatingComponents";
 // TODO implement ADD Review feature here
 
 const RestaurantItem = (props) => {
-
-  // details.photoUrl
-
-  const photo = props.item.streetViewURL ? props.item.streetViewURL : fmjImg;
+  const photo = props.item.streetViewURL ? props.item.streetViewURL : (props.item.details.photoUrl ? props.item.details.photoUrl : fmjImg);
+  // const photo = props.item.streetViewURL ? props.item.streetViewURL : fmjImg;
 
   return(
     <Item>

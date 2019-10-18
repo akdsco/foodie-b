@@ -16,6 +16,8 @@ import {Dimmer, Loader} from "semantic-ui-react";
 // TODO check max and min values for longitude and latitude and enforce in add restaurant form
 // TODO when users adds new review, make sure to re-evaluate avgRating for the restaurant
 // TODO add 'add Restaurant' feature which works when clicking on the map (sources lat + lng automatically from map)
+// TODO add link to image in from file restaurant markers.. ?
+// TODO implement loader for picture inside accordion item (take's 1-2 sec sometimes)
 
 
 /* TODO implement below:
@@ -90,39 +92,77 @@ export default class App extends React.Component {
     });
   };
 
+  // locateUser() {
+  //   if(navigator.geolocation) {
+  //     navigator.geolocation.getCurrentPosition(
+  //         position => {
+  //     console.log('User Successfully located');
+  //     this.setState(prevState => ({
+  //     userLocation: {
+  //       lat: position.coords.latitude,
+  //       lng: position.coords.longitude
+  //     },
+  //     center: {
+  //       ...prevState.center,
+  //       lat: position.coords.latitude,
+  //       lng: position.coords.longitude
+  //     },
+  //     isUserMarkerShown: true
+  //      }), () => this.loadGooglePlacesRestaurants());
+  //   }, (error) => {
+  //       console.log(error);
+  //       // console.log('Error: The Geolocation service failed.');
+  //       this.setState(prevState => ({
+  //         userLocation: {
+  //           lat: 51.516126,
+  //           lng: -0.081679
+  //         },
+  //         center: {
+  //           ...prevState.center,
+  //           lat: 51.516126,
+  //           lng: -0.081679
+  //         },
+  //         isUserMarkerShown: true,
+  //         }), () => this.loadGooglePlacesRestaurants());
+  //       // console.log('from locate user', this.state.restaurants);
+  //       }
+  //     )
+  //   }
+  // }
+
   locateUser() {
     if(navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
-          position => {
-      console.log('User Successfully located');
-      this.setState(prevState => ({
-      userLocation: {
-        lat: position.coords.latitude,
-        lng: position.coords.longitude
-      },
-      center: {
-        ...prevState.center,
-        lat: position.coords.latitude,
-        lng: position.coords.longitude
-      },
-      isUserMarkerShown: true
-       })/*, () => this.loadGooglePlacesRestaurants()*/);
-    }, (error) => {
-        console.log(error);
-        // console.log('Error: The Geolocation service failed.');
-        this.setState(prevState => ({
-          userLocation: {
-            lat: 51.516126,
-            lng: -0.081679
-          },
-          center: {
-            ...prevState.center,
-            lat: 51.516126,
-            lng: -0.081679
-          },
-          isUserMarkerShown: false,
+        position => {
+          console.log('User Successfully located');
+          this.setState(prevState => ({
+            userLocation: {
+              lat: position.coords.latitude,
+              lng: position.coords.longitude
+            },
+            center: {
+              ...prevState.center,
+              lat: position.coords.latitude,
+              lng: position.coords.longitude
+            },
+            isUserMarkerShown: true
           })/*, () => this.loadGooglePlacesRestaurants()*/);
-        // console.log('from locate user', this.state.restaurants);
+        }, (error) => {
+          console.log(error);
+          // console.log('Error: The Geolocation service failed.');
+          this.setState(prevState => ({
+            userLocation: {
+              lat: 51.516126,
+              lng: -0.081679
+            },
+            center: {
+              ...prevState.center,
+              lat: 51.516126,
+              lng: -0.081679
+            },
+            isUserMarkerShown: false,
+          })/*, () => this.loadGooglePlacesRestaurants()*/);
+          // console.log('from locate user', this.state.restaurants);
         }
       )
     }
@@ -251,7 +291,7 @@ export default class App extends React.Component {
         console.log('Sorry no placeID supplied.');
       }
     } else {
-      console.log('Consecutive placeID query, load denied');
+      console.log('Consecutive placeID query or restaurant from file, load denied');
     }
   };
 
