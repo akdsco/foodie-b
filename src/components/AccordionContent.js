@@ -1,14 +1,22 @@
 import React from 'react';
 import ReviewItem from "./ReviewItem";
-import {Container, GridColumn, List, Image, Button, Icon} from "semantic-ui-react";
+import {Container, GridColumn, List, Image, Button, Icon, Modal, Header} from "semantic-ui-react";
 
 // Import CSS
 import '../css/style.css';
 import Grid from "semantic-ui-react/dist/commonjs/collections/Grid";
 
 export default class AccordionContent extends React.Component {
+  state = {
+    modalOpen: false
+  };
+
+  handleOpen = () => this.setState({ modalOpen: true });
+
+  handleClose = () => this.setState({ modalOpen: false });
 
   //TODO add a functionality that will query more than 5 reviews if user demands more
+  // not doable due to google limits, only available for paying users
 
   getRestReviews = () => {
     let reviews = [];
@@ -66,7 +74,7 @@ export default class AccordionContent extends React.Component {
 
       if(data.photos) {
         // noinspection JSUnusedLocalSymbols
-        let photoRef = data.photos[0].photo_reference;
+        let photoRef = data.photos[1].photo_reference;
         // url = 'https://maps.googleapis.com/maps/api/place/photo?maxwidth=800&photoreference=' + photoRef + '&key=' + process.env.REACT_APP_G_API;
       } else if (typeof data.photoUrl !== 'undefined' && data.photoUrl !== '') {
         url = data.photoUrl;
@@ -130,12 +138,29 @@ export default class AccordionContent extends React.Component {
 
           <Grid.Row>
             <GridColumn className='restaurant-item-buttons'>
-              <Button compact animated='vertical' color='blue'>
-                <Button.Content hidden>
-                  <Icon name='arrow down'/>
-                </Button.Content>
-                <Button.Content visible>Load more reviews</Button.Content>
-              </Button>
+              <Modal
+                trigger={<Button onClick={this.handleOpen} compact animated='vertical' color='blue'>
+                  <Button.Content hidden>
+                    <Icon name='arrow down'/>
+                  </Button.Content>
+                  <Button.Content visible>Load more reviews</Button.Content>
+                </Button>}
+                open={this.state.modalOpen}
+                onClose={this.handleClose}
+                basic
+                size='small'
+              >
+                <Header icon='browser' content='Like this feature?' />
+                <Modal.Content>
+                  <h3>This feature is available only for subscribed users.</h3>
+                </Modal.Content>
+                <Modal.Actions>
+                  <Button color='green' onClick={this.handleClose} inverted>
+                    <Icon name='checkmark' /> Got it
+                  </Button>
+                </Modal.Actions>
+              </Modal>
+
               {/*<a href='#'>Load more reviews?</a>*/}
               <Button animated compact color='green'>
                 <Button.Content hidden>Write it now!</Button.Content>
