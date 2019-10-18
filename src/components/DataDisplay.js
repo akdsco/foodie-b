@@ -33,7 +33,7 @@ export default class DataDisplay extends React.Component {
   render() {
     const { activeItem } = this.state;
     const { restaurants, ratingMin, ratingMax, activeRest, handleActiveRest,
-            handleRestaurantAddition, handleMinRate, handleMaxRate, handleReset} = this.props;
+            handleNewData, handleMinRate, handleMaxRate, handleReset} = this.props;
 
     return (
       <div className='left-container-computer'>
@@ -94,7 +94,7 @@ export default class DataDisplay extends React.Component {
           <AddRestaurant
             restaurants={restaurants}
 
-            handleRestaurantAddition={handleRestaurantAddition}
+            handleNewData={handleNewData}
             handleItemClick={this.handleItemClick}
           />
         </Segment>

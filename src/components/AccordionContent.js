@@ -2,50 +2,84 @@ import React from 'react';
 import ReviewItem from "./ReviewItem";
 import {Container, GridColumn, List, Image, Button, Icon, Modal, Header} from "semantic-ui-react";
 
+//TODO add a functionality that will query more than 5 reviews if user demands more
+// not doable due to google limits, only available for paying users
+
+//TODO change current structure so that after you add reviews, they won't get deleted when you change menu card
+// basically move all data storage to App.js... :( lot's to do
+
 // Import CSS
 import '../css/style.css';
 import Grid from "semantic-ui-react/dist/commonjs/collections/Grid";
+import AddReview from "./AddReview";
 
 export default class AccordionContent extends React.Component {
   state = {
-    modalOpen: false
+    modalOpen: false,
+    addedRestaurants: []
   };
 
   handleOpen = () => this.setState({ modalOpen: true });
 
-  handleClose = () => this.setState({ modalOpen: false });
 
-  //TODO add a functionality that will query more than 5 reviews if user demands more
-  // not doable due to google limits, only available for paying users
+  handleClose = () => {
+    console.log('trying to close modal');
+    this.setState({ modalOpen: false });
+  };
+
+  handleNewReview = (review) => {
+    const prevState = [...this.state.addedRestaurants];
+    console.log('handleNewReview, prevState:', prevState);
+    prevState.push(review);
+
+    this.setState({addedRestaurants: prevState});
+  };
 
   getRestReviews = () => {
     let reviews = [];
     let counter = -1;
+    const { restaurant } = this.props;
 
-    if (this.props.restaurant.details) {
-      reviews = this.props.restaurant.details.reviews ?
-        this.props.restaurant.details.reviews.map(review => {
+    if (restaurant.details) {
+      reviews = restaurant.details.reviews ?
+        restaurant.details.reviews.map(review => {
           counter++;
           return(
-            <Grid>
+            <Grid key={counter}>
               <Grid.Row centered only='computer'>
                 <GridColumn width={15}>
-                  <ReviewItem key={counter} item={review} fromFile={this.props.restaurant.isFromFile} />
+                  <ReviewItem item={review} fromFile={restaurant.isFromFile} />
                 </GridColumn>
               </Grid.Row>
             </Grid>)
         })
         : null;
     }
+
+    if (this.state.addedRestaurants.length > 0) {
+      this.state.addedRestaurants.map(review => {
+        reviews.push(
+          <Grid key={review.id}>
+            <Grid.Row centered only='computer'>
+              <GridColumn width={15}>
+                <ReviewItem item={review} fromFile={restaurant.isFromFile} />
+              </GridColumn>
+            </Grid.Row>
+          </Grid>
+        )
+      })
+    }
+
     return reviews;
   };
 
   getRestOpenTime = () => {
     let openingTimes = [];
+    const { restaurant } = this.props;
 
-    if(this.props.restaurant.details) {
-      if(this.props.restaurant.details.openingHours) {
-        this.props.restaurant.details.openingHours.weekday_text.forEach(day => {
+    if(restaurant.details) {
+      if(restaurant.details.openingHours) {
+        restaurant.details.openingHours.weekday_text.forEach(day => {
           openingTimes.push(<p class='mb-2'>{day}</p>)
         });
       }
@@ -55,10 +89,11 @@ export default class AccordionContent extends React.Component {
 
   getRestPhoneNum = () => {
     let number = 'tel:';
+    const { restaurant } = this.props;
 
-    if(this.props.restaurant.details) {
-      if(this.props.restaurant.details.phoneNumber) {
-        number += this.props.restaurant.details.phoneNumber;
+    if(restaurant.details) {
+      if(restaurant.details.phoneNumber) {
+        number += restaurant.details.phoneNumber;
       }
     }
 
@@ -68,9 +103,10 @@ export default class AccordionContent extends React.Component {
 
   getRestPhotoUrl = () => {
     let url = 'https://react.semantic-ui.com/images/wireframe/image.png';
+    const { restaurant } = this.props;
 
-    if(this.props.restaurant.details) {
-      let data = this.props.restaurant.details;
+    if(restaurant.details) {
+      let data = restaurant.details;
 
       if(data.photos) {
         // noinspection JSUnusedLocalSymbols
@@ -86,6 +122,8 @@ export default class AccordionContent extends React.Component {
 
   render() {
 
+    const { restaurant } = this.props;
+
     return(
       <Container className='container-accordion'>
         <Grid>
@@ -100,7 +138,7 @@ export default class AccordionContent extends React.Component {
                 <List.Item key='1'>
                   <List.Icon name='linkify' />
                   <List.Content>
-                    <a href={this.props.restaurant.details && this.props.restaurant.details.link}>
+                    <a href={restaurant.details && restaurant.details.link}>
                       Visit Website
                     </a>
                   </List.Content>
@@ -161,13 +199,27 @@ export default class AccordionContent extends React.Component {
                 </Modal.Actions>
               </Modal>
 
-              {/*<a href='#'>Load more reviews?</a>*/}
-              <Button animated compact color='green'>
+              <Modal trigger={<Button animated compact color='green'>
                 <Button.Content hidden>Write it now!</Button.Content>
                 <Button.Content visible>
                   <Icon name='write'/>Add a Review
-                </Button.Content>
-              </Button>
+                </Button.Content></Button>}>
+                <Modal.Header>Share your experience with {restaurant.restaurantName}</Modal.Header>
+                <Modal.Content image>
+                  <Image wrapped size='medium' src={this.getRestPhotoUrl()} />
+                  <Modal.Description>
+                    <Header>Tell us what did you like about {restaurant.restaurantName}?</Header>
+                    <AddReview
+                      restaurant={restaurant}
+
+                      addedRestaurants={this.state.addedRestaurants}
+                      handleClose={this.handleClose}
+                      handleNewReview={this.handleNewReview}
+                    />
+                  </Modal.Description>
+                </Modal.Content>
+              </Modal>
+
             </GridColumn>
           </Grid.Row>
 

@@ -9,14 +9,14 @@
     "details": {
       "reviews": [
         {
-          "id": 11,
+          "id": "rev0",
           "name": "Michael Max",
           "stars":4,
           "comment":"Great! But not many veggie options.",
           "image_url": ""
         },
         {
-          "id": 12,
+          "id": "rev1",
           "name": "Paul Histamine",
           "stars":4,
           "comment":"My favorite restaurant!",
@@ -36,14 +36,14 @@
     "details": {
       "reviews": [
         {
-          "id": 21,
+          "id": "rev0",
           "name": "Miguel Giunno",
           "stars":5,
           "comment":"Tiny pizzeria next to Sacre Coeur!",
           "imageUrl": ""
         },
         {
-          "id": 22,
+          "id": "rev1",
           "name": "Marco Polo",
           "stars":1,
           "comment":"Meh, it was fine.",
@@ -63,14 +63,14 @@
     "details": {
       "reviews": [
         {
-          "id": 31,
+          "id": "rev0",
           "name": "Paulo Mastado",
           "stars":5,
           "comment":"Best place for lunch in City.",
           "imageUrl": ""
         },
         {
-          "id": 32,
+          "id": "rev1",
           "name": "Monica Last",
           "stars":5,
           "comment":"Good but not best.",
@@ -90,14 +90,14 @@
     "details": {
       "reviews": [
         {
-          "id": 11,
+          "id": "rev0",
           "name": "Michael Max",
           "stars":1,
           "comment":"Great! But not many veggie options.",
           "imageUrl": ""
         },
         {
-          "id": 12,
+          "id": "rev1",
           "name": "Paul Histamine",
           "stars":3,
           "comment":"My favorite restaurant!",
@@ -117,14 +117,14 @@
     "details": {
       "reviews": [
         {
-          "id": 11,
+          "id": "rev0",
           "name": "Michael Max",
           "stars":1,
           "comment":"Great! But not many veggie options.",
           "imageUrl": ""
         },
         {
-          "id": 12,
+          "id": "rev1",
           "name": "Paul Histamine",
           "stars":1,
           "comment":"My favorite restaurant!",

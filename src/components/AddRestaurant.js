@@ -1,6 +1,8 @@
 import React from 'react';
 import {Form, Checkbox, Button} from 'semantic-ui-react';
 
+//TODO make sure required fields work, as of now you can fill form without lat and lng and it will still add new restaurant
+
 export default class AddRestaurant extends React.Component {
   state = {
     restName: '',
@@ -30,7 +32,7 @@ export default class AddRestaurant extends React.Component {
     };
 
     console.log(newRestaurant);
-    this.props.handleRestaurantAddition(newRestaurant);
+    this.props.handleNewData(newRestaurant);
   };
 
   render() {

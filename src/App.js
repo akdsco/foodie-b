@@ -302,10 +302,9 @@ export default class App extends React.Component {
     })
   };
 
-  handleRestaurantAddition = (newRest) => {
-    console.log('working');
+  handleNewData = (dataObject) => {
     const restaurants = [...this.state.restaurants];
-    restaurants.push(newRest);
+    restaurants.push(dataObject);
 
     this.setState({
       restaurants: restaurants,
@@ -317,7 +316,7 @@ export default class App extends React.Component {
     const { restaurants, ratingMin, ratingMax, center, userLocation,
             isUserMarkerShown, loadingRestaurants, activeRest } = this.state;
     const { handleMaxRate, handleMinRate, handleReset, handleActiveRest,
-            handleCenterChange, handleRestaurantAddition } = this;
+            handleCenterChange, handleNewData } = this;
     return (
       <div>
         <Container>
@@ -339,7 +338,7 @@ export default class App extends React.Component {
                     handleMinRate={handleMinRate}
                     handleMaxRate={handleMaxRate}
                     handleActiveRest={handleActiveRest}
-                    handleRestaurantAddition={handleRestaurantAddition}
+                    handleNewData={handleNewData}
                   />
                 </Dimmer.Dimmable>
               </GridColumn>
