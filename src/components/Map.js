@@ -88,7 +88,7 @@ const MapConst = compose(
 export default class Map extends React.PureComponent {
 
   render() {
-    const {userMarker, userLocation, restaurants, center, activeRest, handleActiveRest, handleCenterChange } = this.props;
+    const { userMarker, userLocation, restaurants, center, activeRest, handleActiveRest, handleCenterChange } = this.props;
     return(
       <MapConst
         userMarker={userMarker}

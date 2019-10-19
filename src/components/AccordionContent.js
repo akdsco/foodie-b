@@ -146,7 +146,7 @@ export default class AccordionContent extends React.Component {
 
           <Grid.Row>
             <GridColumn>
-              <h4>Reviews</h4>
+              <h4>Most helpful reviews</h4>
               {this.getRestReviews()}
             </GridColumn>
           </Grid.Row>

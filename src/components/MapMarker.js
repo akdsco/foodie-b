@@ -13,7 +13,6 @@ const MapMarker = (props) =>  {
 
   return (
     <Marker
-
       position={{lat: props.position.lat, lng: props.position.lng}}
       onClick={handleMarkerClick}
       {...props}
@@ -24,9 +23,9 @@ const MapMarker = (props) =>  {
             {props.restaurant.restaurantName}
           </Header>
           <Card>
-            {/* Implement dimmer for picture loading */}
-            {/* Change (to bigger) close InfoWindow button */}
-            <Image src={props.restaurant.streetViewImgBig} wrapped ui={false} />
+            {/* TODO Implement dimmer for picture loading */}
+            {/* TODO Change (to bigger) close InfoWindow button */}
+            <Image src={props.restaurant.isFromFile ? props.restaurant.details.photoUrl : props.restaurant.streetViewURL} wrapped ui={false} />
             <Card.Content>
               <Card.Meta>
                   <Label tag color={props.restaurant.open ? 'green' : 'red'} size='small'>

@@ -11,13 +11,11 @@ import GridColumn from "semantic-ui-react/dist/commonjs/collections/Grid/GridCol
 import Map from "./components/Map";
 import {Dimmer, Loader} from "semantic-ui-react";
 
-// TODO add link to image in from file restaurant markers.. ?
-
-
-// TODO check max and min values for longitude and latitude and enforce in add restaurant form
+// DONE TODO add link to image in from file restaurant markers.. ?
+// TODO implement old restaurant data discard and upload new each API call
 // TODO add 'add Restaurant' feature which works when clicking on the map (sources lat + lng automatically from map)
 // TODO implement loader for picture inside accordion item (take's 1-2 sec sometimes)
-// TODO add number of reviews on Map for all the restaurants coming from file
+// DONE TODO add number of reviews on Map for all the restaurants coming from file
 // TODO on zoom change -> update state of radius for API call
 
 
@@ -86,6 +84,7 @@ export default class App extends React.Component {
     Object.keys(restaurants).map((id) => restaurants[id]).forEach(restaurant => {
       restaurant.avgRating = restaurant.details.reviews.map( rating => rating.stars).reduce( (a , b ) => a + b ) / restaurant.details.reviews.length;
       restaurant.isFromFile = true;
+      restaurant.numberOfReviews = restaurant.details.reviews.length;
       withAvgRating.push(restaurant)
     });
     this.setState({
@@ -169,8 +168,6 @@ export default class App extends React.Component {
     }
   }
 
-  // TODO find how to trigger data fetch every time center updates
-
   loadGooglePlacesRestaurants = () => {
     let url = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=' + this.state.center.lat + ',' + this.state.center.lng + '&radius=750&type=restaurant&key=' + process.env.REACT_APP_G_API;
     const self = this;
@@ -189,10 +186,10 @@ export default class App extends React.Component {
             count++;
             let restaurantObject = {
               "id": count,
-              // "streetViewURL": 'https://maps.googleapis.com/maps/api/streetview?size=300x200&location='+ r.geometry.location.lat +','+ r.geometry.location.lng +'&heading=151.78&pitch=-0.76&key='+ process.env.REACT_APP_G_API,
-              // "streetViewImgBig": 'https://maps.googleapis.com/maps/api/streetview?size=500x300&location='+ r.geometry.location.lat +','+ r.geometry.location.lng +'&heading=151.78&pitch=-0.76&key='+ process.env.REACT_APP_G_API,
+              // "streetViewURL": 'https://maps.googleapis.com/maps/api/streetview?size=500x300&location='+ r.geometry.location.lat +','+ r.geometry.location.lng +'&heading=151.78&pitch=-0.76&key='+ process.env.REACT_APP_G_API,
               "place_id": r.place_id,
-              "numberOfReviews": r.user_ratings_total,
+              "isFromFile": false,
+              "numberOfReviews": r.user_ratings_total > 5 ? 5 : r.user_ratings_total,
               "avgRating": r.rating,
               "restaurantName": r.name,
               "address": r.vicinity,
@@ -355,6 +352,7 @@ export default class App extends React.Component {
       let index = this.state.activeRest;
       restaurants[index].details.reviews.push(dataObject);
       restaurants[index].avgRating = restaurants[index].details.reviews.map(r => r.stars).reduce((a, b) => a + b) / (restaurants[index].details.reviews.length);
+      restaurants[index].numberOfReviews = restaurants[index].details.reviews.length;
       console.log(restaurants[index].avgRating);
     }
 
