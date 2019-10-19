@@ -192,7 +192,6 @@ export default class AccordionContent extends React.Component {
                       addedRestaurants={this.state.addedRestaurants}
                       handleClose={this.handleClose}
                       handleNewData={handleNewData}
-                      // handleNewReview={this.handleNewReview}
                     />
                   </Modal.Description>
                 </Modal.Content>

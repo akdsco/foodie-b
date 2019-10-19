@@ -1,9 +1,7 @@
 // Import Data
 import restaurantsFromFile from './data/restaurants'
-
 // Import CSS
 import './css/App.css';
-
 // Import Components
 import React from 'react';
 import DataDisplay from './components/DataDisplay';
@@ -13,11 +11,14 @@ import GridColumn from "semantic-ui-react/dist/commonjs/collections/Grid/GridCol
 import Map from "./components/Map";
 import {Dimmer, Loader} from "semantic-ui-react";
 
-// TODO check max and min values for longitude and latitude and enforce in add restaurant form
-// TODO when users adds new review, make sure to re-evaluate avgRating for the restaurant
-// TODO add 'add Restaurant' feature which works when clicking on the map (sources lat + lng automatically from map)
 // TODO add link to image in from file restaurant markers.. ?
+
+
+// TODO check max and min values for longitude and latitude and enforce in add restaurant form
+// TODO add 'add Restaurant' feature which works when clicking on the map (sources lat + lng automatically from map)
 // TODO implement loader for picture inside accordion item (take's 1-2 sec sometimes)
+// TODO add number of reviews on Map for all the restaurants coming from file
+// TODO on zoom change -> update state of radius for API call
 
 
 /* TODO implement below:
@@ -351,7 +352,10 @@ export default class App extends React.Component {
     if(type === 'restaurant') {
       restaurants.push(dataObject);
     } else if (type === 'review') {
-      restaurants[this.state.activeRest].details.reviews.push(dataObject);
+      let index = this.state.activeRest;
+      restaurants[index].details.reviews.push(dataObject);
+      restaurants[index].avgRating = restaurants[index].details.reviews.map(r => r.stars).reduce((a, b) => a + b) / (restaurants[index].details.reviews.length);
+      console.log(restaurants[index].avgRating);
     }
 
     this.setState({

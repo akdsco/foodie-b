@@ -48,6 +48,8 @@ const MapConst = compose(
   <GoogleMap
     ref={props.onMapMounted}
     onDragEnd={props.onDragEnd}
+    onClick={e => {console.log(e.latLng.lat(),e.latLng.lng())}}
+    // onClick={e => console.log(e)}
     defaultZoom={15}
     center={props.center}
     defaultOptions={{
