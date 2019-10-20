@@ -11,13 +11,10 @@ import GridColumn from "semantic-ui-react/dist/commonjs/collections/Grid/GridCol
 import Map from "./components/Map";
 import {Dimmer, Loader} from "semantic-ui-react";
 
-// DONE TODO add link to image in from file restaurant markers.. ?
-// TODO implement old restaurant data discard and upload new each API call
+// DONE TODO implement old restaurant data discard and upload new each API call
 // TODO add 'add Restaurant' feature which works when clicking on the map (sources lat + lng automatically from map)
 // TODO implement loader for picture inside accordion item (take's 1-2 sec sometimes)
-// DONE TODO add number of reviews on Map for all the restaurants coming from file
 // TODO on zoom change -> update state of radius for API call
-
 
 /* TODO implement below:
  *
@@ -169,9 +166,11 @@ export default class App extends React.Component {
   }
 
   loadGooglePlacesRestaurants = () => {
-    let url = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=' + this.state.center.lat + ',' + this.state.center.lng + '&radius=750&type=restaurant&key=' + process.env.REACT_APP_G_API;
     const self = this;
-    let newRestaurants = self.state.restaurants.slice();
+    const url = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=' + this.state.center.lat + ',' + this.state.center.lng + '&radius=750&type=restaurant&key=' + process.env.REACT_APP_G_API;
+    const restaurants = self.state.restaurants.slice().filter(restaurant => restaurant.isFromFile);
+
+    // console.log('Restaurants before loading Google Places: ', restaurants);
 
     fetch(url, {
       method: 'GET',
@@ -179,8 +178,6 @@ export default class App extends React.Component {
       response.json().then(data => {
         console.log('Google Places Restaurants (raw api data)', data);
         let count = self.state.restaurants.length - 1;
-        let repeatedRestaurants = 0;
-        let flag = false;
 
         data.results.forEach( r => {
             count++;
@@ -198,31 +195,13 @@ export default class App extends React.Component {
               "open": r.opening_hours ? r.opening_hours.open_now : true,
               "loadedDetails": false,
             };
-
-            // Making sure that if API returns same restaurants, they won't double up on list
-            this.state.restaurants.forEach( r => {
-              if(r.place_id === restaurantObject.place_id)  {
-                  flag = true;
-                  repeatedRestaurants++;
-                  // TODO !Ask Mentor! is there a better way to 'continue' ?
-                  // noinspection UnnecessaryReturnStatementJS
-                  return
-                }
-            });
-
-            if(flag) {
-              // TODO !Ask Mentor! is there a better way to 'continue' ?
-              // noinspection UnnecessaryReturnStatementJS
-              return
-            } else {
-              newRestaurants.push(restaurantObject);
-            }
+            restaurants.push(restaurantObject);
           },
         );
-        console.log(repeatedRestaurants);
+        // console.log('Restaurants after loading Google Places: ', restaurants);
 
         self.setState({
-          restaurants: newRestaurants,
+          restaurants: restaurants,
           loadingRestaurants: false,
         })
       });
