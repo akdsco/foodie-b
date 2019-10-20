@@ -12,8 +12,6 @@ import MapMarker from "./MapMarker";
 // const _ = require("lodash");
 const styles = require('../data/GoogleMapStyles.json');
 
-// TODO implement - records in DataDisplay and on Map update as you drag map around
-
 const MapConst = compose(
   withProps({
     googleMapURL: "https://maps.googleapis.com/maps/api/js?key=" + process.env.REACT_APP_G_HTTP_RESTRICTED_API + "&v=3.exp&libraries=places,geometry,drawing",
@@ -50,6 +48,7 @@ const MapConst = compose(
     onDragEnd={props.onDragEnd}
     onClick={e => {console.log(e.latLng.lat(),e.latLng.lng())}}
     // onClick={e => console.log(e)}
+    onZoomChanged={e => console.log(e)}
     defaultZoom={15}
     center={props.center}
     defaultOptions={{
@@ -86,6 +85,35 @@ const MapConst = compose(
 );
 
 export default class Map extends React.PureComponent {
+
+  // Modal for restaurant addition
+
+// <Modal
+// trigger={
+//   <Button animated compact color='green'>
+//     <Button.Content hidden>Write it now!</Button.Content>
+//     <Button.Content visible>
+//       <Icon name='write'/>Add a Review
+//     </Button.Content>
+//   </Button>}
+// open={this.handleOpen}
+// onClose={this.handleClose}
+// >
+// <Modal.Header>Share your experience with {restaurant.restaurantName}</Modal.Header>
+// <Modal.Content image>
+// <Image wrapped size='medium' src={this.getRestPhotoUrl()} />
+// <Modal.Description>
+// <Header>Tell us what did you like about {restaurant.restaurantName}?</Header>
+// <AddReview
+// restaurant={restaurant}
+//
+// addedRestaurants={this.state.addedRestaurants}
+// handleClose={this.handleClose}
+// handleNewData={handleNewData}
+// />
+// </Modal.Description>
+// </Modal.Content>
+// </Modal>
 
   render() {
     const { userMarker, userLocation, restaurants, center, activeRest, handleActiveRest, handleCenterChange } = this.props;

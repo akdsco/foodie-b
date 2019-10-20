@@ -11,10 +11,12 @@ import GridColumn from "semantic-ui-react/dist/commonjs/collections/Grid/GridCol
 import Map from "./components/Map";
 import {Dimmer, Loader} from "semantic-ui-react";
 
-// DONE TODO implement old restaurant data discard and upload new each API call
 // TODO add 'add Restaurant' feature which works when clicking on the map (sources lat + lng automatically from map)
 // TODO implement loader for picture inside accordion item (take's 1-2 sec sometimes)
 // TODO on zoom change -> update state of radius for API call
+// DONE TODO fix modals inside Accordion Content
+// TODO add scroll to currently open restaurant
+// TODO add marker colour change when restaurant active
 
 /* TODO implement below:
  *

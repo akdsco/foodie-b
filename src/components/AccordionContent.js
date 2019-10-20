@@ -15,16 +15,11 @@ import AddReview from "./AddReview";
 
 export default class AccordionContent extends React.Component {
   state = {
-    modalOpen: false,
+    addReviewModalOpen: false,
+    loadMoreReviewModalOpen: false,
   };
 
-  handleOpen = () => this.setState({ modalOpen: true });
-
-
-  handleClose = () => {
-    console.log('trying to close modal');
-    this.setState({ modalOpen: false });
-  };
+  handleChange = (e, { name, value }) => this.setState({ [name]: value });
 
   getRestReviews = () => {
     let reviews = [];
@@ -98,7 +93,8 @@ export default class AccordionContent extends React.Component {
   };
 
   render() {
-
+    const { handleChange, getRestPhoneNum, getRestOpenTime, getRestPhotoUrl, getRestReviews } = this;
+    const { addReviewModalOpen, loadMoreReviewModalOpen } = this.state;
     const { restaurant, handleNewData } = this.props;
 
     return(
@@ -110,7 +106,7 @@ export default class AccordionContent extends React.Component {
               <List>
                 <List.Item key='0'>
                   <List.Icon name='phone' />
-                  <List.Content><a href={this.getRestPhoneNum()}>Call us</a></List.Content>
+                  <List.Content><a href={getRestPhoneNum()}>Call us</a></List.Content>
                 </List.Item>
                 <List.Item key='1'>
                   <List.Icon name='linkify' />
@@ -123,14 +119,14 @@ export default class AccordionContent extends React.Component {
               </List>
               <div>
                 <h4 className='mb-2'>Opening Times</h4>
-                {this.getRestOpenTime()}
+                {getRestOpenTime()}
               </div>
             </GridColumn>
 
             <GridColumn width={9}>
               {/*Right Column - Photo */}
                 <Image
-                  src={this.getRestPhotoUrl()}
+                  src={getRestPhotoUrl()}
                   fluid
                   label={{
                     as: 'a',
@@ -147,50 +143,74 @@ export default class AccordionContent extends React.Component {
           <Grid.Row>
             <GridColumn>
               <h4>Most helpful reviews</h4>
-              {this.getRestReviews()}
+              {getRestReviews()}
             </GridColumn>
           </Grid.Row>
 
           <Grid.Row>
             <GridColumn className='restaurant-item-buttons'>
               <Modal
-                trigger={<Button onClick={this.handleOpen} compact animated='vertical' color='blue'>
-                  <Button.Content hidden>
-                    <Icon name='arrow down'/>
-                  </Button.Content>
-                  <Button.Content visible>Load more reviews</Button.Content>
-                </Button>}
-                open={this.state.modalOpen}
-                onClose={this.handleClose}
+                open={loadMoreReviewModalOpen}
+                onClose={handleChange}
+                name='loadMoreReviewModalOpen'
+                value={false}
                 basic
                 size='small'
+                trigger={
+                  <Button onClick={handleChange}
+                          compact animated='vertical'
+                          color='blue'
+                          name='loadMoreReviewModalOpen'
+                          value={true}
+                  >
+                    <Button.Content hidden>
+                      <Icon name='arrow down'/>
+                    </Button.Content>
+                    <Button.Content visible>Load more reviews</Button.Content>
+                  </Button>}
               >
                 <Header icon='browser' content='Like this feature?' />
                 <Modal.Content>
                   <h3>This feature is available only for subscribed users.</h3>
                 </Modal.Content>
                 <Modal.Actions>
-                  <Button color='green' onClick={this.handleClose} inverted>
+                  <Button color='green'
+                          onClick={handleChange}
+                          name='loadMoreReviewModalOpen'
+                          value={false}
+                          inverted>
                     <Icon name='checkmark' /> Got it
                   </Button>
                 </Modal.Actions>
               </Modal>
 
-              <Modal trigger={<Button animated compact color='green'>
-                <Button.Content hidden>Write it now!</Button.Content>
-                <Button.Content visible>
-                  <Icon name='write'/>Add a Review
-                </Button.Content></Button>}>
-                <Modal.Header>Share your experience with {restaurant.restaurantName}</Modal.Header>
+              <Modal
+                open={addReviewModalOpen}
+                onClose={handleChange}
+                name='addReviewModalOpen'
+                value={false}
+                trigger={
+                  <Button onClick={handleChange}
+                          name='addReviewModalOpen'
+                          value={true}
+                          animated
+                          compact
+                          color='green'>
+                    <Button.Content hidden>Write it now!</Button.Content>
+                    <Button.Content visible>
+                      <Icon name='write'/>Add a Review
+                    </Button.Content>
+                  </Button>}
+              >
+                <Modal.Header>Share your experience with us</Modal.Header>
                 <Modal.Content image>
-                  <Image wrapped size='medium' src={this.getRestPhotoUrl()} />
+                  <Image wrapped size='medium' src={getRestPhotoUrl()} />
                   <Modal.Description>
                     <Header>Tell us what did you like about {restaurant.restaurantName}?</Header>
                     <AddReview
                       restaurant={restaurant}
 
-                      addedRestaurants={this.state.addedRestaurants}
-                      handleClose={this.handleClose}
+                      handleClose={handleChange}
                       handleNewData={handleNewData}
                     />
                   </Modal.Description>

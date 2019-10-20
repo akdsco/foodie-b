@@ -12,7 +12,7 @@ export default class AddReview extends React.Component {
 
   handleChange = (e, { name, value }) => this.setState({ [name]: value });
 
-  handleSubmit = () => {
+  handleSubmit = (e, { name, value }) => {
     const { reviewStars, reviewContent, reviewersName, reviewersImgUrl } = this.state;
 
     const newReview = {
@@ -24,6 +24,7 @@ export default class AddReview extends React.Component {
     };
 
     this.props.handleNewData(newReview, 'review');
+    this.props.handleClose(e, {name, value});
   };
 
   render() {
@@ -56,11 +57,14 @@ export default class AddReview extends React.Component {
           />
         </Form.Field>
 
-        {/*<Button.Group>*/}
-          <Button onClick={this.handleSubmit} positive>Add Review</Button>
-          {/*<Button.Or />*/}
-          {/*<Button onClick={this.handleReset}>forget it</Button>*/}
-        {/*</Button.Group>*/}
+        <Button
+          name='addReviewModalOpen'
+          value={false}
+          onClick={this.handleSubmit}
+          positive
+        >
+          Add Review
+        </Button>
       </Form>
     )
   }
