@@ -11,12 +11,13 @@ import GridColumn from "semantic-ui-react/dist/commonjs/collections/Grid/GridCol
 import Map from "./components/Map";
 import {Dimmer, Loader} from "semantic-ui-react";
 
-// TODO add 'add Restaurant' feature which works when clicking on the map (sources lat + lng automatically from map)
+
 // TODO implement loader for picture inside accordion item (take's 1-2 sec sometimes)
 // TODO on zoom change -> update state of radius for API call
-// DONE TODO fix modals inside Accordion Content
 // TODO add scroll to currently open restaurant
-// TODO add marker colour change when restaurant active
+
+// TODO while browsing and clicking into some restaurant and then clicking out.. I get this error:
+// 'Cannot read property 'place_id' of undefined'
 
 /* TODO implement below:
  *
@@ -45,7 +46,7 @@ export default class App extends React.Component {
     this.state = {
       restaurants: [],
       loadingRestaurants: false,
-      ratingMin: 1,
+      ratingMin: 0,
       ratingMax: 5,
       isUserMarkerShown: false,
       userLocation: {
@@ -171,15 +172,16 @@ export default class App extends React.Component {
     const self = this;
     const url = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=' + this.state.center.lat + ',' + this.state.center.lng + '&radius=750&type=restaurant&key=' + process.env.REACT_APP_G_API;
     const restaurants = self.state.restaurants.slice().filter(restaurant => restaurant.isFromFile);
+    console.log(restaurants.length);
 
-    // console.log('Restaurants before loading Google Places: ', restaurants);
+    console.log('Restaurants before loading Google Places: ', restaurants);
 
     fetch(url, {
       method: 'GET',
     }).then(response => {
       response.json().then(data => {
         console.log('Google Places Restaurants (raw api data)', data);
-        let count = self.state.restaurants.length - 1;
+        let count = restaurants.length - 1;
 
         data.results.forEach( r => {
             count++;
@@ -213,7 +215,7 @@ export default class App extends React.Component {
   loadGooglePlaceDetails = (index) => {
     const self = this;
     const currentRestaurantsState = [...self.state.restaurants];
-    const placeID = this.state.restaurants[index].place_id;
+    const placeID = this.state.restaurants[index].place_id ? this.state.restaurants[index].place_id : "";
 
     // if details already fetched previously --> don't fetch again, otherwise yes
     if(!currentRestaurantsState[index].details) {
@@ -235,7 +237,7 @@ export default class App extends React.Component {
 
                 data.result.reviews.forEach( (r, id) =>
                   array.push({
-                    "id": id + 10,
+                    "id": id,
                     "name": r.author_name,
                     "stars": r.rating,
                     "comment": r.text,
@@ -308,7 +310,7 @@ export default class App extends React.Component {
 
   handleReset = () => {
     this.setState({
-      ratingMin: 1,
+      ratingMin: 0,
       ratingMax: 5
     })
   };
@@ -328,6 +330,7 @@ export default class App extends React.Component {
     const restaurants = [...this.state.restaurants];
 
     if(type === 'restaurant') {
+      console.log(dataObject);
       restaurants.push(dataObject);
     } else if (type === 'review') {
       let index = this.state.activeRest;
@@ -389,6 +392,7 @@ export default class App extends React.Component {
                     userLocation={userLocation}
                     activeRest={activeRest}
 
+                    handleNewData={handleNewData}
                     handleActiveRest={handleActiveRest}
                     handleCenterChange={handleCenterChange}
                   />

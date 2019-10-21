@@ -14,28 +14,30 @@ export default class AddReview extends React.Component {
 
   handleSubmit = (e, { name, value }) => {
     const { reviewStars, reviewContent, reviewersName, reviewersImgUrl } = this.state;
+    const { restaurant, handleNewData, handleClose} = this.props;
 
     const newReview = {
-      "id": 'rev' + this.props.restaurant.details.reviews.length,
+      "id": 'rev' + restaurant.details.reviews.length,
       "name": reviewersName,
       "stars": reviewStars,
       "comment": reviewContent,
       "image_url": reviewersImgUrl
     };
 
-    this.props.handleNewData(newReview, 'review');
-    this.props.handleClose(e, {name, value});
+    handleNewData(newReview, 'review');
+    handleClose(e, {name, value});
   };
 
   render() {
     const { reviewContent, reviewersName } = this.state;
+    const { handleChange, handleSubmit } = this;
     const { handleClose } = this.props;
 
     return(
       <Form onSubmit={handleClose}>
         <Form.Field required>
           <label>How many stars?</label>
-          <AddReviewRatingComponent handleChange={this.handleChange} />
+          <AddReviewRatingComponent handleChange={handleChange} />
         </Form.Field>
         <Form.Field required>
           <label>What did you like in particular?</label>
@@ -44,7 +46,7 @@ export default class AddReview extends React.Component {
             name='reviewContent'
             type='text'
             value={reviewContent}
-            onChange={this.handleChange}
+            onChange={handleChange}
           />
         </Form.Field>
         <Form.Field required>
@@ -53,14 +55,14 @@ export default class AddReview extends React.Component {
             placeholder="e.g. John Dough"
             name='reviewersName'
             value={reviewersName}
-            onChange={this.handleChange}
+            onChange={handleChange}
           />
         </Form.Field>
 
         <Button
           name='addReviewModalOpen'
           value={false}
-          onClick={this.handleSubmit}
+          onClick={handleSubmit}
           positive
         >
           Add Review

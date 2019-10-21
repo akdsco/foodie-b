@@ -1,13 +1,12 @@
-/*global google*/
-
 // Import Images
-import userLocation from '../img/user.png'
+import userLocationMarker from '../img/user.png'
 
 // Import Components
 import React from 'react';
-import {withScriptjs, withGoogleMap, GoogleMap, Marker} from "react-google-maps";
+import {withScriptjs, withGoogleMap, GoogleMap, Marker, InfoWindow} from "react-google-maps";
 import {compose, lifecycle, withProps} from "recompose";
 import MapMarker from "./MapMarker";
+import AddRestaurant from "./AddRestaurant";
 
 // const _ = require("lodash");
 const styles = require('../data/GoogleMapStyles.json');
@@ -46,9 +45,8 @@ const MapConst = compose(
   <GoogleMap
     ref={props.onMapMounted}
     onDragEnd={props.onDragEnd}
-    onClick={e => {console.log(e.latLng.lat(),e.latLng.lng())}}
-    // onClick={e => console.log(e)}
-    onZoomChanged={e => console.log(e)}
+    onRightClick={e => props.openInfoWindow(e)}
+    // onZoomChanged={e => console.log(e)}
     defaultZoom={15}
     center={props.center}
     defaultOptions={{
@@ -64,7 +62,7 @@ const MapConst = compose(
     {/* Loading user Marker if browser locates, else hardcoded value for London, City of*/}
     {props.userMarker &&
       <Marker
-        icon={{url: userLocation}}
+        icon={{url: userLocationMarker}}
         position={{lat: props.userLocation.lat, lng: props.userLocation.lng}}
       />
     }
@@ -81,53 +79,74 @@ const MapConst = compose(
       />)
     }
 
+    {props.mapState.isRestAddButtonDisplayed &&
+      <InfoWindow
+        position={{lat: props.mapState.infoWindowCoords.lat, lng: props.mapState.infoWindowCoords.lng}}
+        onCloseClick={props.closeInfoWindow}
+      >
+        <div>
+          <h4>Would you like to <br/>add new Restaurant?</h4>
+          <AddRestaurant
+            restaurants={props.restaurants}
+            restaurantCoords={props.mapState.infoWindowCoords}
+            closeInfoWindow={props.closeInfoWindow}
+
+            handleNewData={props.handleNewData}
+          />
+        </div>
+      </InfoWindow>
+    }
+
   </GoogleMap>
 );
 
 export default class Map extends React.PureComponent {
+  state = {
+    isRestAddButtonDisplayed: false,
+    isRestAddModalOpen: false,
+    infoWindowCoords: {}
+  };
 
-  // Modal for restaurant addition
+  closeInfoWindow = () => {
+    this.setState({
+      isRestAddButtonDisplayed: false,
+      infoWindowCoords: {}
+    })};
 
-// <Modal
-// trigger={
-//   <Button animated compact color='green'>
-//     <Button.Content hidden>Write it now!</Button.Content>
-//     <Button.Content visible>
-//       <Icon name='write'/>Add a Review
-//     </Button.Content>
-//   </Button>}
-// open={this.handleOpen}
-// onClose={this.handleClose}
-// >
-// <Modal.Header>Share your experience with {restaurant.restaurantName}</Modal.Header>
-// <Modal.Content image>
-// <Image wrapped size='medium' src={this.getRestPhotoUrl()} />
-// <Modal.Description>
-// <Header>Tell us what did you like about {restaurant.restaurantName}?</Header>
-// <AddReview
-// restaurant={restaurant}
-//
-// addedRestaurants={this.state.addedRestaurants}
-// handleClose={this.handleClose}
-// handleNewData={handleNewData}
-// />
-// </Modal.Description>
-// </Modal.Content>
-// </Modal>
+  openInfoWindow = (e) => {
+    this.setState({
+      infoWindowCoords: {
+        lat: e.latLng.lat(),
+        lng: e.latLng.lng()
+      },
+      isRestAddButtonDisplayed: true
+    });
+  };
 
   render() {
-    const { userMarker, userLocation, restaurants, center, activeRest, handleActiveRest, handleCenterChange } = this.props;
-    return(
-      <MapConst
-        userMarker={userMarker}
-        userLocation={userLocation}
-        restaurants={restaurants}
-        center={center}
-        activeRest={activeRest}
+    const { userMarker, userLocation, restaurants, center, activeRest,
+            handleActiveRest, handleCenterChange, handleNewData } = this.props;
+    const { closeInfoWindow, openInfoWindow, state } = this;
 
-        handleActiveRest={handleActiveRest}
-        handleCenterChange={handleCenterChange}
-      />
+    return(
+      <div>
+        <MapConst
+          userMarker={userMarker}
+          userLocation={userLocation}
+          restaurants={restaurants}
+          center={center}
+          activeRest={activeRest}
+          mapState={state}
+
+          closeInfoWindow={closeInfoWindow}
+          openInfoWindow={openInfoWindow}
+
+          handleNewData={handleNewData}
+          handleActiveRest={handleActiveRest}
+          handleCenterChange={handleCenterChange}
+        />
+      </div>
+
     )
   }
 }

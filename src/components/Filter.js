@@ -12,11 +12,13 @@ export default class Filter extends React.Component {
           <p>Choose your range:</p>
           <h5>Minimum rating</h5>
           <Rating
+            clearable={true}
             rating={ratingMin}
             size="huge"
             maxRating={5}
             onRate={handleMinRate}
           />
+          <p style={{fontSize: '9px'}}> *to clear selection, click on it again </p>
           <h5>Maximum rating</h5>
           <Rating
             rating={ratingMax}

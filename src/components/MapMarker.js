@@ -1,6 +1,7 @@
 import React from "react";
 import { Marker, InfoWindow } from "react-google-maps";
 import {Card, Header, Icon, Image, Label} from "semantic-ui-react";
+import activeRestMarker from "../img/activeRestMarker.png";
 
 // TODO develop how the map InfoWindow should look like
 
@@ -15,6 +16,7 @@ const MapMarker = (props) =>  {
     <Marker
       position={{lat: props.position.lat, lng: props.position.lng}}
       onClick={handleMarkerClick}
+      icon={props.activeRest === props.index ? {url: activeRestMarker} : ''}
       {...props}
     >
       {props.activeRest === props.index && <InfoWindow onCloseClick={handleMarkerClick}>

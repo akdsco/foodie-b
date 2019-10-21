@@ -52,7 +52,7 @@ export default class AccordionContent extends React.Component {
     if(restaurant.details) {
       if(restaurant.details.openingHours) {
         restaurant.details.openingHours.weekday_text.forEach(day => {
-          openingTimes.push(<p class='mb-2'>{day}</p>)
+          openingTimes.push(<p className='mb-2'>{day}</p>)
         });
       }
     }
