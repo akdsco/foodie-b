@@ -14,7 +14,8 @@ import {Dimmer, Loader} from "semantic-ui-react";
 
 // TODO implement loader for picture inside accordion item (take's 1-2 sec sometimes)
 // TODO on zoom change -> update state of radius for API call
-// TODO add scroll to currently open restaurant
+// TODO add scroll to currently open restaurant,
+// TODO fix react keys for restaurant when adding new restaurant -> they overlap
 
 // TODO while browsing and clicking into some restaurant and then clicking out.. I get this error:
 // 'Cannot read property 'place_id' of undefined'
@@ -215,7 +216,7 @@ export default class App extends React.Component {
   loadGooglePlaceDetails = (index) => {
     const self = this;
     const currentRestaurantsState = [...self.state.restaurants];
-    const placeID = this.state.restaurants[index].place_id ? this.state.restaurants[index].place_id : "";
+    const placeID = this.state.restaurants[index].place_id;
 
     // if details already fetched previously --> don't fetch again, otherwise yes
     if(!currentRestaurantsState[index].details) {
@@ -327,13 +328,23 @@ export default class App extends React.Component {
   };
 
   handleNewData = (dataObject, type) => {
-    const restaurants = [...this.state.restaurants];
+    let restaurants = [...this.state.restaurants];
+    let shiftedRest = [];
 
     if(type === 'restaurant') {
-      console.log(dataObject);
-      restaurants.push(dataObject);
+      // First in the array will be restaurants from file and then added restaurants by user
+      shiftedRest = restaurants.filter(r=>r.isFromFile);
+      shiftedRest.push(dataObject);
+      shiftedRest[shiftedRest.length - 1].id = shiftedRest.length - 1;
+      // Then we need to shift id's for Google Place supplied restaurants by 1 and push objects to shiftedRest array
+      const increment = a => a + 1;
+      restaurants.filter(r=> (!r.isFromFile)).map(r => ({...r, id: increment(r.id)})).forEach(r => shiftedRest.push(r));
+      // Save efforts
+      restaurants = shiftedRest;
     } else if (type === 'review') {
       let index = this.state.activeRest;
+
+      // Recalculating avgRating for particular restaurant
       restaurants[index].details.reviews.push(dataObject);
       restaurants[index].avgRating = restaurants[index].details.reviews.map(r => r.stars).reduce((a, b) => a + b) / (restaurants[index].details.reviews.length);
       restaurants[index].numberOfReviews = restaurants[index].details.reviews.length;

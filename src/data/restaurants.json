@@ -1,7 +1,6 @@
 [
   {
-    "id": "0",
-    "place_id": "",
+    "id": 0,
     "restaurantName":"Bronco",
     "address":"139 Maxim Road, London, UK",
     "lat":51.5138101,
@@ -27,8 +26,7 @@
     }
   },
   {
-    "id": "1",
-    "place_id": "",
+    "id": 1,
     "restaurantName":"Pizzano",
     "address":"25 Middlesex St, London, UK",
     "lat":51.514798,
@@ -54,8 +52,7 @@
     }
   },
   {
-    "id": "2",
-    "place_id": "",
+    "id": 2,
     "restaurantName":"Farmer J",
     "address":"120 Leadenhall St, London, UK",
     "lat":51.5135129,
@@ -81,8 +78,7 @@
     }
   },
   {
-    "id": "3",
-    "place_id": "",
+    "id": 3,
     "restaurantName":"Maxano",
     "address":"139 Gulp Road, London, UK",
     "lat":51.5106176,
@@ -108,10 +104,9 @@
     }
   },
   {
-    "id": "4",
+    "id": 4,
     "restaurantName":"Visual",
     "address":"2 Alexa Street, London, UK",
-    "place_id": "",
     "lat":51.5114317,
     "long":-0.0863146,
     "details": {

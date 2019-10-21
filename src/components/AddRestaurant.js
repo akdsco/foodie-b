@@ -22,7 +22,7 @@ export default class AddRestaurant extends React.Component {
   handleSubmit = async () => {
     const { restaurantCoords, restaurants } = this.props;
     const { restName, imageUrl } = this.state;
-    const id = restaurants.filter(r => r.isFromFile).length;
+    const id = restaurants.length;
 
     Geocode.setApiKey(process.env.REACT_APP_G_API);
     Geocode.fromLatLng(restaurantCoords.lat, restaurantCoords.lng).then(
