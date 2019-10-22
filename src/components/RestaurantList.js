@@ -4,10 +4,17 @@ import RestaurantItem from "./RestaurantItem";
 import AccordionContent from "./AccordionContent";
 
 export default class RestaurantList extends React.Component {
+  constructor(props) {
+    super(props);
+    this.myRef = React.createRef();  // Create a ref object
+  }
+
+  scrollToMyRef = () => window.scrollTo(0, this.myRef.current.offsetTop);
 
   handleAccordionClick = (e, titleProps) =>  {
     const { index } = titleProps;
     this.props.handleActiveRest(index);
+    this.scrollToMyRef();
   };
 
   sortRestaurants() {
@@ -24,6 +31,7 @@ export default class RestaurantList extends React.Component {
       restaurantsList.push(
         <Accordion styled key={restaurant.id}>
           <Accordion.Title
+
             active={activeRest === restaurant.id}
             index={restaurant.id}
             onClick={this.handleAccordionClick}>
@@ -32,8 +40,9 @@ export default class RestaurantList extends React.Component {
                 avgRating={restaurant.avgRating}
               />
           </Accordion.Title>
-          <Accordion.Content active={activeRest === restaurant.id}>
+          <Accordion.Content  active={activeRest === restaurant.id}>
             <AccordionContent
+              ref={this.myRef}
               restaurant={restaurant}
 
               handleNewData={handleNewData}

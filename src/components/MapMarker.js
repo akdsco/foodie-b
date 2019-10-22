@@ -1,7 +1,6 @@
 import React from "react";
 import { Marker, InfoWindow } from "react-google-maps";
 import {Card, Header, Icon, Image, Label} from "semantic-ui-react";
-import activeRestMarker from "../img/activeRestMarker.png";
 
 // TODO develop how the map InfoWindow should look like
 
@@ -13,13 +12,17 @@ const MapMarker = (props) =>  {
   };
 
   return (
-    <Marker
-      position={{lat: props.position.lat, lng: props.position.lng}}
-      onClick={handleMarkerClick}
-      icon={props.activeRest === props.index ? {url: activeRestMarker} : ''}
-      {...props}
-    >
-      {props.activeRest === props.index && <InfoWindow onCloseClick={handleMarkerClick}>
+    <div>
+      {props.activeRest !== props.index &&
+      <Marker
+        position={{lat: props.position.lat, lng: props.position.lng}}
+        onClick={handleMarkerClick}
+        {...props}
+      />}
+      {props.activeRest === props.index &&
+      <InfoWindow
+        position={{lat: props.position.lat, lng: props.position.lng}}
+        onCloseClick={handleMarkerClick}>
         <div>
           <Header as='h3' textAlign='center'>
             {props.restaurant.restaurantName}
@@ -30,22 +33,22 @@ const MapMarker = (props) =>  {
             <Image src={props.restaurant.isFromFile ? props.restaurant.details.photoUrl : props.restaurant.streetViewURL} wrapped ui={false} />
             <Card.Content>
               <Card.Meta>
-                  <Label tag color={props.restaurant.open ? 'green' : 'red'} size='small'>
-                    {props.restaurant.open ? 'Open' : 'Closed'}
-                  </Label>
+                <Label tag color={props.restaurant.open ? 'green' : 'red'} size='small'>
+                  {props.restaurant.open ? 'Open' : 'Closed'}
+                </Label>
               </Card.Meta>
               <Card.Description>
                 {props.restaurant.address}
               </Card.Description>
             </Card.Content>
             <Card.Content extra>
-                <Icon name='users' />
-                {props.restaurant.numberOfReviews} Reviews
+              <Icon name='users' />
+              {props.restaurant.numberOfReviews} Reviews
             </Card.Content>
           </Card>
         </div>
       </InfoWindow>}
-    </Marker>
+    </div>
   );
 };
 

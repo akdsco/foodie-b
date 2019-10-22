@@ -14,10 +14,14 @@ import Grid from "semantic-ui-react/dist/commonjs/collections/Grid";
 import AddReview from "./AddReview";
 
 export default class AccordionContent extends React.Component {
-  state = {
-    addReviewModalOpen: false,
-    loadMoreReviewModalOpen: false,
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      addReviewModalOpen: false,
+      loadMoreReviewModalOpen: false,
+    };
+    this.ref = React.createRef();
+  }
 
   handleChange = (e, { name, value }) => this.setState({ [name]: value });
 
@@ -104,11 +108,11 @@ export default class AccordionContent extends React.Component {
             <GridColumn width={7}>
               {/*  Left Column - Data  */}
               <List>
-                <List.Item key='0'>
+                <List.Item key={0}>
                   <List.Icon name='phone' />
                   <List.Content><a href={getRestPhoneNum()}>Call us</a></List.Content>
                 </List.Item>
-                <List.Item key='1'>
+                <List.Item key={1}>
                   <List.Icon name='linkify' />
                   <List.Content>
                     <a href={restaurant.details && restaurant.details.link}>

@@ -14,11 +14,10 @@ import {Dimmer, Loader} from "semantic-ui-react";
 
 // TODO implement loader for picture inside accordion item (take's 1-2 sec sometimes)
 // TODO on zoom change -> update state of radius for API call
-// TODO add scroll to currently open restaurant,
-// TODO fix react keys for restaurant when adding new restaurant -> they overlap
+// TODO add scroll to currently open restaurant
 
-// TODO while browsing and clicking into some restaurant and then clicking out.. I get this error:
-// 'Cannot read property 'place_id' of undefined'
+// Errors
+// TODO Each child in a list should have a unique "key" prop. => check Accordion Content => when clicking on 10th G.Places loaded restaurant gaucho, only appears on first load, then it doesn't for any other item
 
 /* TODO implement below:
  *
@@ -74,10 +73,19 @@ export default class App extends React.Component {
     this.locateUser();
   }
 
+  // componentDidUpdate(prevProps, prevState, snapshot) {
+  //   if(this.state.activeRest !== -1) {
+  //     const ref = this.state.restaurants[this.state.activeRest].ref;
+  //     this.scrollToRef(ref);
+  //   }
+  // }
+
   /* ==================
    *   Custom Methods
   _* ==================
 */
+
+  scrollToRef = (ref) => window.scrollTo(0, ref.current.offsetTop);
 
   loadFileRestaurants = (restaurants) => {
     const withAvgRating = [];
@@ -161,7 +169,7 @@ export default class App extends React.Component {
               lat: 51.516126,
               lng: -0.081679
             },
-            isUserMarkerShown: false,
+            isUserMarkerShown: true,
           })/*, () => this.loadGooglePlacesRestaurants()*/);
           // console.log('from locate user', this.state.restaurants);
         }
