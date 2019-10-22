@@ -49,6 +49,7 @@ export default class App extends React.Component {
       ratingMin: 0,
       ratingMax: 5,
       isUserMarkerShown: false,
+      searchRadius: 750,
       userLocation: {
         lat: 1,
         lng: 1
@@ -178,10 +179,11 @@ export default class App extends React.Component {
   }
 
   loadGooglePlacesRestaurants = () => {
+    const {center, searchRadius} = this.state;
     const self = this;
-    const url = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=' + this.state.center.lat + ',' + this.state.center.lng + '&radius=750&type=restaurant&key=' + process.env.REACT_APP_G_API;
+
+    const url = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=' + center.lat + ',' + center.lng + '&radius=' + searchRadius + '&type=restaurant&key=' + process.env.REACT_APP_G_API;
     const restaurants = self.state.restaurants.slice().filter(restaurant => restaurant.isFromFile);
-    console.log(restaurants.length);
 
     console.log('Restaurants before loading Google Places: ', restaurants);
 
@@ -297,7 +299,9 @@ export default class App extends React.Component {
   };
 
   handleMinRate = (e, { rating }) => {
-    if((this.state.ratingMax > 0) && (rating < this.state.ratingMax)) {
+    const {ratingMax} = this.state;
+
+    if((ratingMax > 0) && (rating < ratingMax)) {
       this.setState({
         ratingMin: rating
       })
@@ -364,12 +368,32 @@ export default class App extends React.Component {
     })
   };
 
+  handleZoomChange = (zoom) => {
+    let searchRadius = 0;
+    const searchRadiusValues = {
+      12: 4000,
+      13: 2500,
+      14: 1200,
+      15: 750,
+      16: 200
+    };
+
+    if (zoom < 12) {
+        searchRadius = 5000;
+    } else if (zoom >= 12 && zoom <= 16) {
+      searchRadius = searchRadiusValues[zoom];
+    } else {
+      searchRadius = 150;
+    }
+    this.setState({searchRadius: searchRadius})
+  };
+
   render() {
     const style={height: '100vh'};
     const { restaurants, ratingMin, ratingMax, center, userLocation,
             isUserMarkerShown, loadingRestaurants, activeRest } = this.state;
     const { handleMaxRate, handleMinRate, handleReset, handleActiveRest,
-            handleCenterChange, handleNewData } = this;
+            handleCenterChange, handleNewData, handleZoomChange } = this;
     return (
       <div>
         <Container>
@@ -412,6 +436,7 @@ export default class App extends React.Component {
                     activeRest={activeRest}
 
                     handleNewData={handleNewData}
+                    handleZoomChange={handleZoomChange}
                     handleActiveRest={handleActiveRest}
                     handleCenterChange={handleCenterChange}
                   />

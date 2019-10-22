@@ -37,6 +37,10 @@ const MapConst = compose(
             bounds: refs.map.getBounds()
           });
         },
+        onZoomChanged: () => {
+          let zoom = refs.map.getZoom();
+          this.props.handleZoomChange(zoom);
+        }
       })
     },
   }),
@@ -46,7 +50,7 @@ const MapConst = compose(
     ref={props.onMapMounted}
     onDragEnd={props.onDragEnd}
     onRightClick={e => props.openInfoWindow(e)}
-    // onZoomChanged={e => console.log(e)}
+    onZoomChanged={props.onZoomChanged}
     defaultZoom={15}
     center={props.center}
     defaultOptions={{
@@ -125,7 +129,7 @@ export default class Map extends React.PureComponent {
 
   render() {
     const { userMarker, userLocation, restaurants, center, activeRest,
-            handleActiveRest, handleCenterChange, handleNewData } = this.props;
+            handleActiveRest, handleCenterChange, handleNewData,handleZoomChange } = this.props;
     const { closeInfoWindow, openInfoWindow, state } = this;
 
     return(
@@ -142,6 +146,7 @@ export default class Map extends React.PureComponent {
           openInfoWindow={openInfoWindow}
 
           handleNewData={handleNewData}
+          handleZoomChange={handleZoomChange}
           handleActiveRest={handleActiveRest}
           handleCenterChange={handleCenterChange}
         />
