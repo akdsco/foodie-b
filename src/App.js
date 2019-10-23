@@ -2,7 +2,7 @@
 import restaurantsFromFile from './data/restaurants'
 
 // Import CSS
-import './css/App.css';
+import './css/style.css';
 
 // Import Components
 import React from 'react';
@@ -16,17 +16,16 @@ import {Dimmer, Loader} from "semantic-ui-react";
 
 // TODO implement loader for picture inside accordion item (take's 1-2 sec sometimes)
 // TODO add scroll to currently open restaurant                                                                         --> Struggling to get that done, ask mentor for help.
-// TODO fix reviews resize (how about just use css display block and none.. and handler that switches it..
-// TODO put css in one file for everything ?                                                                            --> Ask if this is a good idea
+// TODO fix reviews resize (how about just use css display block and none.. and handler that switches it..                                           --> Ask if this is a good idea
 // TODO Allow user to disable automatic new search onDragEnd()
-// TODO add placeholders?
+// TODO add placeholders? (Look into Semantic UI placeholders)
 
 // TODO design mobile and tablet version of the app (static UI elements + css)
 // TODO add dynamic content to mobile and tablet versions
 
 // Errors -> Talk to Mentor
 // TODO Each child in a list should have a unique "key" prop. => check Accordion Content => when clicking on 10th G.Places
-//  loaded restaurant gaucho, only appears on first load, then it doesn't for any other item
+//  loaded restaurant gaucho, only appears on first load, then it doesn't for any other item or click
 
 
 export default class App extends React.Component {

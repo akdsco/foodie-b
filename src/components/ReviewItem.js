@@ -1,9 +1,7 @@
 // Import Components
-
 import React from 'react'
 import { Item } from 'semantic-ui-react'
 import { SingleRatingComponent } from "./RatingComponents";
-import RevealExampleFade from "./RevealExample";
 
 export default class ReviewItem extends React.Component {
   constructor(props) {
@@ -67,22 +65,8 @@ export default class ReviewItem extends React.Component {
           <Item.Header as='a'>{item.name}</Item.Header>
           <SingleRatingComponent rating={item.stars} />
           <Item.Description>
-            <RevealExampleFade
-              excerptReview={this.state.excerptReview}
-              comment={item.comment}
-            />
-            {/*<Reveal animated='fade'>*/}
-            {/*  <Reveal.Content visible>*/}
-            {/*    <p> {this.state.excerptReview} ...</p>*/}
-            {/*    /!*<Image src='https://react.semantic-ui.com/images/wireframe/square-image.png' size='small' />*!/*/}
-            {/*  </Reveal.Content>*/}
-            {/*  <Reveal.Content hidden>*/}
-            {/*    <p>{item.comment}</p>*/}
-            {/*    /!*<Image src='https://react.semantic-ui.com/images/avatar/large/ade.jpg' size='small' />*!/*/}
-            {/*  </Reveal.Content>*/}
-            {/*</Reveal>*/}
-            {/*{this.state.isReviewLong? this.state.excerptReview : item.comment}*/}
-            {/*{this.state.isReviewLong && <a href='#' onClick={this.handleReviewOpen}> [...]</a>}*/}
+            {this.state.isReviewLong? this.state.excerptReview : item.comment}
+            {this.state.isReviewLong && <a href='#' onClick={this.handleReviewOpen}> [...]</a>}
           </Item.Description>
         </Item.Content>
       </Item>

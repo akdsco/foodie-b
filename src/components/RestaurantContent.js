@@ -1,15 +1,10 @@
+// Import CSS
+import '../css/style.css';
+
+// Import Components
 import React from 'react';
 import ReviewItem from "./ReviewItem";
 import {Container, GridColumn, List, Image, Button, Icon, Modal, Header} from "semantic-ui-react";
-
-//TODO add a functionality that will query more than 5 reviews if user demands more
-// not doable due to google limits, only available for paying users
-
-//TODO change current structure so that after you add reviews, they won't get deleted when you change menu card
-// basically move all data storage to App.js... :( lot's to do
-
-// Import CSS
-import '../css/style.css';
 import Grid from "semantic-ui-react/dist/commonjs/collections/Grid";
 import AddReview from "./AddReview";
 

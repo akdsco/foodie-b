@@ -1,7 +1,0 @@
-.left-container-computer {
-    height: 100vh;
-    /* new property */
-    scrollbar-width: none;
-    overflow-y: scroll;
-    overflow-x: hidden;
-}

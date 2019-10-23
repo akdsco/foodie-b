@@ -1,8 +1,8 @@
+// Import Components
+
 import React from "react";
 import { Marker, InfoWindow } from "react-google-maps";
 import {Card, Header, Icon, Image, Label} from "semantic-ui-react";
-
-// TODO develop how the map InfoWindow should look like
 
 const MapMarker = (props) =>  {
   const { index } = props;
@@ -28,8 +28,6 @@ const MapMarker = (props) =>  {
             {props.restaurant.restaurantName}
           </Header>
           <Card>
-            {/* TODO Implement dimmer for picture loading */}
-            {/* TODO Change (to bigger) close InfoWindow button */}
             <Image src={props.restaurant.isFromFile ? props.restaurant.details.photoUrl : props.restaurant.streetViewURL} wrapped ui={false} />
             <Card.Content>
               <Card.Meta>

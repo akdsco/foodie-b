@@ -1,3 +1,21 @@
+body {
+    margin: 0;
+    padding: 0;
+    position: relative;
+    background: #EFEFEA url('../img/left-bg.png') no-repeat;
+    background-size: cover;
+}
+
+/* Custom Style on top of Semantic UI styles */
+
+/*noinspection CssUnknownProperty*/
+.left-container-computer {
+    height: 100vh;
+    scrollbar-width: none;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
 .container-accordion {
     padding: .3em .5em;
 }
@@ -6,8 +24,9 @@
     text-align: center !important;
 }
 
-.ui.styled.accordion .accordion .content, .ui.styled.accordion .content {
-    padding: 0 !important;
+.ui.styled.accordion .accordion .content,
+.ui.styled.accordion .content {
+    padding: 0 0 .2em !important;
 }
 
 .mb-2 {

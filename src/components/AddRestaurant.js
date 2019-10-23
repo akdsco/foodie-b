@@ -1,6 +1,9 @@
+// Import Images
+import logoImg from '../img/logo.png';
+
+// Import Components
 import React from 'react';
 import {Form, Checkbox, Button, Modal, Image, Header} from 'semantic-ui-react';
-import logoImg from '../img/logo.png';
 import Geocode from "react-geocode";
 
 //TODO make sure required fields work, as of now you can fill form without lat and lng and it will still add new restaurant

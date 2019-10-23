@@ -1,3 +1,4 @@
+// Import Components
 import React from 'react'
 import Accordion from "semantic-ui-react/dist/commonjs/modules/Accordion";
 import RestaurantTitle from "./RestaurantTitle";

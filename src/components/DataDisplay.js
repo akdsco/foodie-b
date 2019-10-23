@@ -1,5 +1,5 @@
 // Import CSS
-import '../css/DataDisplay.css'
+import '../css/style.css'
 
 // Import images
 import logoImg from '../img/logo.png'
