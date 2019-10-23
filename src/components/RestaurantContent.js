@@ -13,14 +13,13 @@ import '../css/style.css';
 import Grid from "semantic-ui-react/dist/commonjs/collections/Grid";
 import AddReview from "./AddReview";
 
-export default class AccordionContent extends React.Component {
+export default class RestaurantContent extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       addReviewModalOpen: false,
       loadMoreReviewModalOpen: false,
     };
-    this.ref = React.createRef();
   }
 
   handleChange = (e, { name, value }) => this.setState({ [name]: value });
@@ -86,7 +85,8 @@ export default class AccordionContent extends React.Component {
 
       if(data.photos) {
         // noinspection JSUnusedLocalSymbols
-        let photoRef = data.photos[1].photo_reference;
+        let photoRef = data.photos[1] ? data.photos[1].photo_reference : (data.photos[0] ? data.photos[0].photo_reference : '');
+        console.log(photoRef);
         // url = 'https://maps.googleapis.com/maps/api/place/photo?maxwidth=800&photoreference=' + photoRef + '&key=' + process.env.REACT_APP_G_API;
       } else if (typeof data.photoUrl !== 'undefined' && data.photoUrl !== '') {
         url = data.photoUrl;

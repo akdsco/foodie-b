@@ -1,7 +1,7 @@
 import React from 'react'
 import Accordion from "semantic-ui-react/dist/commonjs/modules/Accordion";
-import RestaurantItem from "./RestaurantItem";
-import AccordionContent from "./AccordionContent";
+import RestaurantTitle from "./RestaurantTitle";
+import RestaurantContent from "./RestaurantContent";
 
 export default class RestaurantList extends React.Component {
   constructor(props) {
@@ -35,13 +35,13 @@ export default class RestaurantList extends React.Component {
             active={activeRest === restaurant.id}
             index={restaurant.id}
             onClick={this.handleAccordionClick}>
-              <RestaurantItem
+              <RestaurantTitle
                 item={restaurant}
                 avgRating={restaurant.avgRating}
               />
           </Accordion.Title>
           <Accordion.Content  active={activeRest === restaurant.id}>
-            <AccordionContent
+            <RestaurantContent
               ref={this.myRef}
               restaurant={restaurant}
 

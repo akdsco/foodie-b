@@ -6,7 +6,7 @@ import React from 'react'
 import {Button, Icon, Item } from "semantic-ui-react";
 import {AvgRatingComponent} from "./RatingComponents";
 
-const RestaurantItem = (props) => {
+const RestaurantTitle = (props) => {
   // const photo = props.item.streetViewURL ? props.item.streetViewURL : (props.item.details.photoUrl ? props.item.details.photoUrl : fmjImg);
   const photo = props.item.streetViewURL ? props.item.streetViewURL : fmjImg;
 
@@ -27,4 +27,4 @@ const RestaurantItem = (props) => {
     </Item>)
 };
 
-export default RestaurantItem
+export default RestaurantTitle

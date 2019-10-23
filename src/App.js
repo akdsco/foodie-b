@@ -1,7 +1,9 @@
 // Import Data
 import restaurantsFromFile from './data/restaurants'
+
 // Import CSS
 import './css/App.css';
+
 // Import Components
 import React from 'react';
 import DataDisplay from './components/DataDisplay';
@@ -13,32 +15,19 @@ import {Dimmer, Loader} from "semantic-ui-react";
 
 
 // TODO implement loader for picture inside accordion item (take's 1-2 sec sometimes)
-// TODO on zoom change -> update state of radius for API call
-// TODO add scroll to currently open restaurant
+// TODO add scroll to currently open restaurant                                                                         --> Struggling to get that done, ask mentor for help.
+// TODO fix reviews resize (how about just use css display block and none.. and handler that switches it..
+// TODO put css in one file for everything ?                                                                            --> Ask if this is a good idea
+// TODO Allow user to disable automatic new search onDragEnd()
+// TODO add placeholders?
 
-// Errors
-// TODO Each child in a list should have a unique "key" prop. => check Accordion Content => when clicking on 10th G.Places loaded restaurant gaucho, only appears on first load, then it doesn't for any other item
+// TODO design mobile and tablet version of the app (static UI elements + css)
+// TODO add dynamic content to mobile and tablet versions
 
-/* TODO implement below:
- *
- * Steps:
- * 1  - Locate user
- * 2  - Get current map bounds / Not doable, api works with radius -> make the view square
- * 3  - Load restaurants from file if they are inside map bounds / Don't write it perfect.
- * 4  - Load restaurants from Google Places
- * 4.5- switch loading to false
- * 5  - Display fetched data
- * 6  - Allow user to disable automatic new search onDragEnd() -> postpone this feature
- * 7  - If user let's automatic search on and drags map:
- * 8  - switch loading to true
- * 9  - clean up current restaurant state
- * 10 - Get current map bounds
- * 11 - Load restaurants from file if they are inside map bounds
- * 12 - Load restaurants from Google Places
- * 13 - switch loading to false
- * 13 - switch loading to false
- *
- */
+// Errors -> Talk to Mentor
+// TODO Each child in a list should have a unique "key" prop. => check Accordion Content => when clicking on 10th G.Places
+//  loaded restaurant gaucho, only appears on first load, then it doesn't for any other item
+
 
 export default class App extends React.Component {
   constructor(props) {
@@ -74,12 +63,106 @@ export default class App extends React.Component {
     this.locateUser();
   }
 
-  // componentDidUpdate(prevProps, prevState, snapshot) {
-  //   if(this.state.activeRest !== -1) {
-  //     const ref = this.state.restaurants[this.state.activeRest].ref;
-  //     this.scrollToRef(ref);
-  //   }
-  // }
+  /* ===================
+   *   Handler Methods
+  _* ===================
+*/
+
+  handleCenterChange = (center) => {
+    this.setState({
+      center: center
+    }, () => this.loadGooglePlacesRestaurants())
+  };
+
+  handleMinRate = (e, { rating }) => {
+    const {ratingMax} = this.state;
+
+    if((ratingMax > 0) && (rating < ratingMax)) {
+      this.setState({
+        ratingMin: rating
+      })
+    } else {
+      this.setState({
+        ratingMin: rating,
+        ratingMax: rating
+      })
+    }
+  };
+
+  handleMaxRate = (e, { rating }) => {
+    if(this.state.ratingMin <= rating) {
+      this.setState({
+        ratingMax: rating
+      })
+    }
+  };
+
+  handleReset = () => {
+    this.setState({
+      ratingMin: 0,
+      ratingMax: 5
+    })
+  };
+
+  handleActiveRest = (index) => {
+    const { activeRest } = this.state;
+    const newIndex = activeRest === index ? -1 : index;
+    if(newIndex !== -1) {
+      this.loadGooglePlaceDetails(newIndex);
+    }
+    this.setState({
+      activeRest: newIndex
+    })
+  };
+
+  handleNewData = (dataObject, type) => {
+    let restaurants = [...this.state.restaurants];
+    let shiftedRest = [];
+
+    if(type === 'restaurant') {
+      // First in the array will be restaurants from file and then added restaurants by user
+      shiftedRest = restaurants.filter(r=>r.isFromFile);
+      shiftedRest.push(dataObject);
+      shiftedRest[shiftedRest.length - 1].id = shiftedRest.length - 1;
+      // Then we need to shift id's for Google Place supplied restaurants by 1 and push objects to shiftedRest array
+      const increment = a => a + 1;
+      restaurants.filter(r=> (!r.isFromFile)).map(r => ({...r, id: increment(r.id)})).forEach(r => shiftedRest.push(r));
+      // Save efforts
+      restaurants = shiftedRest;
+    } else if (type === 'review') {
+      let index = this.state.activeRest;
+
+      // Recalculating avgRating for particular restaurant
+      restaurants[index].details.reviews.push(dataObject);
+      restaurants[index].avgRating = restaurants[index].details.reviews.map(r => r.stars).reduce((a, b) => a + b) / (restaurants[index].details.reviews.length);
+      restaurants[index].numberOfReviews = restaurants[index].details.reviews.length;
+      console.log(restaurants[index].avgRating);
+    }
+
+    this.setState({
+      restaurants: restaurants,
+    })
+  };
+
+  handleZoomChange = (zoom) => {
+    let searchRadius = 0;
+    const searchRadiusValues = {
+      12: 4000,
+      13: 2500,
+      14: 1200,
+      15: 750,
+      16: 200
+    };
+
+    if (zoom < 12) {
+      searchRadius = 5000;
+    } else if (zoom >= 12 && zoom <= 16) {
+      searchRadius = searchRadiusValues[zoom];
+    } else {
+      searchRadius = 150;
+    }
+    this.setState({searchRadius: searchRadius})
+  };
 
   /* ==================
    *   Custom Methods
@@ -287,107 +370,6 @@ export default class App extends React.Component {
     }
   };
 
-  /* ===================
-   *   Handler Methods
-  _* ===================
-*/
-
-  handleCenterChange = (center) => {
-    this.setState({
-      center: center
-    }, () => this.loadGooglePlacesRestaurants())
-  };
-
-  handleMinRate = (e, { rating }) => {
-    const {ratingMax} = this.state;
-
-    if((ratingMax > 0) && (rating < ratingMax)) {
-      this.setState({
-        ratingMin: rating
-      })
-    } else {
-      this.setState({
-        ratingMin: rating,
-        ratingMax: rating
-      })
-    }
-  };
-
-  handleMaxRate = (e, { rating }) => {
-    if(this.state.ratingMin <= rating) {
-      this.setState({
-        ratingMax: rating
-      })
-    }
-  };
-
-  handleReset = () => {
-    this.setState({
-      ratingMin: 0,
-      ratingMax: 5
-    })
-  };
-
-  handleActiveRest = (index) => {
-    const { activeRest } = this.state;
-    const newIndex = activeRest === index ? -1 : index;
-    if(newIndex !== -1) {
-      this.loadGooglePlaceDetails(newIndex);
-    }
-    this.setState({
-      activeRest: newIndex
-    })
-  };
-
-  handleNewData = (dataObject, type) => {
-    let restaurants = [...this.state.restaurants];
-    let shiftedRest = [];
-
-    if(type === 'restaurant') {
-      // First in the array will be restaurants from file and then added restaurants by user
-      shiftedRest = restaurants.filter(r=>r.isFromFile);
-      shiftedRest.push(dataObject);
-      shiftedRest[shiftedRest.length - 1].id = shiftedRest.length - 1;
-      // Then we need to shift id's for Google Place supplied restaurants by 1 and push objects to shiftedRest array
-      const increment = a => a + 1;
-      restaurants.filter(r=> (!r.isFromFile)).map(r => ({...r, id: increment(r.id)})).forEach(r => shiftedRest.push(r));
-      // Save efforts
-      restaurants = shiftedRest;
-    } else if (type === 'review') {
-      let index = this.state.activeRest;
-
-      // Recalculating avgRating for particular restaurant
-      restaurants[index].details.reviews.push(dataObject);
-      restaurants[index].avgRating = restaurants[index].details.reviews.map(r => r.stars).reduce((a, b) => a + b) / (restaurants[index].details.reviews.length);
-      restaurants[index].numberOfReviews = restaurants[index].details.reviews.length;
-      console.log(restaurants[index].avgRating);
-    }
-
-    this.setState({
-      restaurants: restaurants,
-    })
-  };
-
-  handleZoomChange = (zoom) => {
-    let searchRadius = 0;
-    const searchRadiusValues = {
-      12: 4000,
-      13: 2500,
-      14: 1200,
-      15: 750,
-      16: 200
-    };
-
-    if (zoom < 12) {
-        searchRadius = 5000;
-    } else if (zoom >= 12 && zoom <= 16) {
-      searchRadius = searchRadiusValues[zoom];
-    } else {
-      searchRadius = 150;
-    }
-    this.setState({searchRadius: searchRadius})
-  };
-
   render() {
     const style={height: '100vh'};
     const { restaurants, ratingMin, ratingMax, center, userLocation,
@@ -399,7 +381,7 @@ export default class App extends React.Component {
         <Container>
           <Grid>
             <Grid.Row centered columns={2} only='computer' style={style}>
-              <GridColumn width={9} >
+              <GridColumn width={9}>
                 <Dimmer.Dimmable dimmed={loadingRestaurants}>
                   <Dimmer active={loadingRestaurants} inverted>
                     <Loader>LoadingRestaurants</Loader>
