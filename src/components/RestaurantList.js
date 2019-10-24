@@ -4,18 +4,18 @@ import Accordion from "semantic-ui-react/dist/commonjs/modules/Accordion";
 import RestaurantTitle from "./RestaurantTitle";
 import RestaurantContent from "./RestaurantContent";
 
+// TODO create a name property for each title, and send this to map component, when marker clicked js will scroll to
+//  this name component.. ????
+
 export default class RestaurantList extends React.Component {
   constructor(props) {
     super(props);
-    this.myRef = React.createRef();  // Create a ref object
   }
 
-  scrollToMyRef = () => window.scrollTo(0, this.myRef.current.offsetTop);
 
   handleAccordionClick = (e, titleProps) =>  {
     const { index } = titleProps;
     this.props.handleActiveRest(index);
-    this.scrollToMyRef();
   };
 
   sortRestaurants() {
@@ -32,7 +32,6 @@ export default class RestaurantList extends React.Component {
       restaurantsList.push(
         <Accordion styled key={restaurant.id}>
           <Accordion.Title
-
             active={activeRest === restaurant.id}
             index={restaurant.id}
             onClick={this.handleAccordionClick}>
@@ -43,7 +42,6 @@ export default class RestaurantList extends React.Component {
           </Accordion.Title>
           <Accordion.Content  active={activeRest === restaurant.id}>
             <RestaurantContent
-              ref={this.myRef}
               restaurant={restaurant}
 
               handleNewData={handleNewData}

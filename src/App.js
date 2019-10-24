@@ -13,15 +13,17 @@ import GridColumn from "semantic-ui-react/dist/commonjs/collections/Grid/GridCol
 import Map from "./components/Map";
 import {Dimmer, Loader} from "semantic-ui-react";
 
-
 // TODO implement loader for picture inside accordion item (take's 1-2 sec sometimes)
-// TODO add scroll to currently open restaurant                                                                         --> Struggling to get that done, ask mentor for help.
+// TODO add scroll to currently open restaurant                                                                        --> Struggling to get that done, ask mentor for help.
 // TODO fix reviews resize (how about just use css display block and none.. and handler that switches it..                                           --> Ask if this is a good idea
 // TODO Allow user to disable automatic new search onDragEnd()
 // TODO add placeholders? (Look into Semantic UI placeholders)
+// TODO add restaurant address for user to know where he clicked
 
 // TODO design mobile and tablet version of the app (static UI elements + css)
 // TODO add dynamic content to mobile and tablet versions
+//
+// TODO FEATURE -- Search that looks through current list of rest and searches if name is in it
 
 // Errors -> Talk to Mentor
 // TODO Each child in a list should have a unique "key" prop. => check Accordion Content => when clicking on 10th G.Places
@@ -49,7 +51,6 @@ export default class App extends React.Component {
       activeRest: -1,
       updatingItem: false
     };
-
   }
 
   /* =====================
@@ -69,7 +70,8 @@ export default class App extends React.Component {
 
   handleCenterChange = (center) => {
     this.setState({
-      center: center
+      center: center,
+      loadingRestaurants: true,
     }, () => this.loadGooglePlacesRestaurants())
   };
 
@@ -375,8 +377,10 @@ export default class App extends React.Component {
             isUserMarkerShown, loadingRestaurants, activeRest } = this.state;
     const { handleMaxRate, handleMinRate, handleReset, handleActiveRest,
             handleCenterChange, handleNewData, handleZoomChange } = this;
+
     return (
       <div>
+        {/* Full Desktop Mode */}
         <Container>
           <Grid>
             <Grid.Row centered columns={2} only='computer' style={style}>
@@ -405,7 +409,6 @@ export default class App extends React.Component {
                   <Dimmer active={loadingRestaurants} inverted>
                     <Loader>LoadingRestaurants</Loader>
                   </Dimmer>
-
                   <Map
                     restaurants={restaurants.filter(restaurant =>
                       restaurant.avgRating >= ratingMin &&
@@ -424,18 +427,91 @@ export default class App extends React.Component {
                 </Dimmer.Dimmable>
               </GridColumn>
             </Grid.Row>
-            <Grid.Row centered columns={1} only='tablet'>
-              <GridColumn>
-                {/*<Map />*/}
-              </GridColumn>
-            </Grid.Row>
-            <Grid.Row centered columns={1} only='mobile'>
-              <GridColumn>
-
-              </GridColumn>
-            </Grid.Row>
           </Grid>
         </Container>
+
+        {/* Tablet Mode */}
+        <Grid>
+          <Grid.Row centered columns={2} only='tablet' style={style}>
+            <GridColumn width={9}>
+              <Dimmer.Dimmable dimmed={loadingRestaurants}>
+                <Dimmer active={loadingRestaurants} inverted>
+                  <Loader>LoadingRestaurants</Loader>
+                </Dimmer>
+
+                <DataDisplay
+                  restaurants={restaurants}
+                  ratingMax={ratingMax}
+                  ratingMin={ratingMin}
+                  activeRest={activeRest}
+
+                  handleReset={handleReset}
+                  handleMinRate={handleMinRate}
+                  handleMaxRate={handleMaxRate}
+                  handleNewData={handleNewData}
+                  handleActiveRest={handleActiveRest}
+                />
+              </Dimmer.Dimmable>
+            </GridColumn>
+            <GridColumn width={7}>
+              <Dimmer.Dimmable dimmed={loadingRestaurants}>
+                <Dimmer active={loadingRestaurants} inverted>
+                  <Loader>LoadingRestaurants</Loader>
+                </Dimmer>
+
+                <Map
+                  restaurants={restaurants.filter(restaurant =>
+                    restaurant.avgRating >= ratingMin &&
+                    restaurant.avgRating <= ratingMax)
+                  }
+                  center={center}
+                  userMarker={isUserMarkerShown}
+                  userLocation={userLocation}
+                  activeRest={activeRest}
+
+                  handleNewData={handleNewData}
+                  handleZoomChange={handleZoomChange}
+                  handleActiveRest={handleActiveRest}
+                  handleCenterChange={handleCenterChange}
+                />
+              </Dimmer.Dimmable>
+            </GridColumn>
+          </Grid.Row>
+        </Grid>
+
+        {/*  Mobile Mode */}
+        <Grid>
+          <Grid.Row centered columns={1} only='mobile' style={style}>
+            <GridColumn>
+              <Dimmer.Dimmable dimmed={loadingRestaurants}>
+                <Dimmer active={loadingRestaurants} inverted>
+                  <Loader>LoadingRestaurants</Loader>
+                </Dimmer>
+
+                <DataDisplay
+                  restaurants={restaurants}
+                  ratingMax={ratingMax}
+                  ratingMin={ratingMin}
+                  activeRest={activeRest}
+
+                  handleReset={handleReset}
+                  handleMinRate={handleMinRate}
+                  handleMaxRate={handleMaxRate}
+                  handleNewData={handleNewData}
+                  handleActiveRest={handleActiveRest}
+
+                  center={center}
+                  userMarker={isUserMarkerShown}
+                  userLocation={userLocation}
+                  loadingRestaurants={loadingRestaurants}
+
+                  handleZoomChange={handleZoomChange}
+                  handleCenterChange={handleCenterChange}
+                />
+              </Dimmer.Dimmable>
+            </GridColumn>
+          </Grid.Row>
+        </Grid>
       </div>
     );
   }

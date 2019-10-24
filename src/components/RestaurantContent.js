@@ -4,7 +4,7 @@ import '../css/style.css';
 // Import Components
 import React from 'react';
 import ReviewItem from "./ReviewItem";
-import {Container, GridColumn, List, Image, Button, Icon, Modal, Header} from "semantic-ui-react";
+import {Container, GridColumn, List, Image, Button, Icon, Modal, Header, Segment, Loader} from "semantic-ui-react";
 import Grid from "semantic-ui-react/dist/commonjs/collections/Grid";
 import AddReview from "./AddReview";
 
@@ -14,7 +14,17 @@ export default class RestaurantContent extends React.Component {
     this.state = {
       addReviewModalOpen: false,
       loadMoreReviewModalOpen: false,
+      loadingImg: true,
     };
+  }
+
+  // TODO is it a good approach from performance point of view, to have couple of functions sourcing same prop..
+
+  componentDidMount() {
+    if(this.props.restaurant.isFromFile) {
+      this.setState({loadingImg: false});
+    }
+    console.log('done loadingImg to false');
   }
 
   handleChange = (e, { name, value }) => this.setState({ [name]: value });
@@ -30,7 +40,7 @@ export default class RestaurantContent extends React.Component {
           counter++;
           return(
             <Grid key={counter}>
-              <Grid.Row centered only='computer'>
+              <Grid.Row centered>
                 <GridColumn width={15}>
                   <ReviewItem item={review} fromFile={restaurant.isFromFile} />
                 </GridColumn>
@@ -83,11 +93,11 @@ export default class RestaurantContent extends React.Component {
         let photoRef = data.photos[1] ? data.photos[1].photo_reference : (data.photos[0] ? data.photos[0].photo_reference : '');
         console.log(photoRef);
         // url = 'https://maps.googleapis.com/maps/api/place/photo?maxwidth=800&photoreference=' + photoRef + '&key=' + process.env.REACT_APP_G_API;
+        // this.setState({loadingImg: false});
       } else if (typeof data.photoUrl !== 'undefined' && data.photoUrl !== '') {
         url = data.photoUrl;
       }
     }
-
     return url
   };
 
@@ -99,7 +109,7 @@ export default class RestaurantContent extends React.Component {
     return(
       <Container className='container-accordion'>
         <Grid>
-          <Grid.Row divided columns={2} only='computer'>
+          <Grid.Row columns={2}>
             <GridColumn width={7}>
               {/*  Left Column - Data  */}
               <List>
@@ -124,6 +134,10 @@ export default class RestaurantContent extends React.Component {
 
             <GridColumn width={9}>
               {/*Right Column - Photo */}
+              <Segment>
+                {/*<Dimmer inverted active={this.state.loadingImg}>*/}
+                  <Loader active={this.state.loadingImg} content='Loading image' />
+                {/*</Dimmer>*/}
                 <Image
                   src={getRestPhotoUrl()}
                   fluid
@@ -135,8 +149,9 @@ export default class RestaurantContent extends React.Component {
                     ribbon: true,
                   }}
                 />
-            </GridColumn>
+              </Segment>
 
+            </GridColumn>
           </Grid.Row>
 
           <Grid.Row>
