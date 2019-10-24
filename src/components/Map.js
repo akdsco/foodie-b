@@ -11,6 +11,7 @@ import {compose, lifecycle, withProps} from "recompose";
 import MapMarker from "./MapMarker";
 import AddRestaurant from "./AddRestaurant";
 import {Form} from "semantic-ui-react";
+import Geocode from "react-geocode";
 
 // const _ = require("lodash");
 const styles = require('../data/GoogleMapStyles.json');
@@ -89,14 +90,15 @@ const MapConst = compose(
 
     {props.mapState.isRestAddButtonDisplayed &&
       <InfoWindow
-        position={{lat: props.mapState.infoWindowCoords.lat, lng: props.mapState.infoWindowCoords.lng}}
+        position={{lat: props.mapState.newRestData.lat, lng: props.mapState.newRestData.lng}}
         onCloseClick={props.closeInfoWindow}
       >
         <div>
-          <h4>Would you like to <br/>add new Restaurant?</h4>
+          <h4>Add restaurant</h4>
+          <p>{props.mapState.newRestData.address}</p>
           <AddRestaurant
             restaurants={props.restaurants}
-            restaurantCoords={props.mapState.infoWindowCoords}
+            newRestData={props.mapState.newRestData}
             closeInfoWindow={props.closeInfoWindow}
 
             handleNewData={props.handleNewData}
@@ -112,23 +114,44 @@ export default class Map extends React.PureComponent {
   state = {
     isRestAddButtonDisplayed: false,
     isRestAddModalOpen: false,
-    infoWindowCoords: {}
+    newRestData: {
+      address: '',
+      lat: '',
+      lng: ''
+    }
   };
 
   closeInfoWindow = () => {
     this.setState({
       isRestAddButtonDisplayed: false,
-      infoWindowCoords: {}
+      newRestData: {
+        address: '',
+        lat: '',
+        lng: ''
+      }
     })};
 
   openInfoWindow = (e) => {
-    this.setState({
-      infoWindowCoords: {
-        lat: e.latLng.lat(),
-        lng: e.latLng.lng()
+    let restData = {};
+
+    Geocode.setApiKey(process.env.REACT_APP_G_API);
+    Geocode.fromLatLng(e.latLng.lat(), e.latLng.lng()).then(
+      response => {
+        const address = response.results[0].formatted_address;
+        restData = {
+          address: address,
+          lat: e.latLng.lat(),
+          lng: e.latLng.lng()
+        };
+        this.setState({
+          newRestData: restData,
+          isRestAddButtonDisplayed: true
+        })
       },
-      isRestAddButtonDisplayed: true
-    });
+      error => {
+        console.error(error);
+      }
+    )
   };
 
   render() {

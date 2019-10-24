@@ -15,12 +15,11 @@ import {Dimmer, Loader} from "semantic-ui-react";
 
 // TODO implement loader for picture inside accordion item (take's 1-2 sec sometimes)
 // TODO add scroll to currently open restaurant                                                                        --> Struggling to get that done, ask mentor for help.
-// TODO fix reviews resize (how about just use css display block and none.. and handler that switches it..
 // TODO add placeholders? (Look into Semantic UI placeholders)
-// TODO add restaurant address for user to know where he clicked
 
 // TODO design mobile and tablet version of the app (static UI elements + css)
 // TODO add dynamic content to mobile and tablet versions
+// TODO redo opening times.. maybe just say: 'open today: hours' ?
 //
 // TODO FEATURE -- Search that looks through current list of rest and searches if name is in it
 

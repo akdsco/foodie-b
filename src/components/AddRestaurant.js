@@ -4,7 +4,6 @@ import logoImg from '../img/logo.png';
 // Import Components
 import React from 'react';
 import {Form, Checkbox, Button, Modal, Image, Header} from 'semantic-ui-react';
-import Geocode from "react-geocode";
 
 //TODO make sure required fields work, as of now you can fill form without lat and lng and it will still add new restaurant
 
@@ -23,35 +22,28 @@ export default class AddRestaurant extends React.Component {
   };
 
   handleSubmit = async () => {
-    const { restaurantCoords, restaurants } = this.props;
+    const { newRestData, restaurants } = this.props;
     const { restName, imageUrl } = this.state;
     const id = restaurants.length;
 
-    Geocode.setApiKey(process.env.REACT_APP_G_API);
-    Geocode.fromLatLng(restaurantCoords.lat, restaurantCoords.lng).then(
-      response => {
-        const address = response.results[0].formatted_address;
-        const newRestaurant = {
-          "id": id,
-          "restaurantName": restName,
-          "address": address,
-          "lat": restaurantCoords.lat,
-          "long": restaurantCoords.lng,
-          "isFromFile": true,
-          "place_id": "",
-          "avgRating": 0,
-          "numberOfReviews": 0,
-          "details": {
-            "reviews": [],
-            "photoUrl": imageUrl
-          }
-        };
-        this.props.handleNewData(newRestaurant, 'restaurant');
-      },
-      error => {
-        console.error(error);
+    const newRestaurant = {
+      "id": id,
+      "restaurantName": restName,
+      "address": newRestData.address,
+      "lat": newRestData.lat,
+      "long": newRestData.lng,
+      "isFromFile": true,
+      "place_id": "",
+      "avgRating": 0,
+      "numberOfReviews": 0,
+      "details": {
+        "reviews": [],
+        "photoUrl": imageUrl
       }
-    );
+    };
+
+    this.props.handleNewData(newRestaurant, 'restaurant');
+
     this.handleCancel();
   };
 
