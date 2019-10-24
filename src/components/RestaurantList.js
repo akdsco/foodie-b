@@ -1,3 +1,6 @@
+// Import CSS
+import '../css/style.css';
+
 // Import Components
 import React from 'react'
 import Accordion from "semantic-ui-react/dist/commonjs/modules/Accordion";
@@ -30,7 +33,7 @@ export default class RestaurantList extends React.Component {
 
     this.sortRestaurants().forEach(restaurant => {
       restaurantsList.push(
-        <Accordion styled key={restaurant.id}>
+        <Accordion className='mb-2' styled key={restaurant.id}>
           <Accordion.Title
             active={activeRest === restaurant.id}
             index={restaurant.id}

@@ -1,6 +1,9 @@
 // Import Images
 import fmjImg from '../img/fmj.jpg'
 
+// Import CSS
+import '../css/style.css';
+
 // Import Components
 import React from 'react'
 import {Button, Icon, Item } from "semantic-ui-react";
@@ -21,7 +24,7 @@ const RestaurantTitle = (props) => {
         </Item.Meta>
         <Item.Extra>
           <AvgRatingComponent avgRating={props.avgRating}/>
-          <Button size='mini' floated='right'>More Info <Icon name='dropdown'/></Button>
+          <Button className='more-info' size='mini' floated='right'>More Info <Icon name='dropdown'/></Button>
         </Item.Extra>
       </Item.Content>
     </Item>)

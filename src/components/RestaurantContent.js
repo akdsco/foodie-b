@@ -91,9 +91,7 @@ export default class RestaurantContent extends React.Component {
       if(data.photos) {
         // noinspection JSUnusedLocalSymbols
         let photoRef = data.photos[1] ? data.photos[1].photo_reference : (data.photos[0] ? data.photos[0].photo_reference : '');
-        console.log(photoRef);
         // url = 'https://maps.googleapis.com/maps/api/place/photo?maxwidth=800&photoreference=' + photoRef + '&key=' + process.env.REACT_APP_G_API;
-        // this.setState({loadingImg: false});
       } else if (typeof data.photoUrl !== 'undefined' && data.photoUrl !== '') {
         url = data.photoUrl;
       }

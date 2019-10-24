@@ -38,7 +38,10 @@ export default class App extends React.Component {
       loadingRestaurants: false,
       ratingMin: 0,
       ratingMax: 5,
-      isUserMarkerShown: false,
+      flags: {
+        isRestSearchAllowed: true,
+        isUserMarkerShown: false,
+      },
       searchRadius: 750,
       userLocation: {
         lat: 1,
@@ -49,7 +52,6 @@ export default class App extends React.Component {
         lng: 1
       },
       activeRest: -1,
-      updatingItem: false
     };
   }
 
@@ -69,16 +71,28 @@ export default class App extends React.Component {
 */
 
   handleCenterChange = (center) => {
-    this.setState({
-      center: center,
-      loadingRestaurants: true,
-    }, () => this.loadGooglePlacesRestaurants())
+    if (this.state.flags.isRestSearchAllowed) {
+      this.setState({
+        center: center,
+        loadingRestaurants: true,
+      }, () => this.loadGooglePlacesRestaurants());
+    } else {
+      this.setState({center: center});
+    }
   };
 
-  handleMinRate = (e, { rating }) => {
+  handleRestSearch = () => {
+    this.setState(prevState => ({
+      flags: {
+        isRestSearchAllowed: !prevState.flags.isRestSearchAllowed,
+      }
+    }))
+  };
+
+  handleMinRate = (e, {rating}) => {
     const {ratingMax} = this.state;
 
-    if((ratingMax > 0) && (rating < ratingMax)) {
+    if ((ratingMax > 0) && (rating < ratingMax)) {
       this.setState({
         ratingMin: rating
       })
@@ -90,8 +104,8 @@ export default class App extends React.Component {
     }
   };
 
-  handleMaxRate = (e, { rating }) => {
-    if(this.state.ratingMin <= rating) {
+  handleMaxRate = (e, {rating}) => {
+    if (this.state.ratingMin <= rating) {
       this.setState({
         ratingMax: rating
       })
@@ -106,9 +120,9 @@ export default class App extends React.Component {
   };
 
   handleActiveRest = (index) => {
-    const { activeRest } = this.state;
+    const {activeRest} = this.state;
     const newIndex = activeRest === index ? -1 : index;
-    if(newIndex !== -1) {
+    if (newIndex !== -1) {
       this.loadGooglePlaceDetails(newIndex);
     }
     this.setState({
@@ -120,14 +134,17 @@ export default class App extends React.Component {
     let restaurants = [...this.state.restaurants];
     let shiftedRest = [];
 
-    if(type === 'restaurant') {
+    if (type === 'restaurant') {
       // First in the array will be restaurants from file and then added restaurants by user
-      shiftedRest = restaurants.filter(r=>r.isFromFile);
+      shiftedRest = restaurants.filter(r => r.isFromFile);
       shiftedRest.push(dataObject);
       shiftedRest[shiftedRest.length - 1].id = shiftedRest.length - 1;
       // Then we need to shift id's for Google Place supplied restaurants by 1 and push objects to shiftedRest array
       const increment = a => a + 1;
-      restaurants.filter(r=> (!r.isFromFile)).map(r => ({...r, id: increment(r.id)})).forEach(r => shiftedRest.push(r));
+      restaurants.filter(r => (!r.isFromFile)).map(r => ({
+        ...r,
+        id: increment(r.id)
+      })).forEach(r => shiftedRest.push(r));
       // Save efforts
       restaurants = shiftedRest;
     } else if (type === 'review') {
@@ -176,7 +193,7 @@ export default class App extends React.Component {
     const withAvgRating = [];
     // calculate average rating for each restaurant
     Object.keys(restaurants).map((id) => restaurants[id]).forEach(restaurant => {
-      restaurant.avgRating = restaurant.details.reviews.map( rating => rating.stars).reduce( (a , b ) => a + b ) / restaurant.details.reviews.length;
+      restaurant.avgRating = restaurant.details.reviews.map(rating => rating.stars).reduce((a, b) => a + b) / restaurant.details.reviews.length;
       restaurant.isFromFile = true;
       restaurant.numberOfReviews = restaurant.details.reviews.length;
       withAvgRating.push(restaurant)
@@ -201,7 +218,9 @@ export default class App extends React.Component {
   //       lat: position.coords.latitude,
   //       lng: position.coords.longitude
   //     },
+  //      flags: {
   //     isUserMarkerShown: true
+  //     }
   //      }), () => this.loadGooglePlacesRestaurants());
   //   }, (error) => {
   //       console.log(error);
@@ -216,7 +235,9 @@ export default class App extends React.Component {
   //           lat: 51.516126,
   //           lng: -0.081679
   //         },
+  //          flags: {
   //         isUserMarkerShown: true,
+  //         }
   //         }), () => this.loadGooglePlacesRestaurants());
   //       // console.log('from locate user', this.state.restaurants);
   //       }
@@ -239,7 +260,9 @@ export default class App extends React.Component {
               lat: position.coords.latitude,
               lng: position.coords.longitude
             },
-            isUserMarkerShown: true
+            flags: {
+              isUserMarkerShown: true
+            }
           })/*, () => this.loadGooglePlacesRestaurants()*/);
         }, (error) => {
           console.log(error);
@@ -254,7 +277,9 @@ export default class App extends React.Component {
               lat: 51.516126,
               lng: -0.081679
             },
-            isUserMarkerShown: true,
+            flags: {
+              isUserMarkerShown: true,
+            }
           })/*, () => this.loadGooglePlacesRestaurants()*/);
           // console.log('from locate user', this.state.restaurants);
         }
@@ -374,9 +399,9 @@ export default class App extends React.Component {
   render() {
     const style={height: '100vh'};
     const { restaurants, ratingMin, ratingMax, center, userLocation,
-            isUserMarkerShown, loadingRestaurants, activeRest } = this.state;
+            loadingRestaurants, activeRest, flags } = this.state;
     const { handleMaxRate, handleMinRate, handleReset, handleActiveRest,
-            handleCenterChange, handleNewData, handleZoomChange } = this;
+            handleCenterChange, handleNewData, handleZoomChange, handleRestSearch } = this;
 
     return (
       <div>
@@ -414,11 +439,13 @@ export default class App extends React.Component {
                       restaurant.avgRating >= ratingMin &&
                       restaurant.avgRating <= ratingMax)
                     }
+
                     center={center}
-                    userMarker={isUserMarkerShown}
+                    flags={flags}
                     userLocation={userLocation}
                     activeRest={activeRest}
 
+                    handleRestSearch={handleRestSearch}
                     handleNewData={handleNewData}
                     handleZoomChange={handleZoomChange}
                     handleActiveRest={handleActiveRest}
@@ -465,10 +492,11 @@ export default class App extends React.Component {
                     restaurant.avgRating <= ratingMax)
                   }
                   center={center}
-                  userMarker={isUserMarkerShown}
+                  flags={flags}
                   userLocation={userLocation}
                   activeRest={activeRest}
 
+                  handleRestSearch={handleRestSearch}
                   handleNewData={handleNewData}
                   handleZoomChange={handleZoomChange}
                   handleActiveRest={handleActiveRest}
@@ -501,10 +529,11 @@ export default class App extends React.Component {
                   handleActiveRest={handleActiveRest}
 
                   center={center}
-                  userMarker={isUserMarkerShown}
+                  flags={flags}
                   userLocation={userLocation}
                   loadingRestaurants={loadingRestaurants}
 
+                  handleRestSearch={handleRestSearch}
                   handleZoomChange={handleZoomChange}
                   handleCenterChange={handleCenterChange}
                 />

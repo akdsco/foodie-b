@@ -1,7 +1,4 @@
 body {
-    margin: 0;
-    padding: 0;
-    position: relative;
     background: #EFEFEA url('../img/left-bg.png') no-repeat;
     background-size: cover;
 }
@@ -9,10 +6,10 @@ body {
 /* Custom Style on top of Semantic UI styles */
 
 /*noinspection CssUnknownProperty*/
-.left-container-computer {
+.data-display {
     height: 100vh;
-    scrollbar-width: none;
-    overflow-y: scroll;
+    /*scrollbar-width: none;*/
+    overflow-y: visible;
     overflow-x: hidden;
 }
 
@@ -36,4 +33,30 @@ body {
 .restaurant-item-buttons {
     text-align: center;
     margin-bottom: 1em !important;
+}
+
+.toggle-button {
+    position: absolute;
+    top: 30px;
+    left: 30px;
+    padding: 7px 16px;
+    background: rgba(255,255,255, .85);
+}
+
+@media (max-width: 768px) {
+    .ui.styled.accordion {
+        width: 100%;
+    }
+}
+
+@media (max-width: 390px) {
+    .more-info {
+        display: none !important;
+    }
+}
+
+@media (max-width: 420px) {
+    .data-display {
+        height: 105vh;
+    }
 }

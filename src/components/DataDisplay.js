@@ -47,11 +47,11 @@ export default class DataDisplay extends React.Component {
     const { activeItem, width} = this.state;
     const { restaurants, ratingMin, ratingMax, activeRest, handleActiveRest,
             handleNewData, handleMinRate, handleMaxRate, handleReset, center,
-            userMarker, userLocation, handleZoomChange,
-            handleCenterChange } = this.props;
+            userMarker, userLocation, handleZoomChange, handleRestSearch,
+            handleCenterChange, flags } = this.props;
 
     return (
-      <div className='left-container-computer'>
+      <div className='data-display'>
         <Sticky>
           <Segment>
           <Menu size='mini'>
@@ -116,10 +116,12 @@ export default class DataDisplay extends React.Component {
                   restaurant.avgRating <= ratingMax)
                 }
                 center={center}
+                flags={flags}
                 userMarker={userMarker}
                 userLocation={userLocation}
                 activeRest={activeRest}
 
+                handleRestSearch={handleRestSearch}
                 handleNewData={handleNewData}
                 handleZoomChange={handleZoomChange}
                 handleActiveRest={handleActiveRest}

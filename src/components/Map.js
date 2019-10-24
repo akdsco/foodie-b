@@ -1,12 +1,16 @@
 // Import Images
 import userLocationMarker from '../img/user.png'
 
+// Import CSS
+import '../css/style.css';
+
 // Import Components
 import React from 'react';
 import {withScriptjs, withGoogleMap, GoogleMap, Marker, InfoWindow} from "react-google-maps";
 import {compose, lifecycle, withProps} from "recompose";
 import MapMarker from "./MapMarker";
 import AddRestaurant from "./AddRestaurant";
+import {Form} from "semantic-ui-react";
 
 // const _ = require("lodash");
 const styles = require('../data/GoogleMapStyles.json');
@@ -128,14 +132,14 @@ export default class Map extends React.PureComponent {
   };
 
   render() {
-    const { userMarker, userLocation, restaurants, center, activeRest,
-            handleActiveRest, handleCenterChange, handleNewData,handleZoomChange } = this.props;
+    const { userLocation, restaurants, center, activeRest, handleRestSearch, flags,
+            handleActiveRest, handleCenterChange, handleNewData, handleZoomChange,   } = this.props;
     const { closeInfoWindow, openInfoWindow, state } = this;
 
     return(
       <div>
         <MapConst
-          userMarker={userMarker}
+          userMarker={flags.isUserMarkerShown}
           userLocation={userLocation}
           restaurants={restaurants}
           center={center}
@@ -150,8 +154,22 @@ export default class Map extends React.PureComponent {
           handleActiveRest={handleActiveRest}
           handleCenterChange={handleCenterChange}
         />
+        {/*<Button*/}
+        {/*  className='toggle-button'*/}
+        {/*  toggle*/}
+        {/*  active={true}*/}
+        {/*  onClick={() => {}}*/}
+        {/*>*/}
+        {/*  Updating Restaurants as you move the map*/}
+        {/*</Button>*/}
+        <Form.Checkbox
+          className='toggle-button'
+          label='Search as I move the map'
+          checked={flags.isRestSearchAllowed}
+          name='searchToggle'
+          onChange={handleRestSearch}
+        />
       </div>
-
     )
   }
 }
