@@ -1,6 +1,9 @@
+// Import CSS
+import '../css/style.css';
+
 // Import Components
 import React from 'react'
-import { Item } from 'semantic-ui-react'
+import {Grid, Image, Header, GridColumn,} from 'semantic-ui-react'
 import { SingleRatingComponent } from "./RatingComponents";
 
 export default class ReviewItem extends React.Component {
@@ -8,6 +11,7 @@ export default class ReviewItem extends React.Component {
     super(props);
     this.state = {
       isReviewLong: false,
+      isFullReviewDisplayed: false,
       excerptReview: ''
     }
   }
@@ -19,7 +23,7 @@ export default class ReviewItem extends React.Component {
 
   componentDidMount() {
     if (this.props.item.comment.length > 255) {
-      const excerptReview = this.shortenString(this.props.item.comment, 250);
+      const excerptReview = this.shortenString(this.props.item.comment, 255);
       this.setState({ isReviewLong: true, excerptReview: excerptReview });
     }
   };
@@ -30,8 +34,9 @@ export default class ReviewItem extends React.Component {
 */
 
   handleReviewOpen = () => {
-    console.log('trying to open review');
-
+    this.setState(prevState => ({
+      isFullReviewDisplayed: !prevState.isFullReviewDisplayed,
+    }))
   };
 
   /* ==================
@@ -41,53 +46,49 @@ export default class ReviewItem extends React.Component {
 
   shortenString = (str, maxLen, separator = ' ') => {
     if (str.length <= maxLen) return str;
-    this.setState({isReviewLong: false});
-    return str.substr(0, str.lastIndexOf(separator, maxLen));
+    return str.substr(0, str.lastIndexOf(separator, maxLen)) + '... ';
   };
 
   render() {
     // Component Props
     const { item } = this.props;
-    const { isReviewLong } = this.state;
+    const { isReviewLong, excerptReview, isFullReviewDisplayed } = this.state;
     const genericReviewImgUrl = 'https://bit.ly/2VPaipa';
 
     return(
-      isReviewLong === true ?
-      <Item>
-        {this.props.fromFile ?
-          <Item.Image floated='left' size='tiny'
-                      src={item.image_url ? item.image_url : genericReviewImgUrl} circular /> :
-          <Item.Image floated='left' size='tiny'
-                      src={item.image_url ? item.image_url : genericReviewImgUrl}/>
-        }
+      <Grid centered>
+        <GridColumn width={4} only='computer tablet'>
+          <Image
+            className='center-image'
+            size='small'
+            src={item.image_url ? item.image_url : genericReviewImgUrl}
+          />
+        </GridColumn>
 
-        <Item.Content>
-          <Item.Header as='a'>{item.name}</Item.Header>
-          <SingleRatingComponent rating={item.stars} />
-          <Item.Description>
-            {this.state.isReviewLong? this.state.excerptReview : item.comment}
-            {this.state.isReviewLong && <a href='#' onClick={this.handleReviewOpen}> [...]</a>}
-          </Item.Description>
-        </Item.Content>
-      </Item>
-   :
-    <Item>
-      {this.props.fromFile ?
-        <Item.Image floated='left' size='tiny'
-                    src={item.image_url ? item.image_url : genericReviewImgUrl} circular /> :
-        <Item.Image floated='left' size='tiny'
-                    src={item.image_url ? item.image_url : genericReviewImgUrl}/>
-      }
+        <GridColumn width={12} only='computer tablet'>
+          <Header as='h4'>{item.name} <SingleRatingComponent rating={item.stars} /></Header>
+          <div>
+            {!isReviewLong ? item.comment : isFullReviewDisplayed ? item.comment : excerptReview}
+            {isReviewLong ? isFullReviewDisplayed ?
+              <a href='#' onClick={this.handleReviewOpen}><h5>show less</h5></a> :
+              <a href='#' onClick={this.handleReviewOpen}>read more</a> :
+              ''
+            }
+          </div>
+        </GridColumn>
 
-      <Item.Content>
-        <Item.Header as='a'>{item.name}</Item.Header>
-        <SingleRatingComponent rating={item.stars} />
-        <Item.Description>
-          {this.state.isReviewLong? this.state.excerptReview : item.comment}
-          {this.state.isReviewLong && <a href='#' onClick={this.handleReviewOpen}> [...]</a>}
-        </Item.Description>
-      </Item.Content>
-    </Item>
+        <GridColumn textAlign='center' width={16} only='mobile'>
+            <Header as='h4'>{item.name} <SingleRatingComponent rating={item.stars} /></Header>
+            <div>
+              {!isReviewLong ? item.comment : isFullReviewDisplayed ? item.comment : excerptReview}
+              {isReviewLong ? isFullReviewDisplayed ?
+                <a href='#' onClick={this.handleReviewOpen}> Show less</a> :
+                <a href='#' onClick={this.handleReviewOpen}><p>read more</p></a> :
+                ''
+              }
+            </div>
+        </GridColumn>
+      </Grid>
     )
   }
 }

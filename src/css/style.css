@@ -3,12 +3,10 @@ body {
     background-size: cover;
 }
 
-/* Custom Style on top of Semantic UI styles */
+/* Custom Style Modifications */
 
-/*noinspection CssUnknownProperty*/
 .data-display {
     height: 100vh;
-    /*scrollbar-width: none;*/
     overflow-y: visible;
     overflow-x: hidden;
 }
