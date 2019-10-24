@@ -15,8 +15,7 @@ import {Dimmer, Loader} from "semantic-ui-react";
 
 // TODO implement loader for picture inside accordion item (take's 1-2 sec sometimes)
 // TODO add scroll to currently open restaurant                                                                        --> Struggling to get that done, ask mentor for help.
-// TODO fix reviews resize (how about just use css display block and none.. and handler that switches it..                                           --> Ask if this is a good idea
-// TODO Allow user to disable automatic new search onDragEnd()
+// TODO fix reviews resize (how about just use css display block and none.. and handler that switches it..
 // TODO add placeholders? (Look into Semantic UI placeholders)
 // TODO add restaurant address for user to know where he clicked
 
@@ -35,10 +34,10 @@ export default class App extends React.Component {
     super(props);
     this.state = {
       restaurants: [],
-      loadingRestaurants: false,
       ratingMin: 0,
       ratingMax: 5,
       flags: {
+        isLoadingRestaurants: false,
         isRestSearchAllowed: true,
         isUserMarkerShown: false,
       },
@@ -72,10 +71,13 @@ export default class App extends React.Component {
 
   handleCenterChange = (center) => {
     if (this.state.flags.isRestSearchAllowed) {
-      this.setState({
+      this.setState(prevState => ({
         center: center,
-        loadingRestaurants: true,
-      }, () => this.loadGooglePlacesRestaurants());
+        flags: {
+          ...prevState.flags,
+          isLoadingRestaurants: true,
+        }
+      }), () => this.loadGooglePlacesRestaurants());
     } else {
       this.setState({center: center});
     }
@@ -84,6 +86,7 @@ export default class App extends React.Component {
   handleRestSearch = () => {
     this.setState(prevState => ({
       flags: {
+        ...prevState.flags,
         isRestSearchAllowed: !prevState.flags.isRestSearchAllowed,
       }
     }))
@@ -219,6 +222,7 @@ export default class App extends React.Component {
   //       lng: position.coords.longitude
   //     },
   //      flags: {
+  //     ...prevState.flags,
   //     isUserMarkerShown: true
   //     }
   //      }), () => this.loadGooglePlacesRestaurants());
@@ -236,7 +240,8 @@ export default class App extends React.Component {
   //           lng: -0.081679
   //         },
   //          flags: {
-  //         isUserMarkerShown: true,
+  //          ...prevState.flags,
+  //          isUserMarkerShown: true,
   //         }
   //         }), () => this.loadGooglePlacesRestaurants());
   //       // console.log('from locate user', this.state.restaurants);
@@ -261,6 +266,7 @@ export default class App extends React.Component {
               lng: position.coords.longitude
             },
             flags: {
+              ...prevState.flags,
               isUserMarkerShown: true
             }
           })/*, () => this.loadGooglePlacesRestaurants()*/);
@@ -278,6 +284,7 @@ export default class App extends React.Component {
               lng: -0.081679
             },
             flags: {
+              ...prevState.flags,
               isUserMarkerShown: true,
             }
           })/*, () => this.loadGooglePlacesRestaurants()*/);
@@ -324,10 +331,13 @@ export default class App extends React.Component {
         );
         // console.log('Restaurants after loading Google Places: ', restaurants);
 
-        self.setState({
+        self.setState(prevState => ({
           restaurants: restaurants,
-          loadingRestaurants: false,
-        })
+          flags: {
+            ...prevState.flags,
+            isLoadingRestaurants: false,
+          }
+        }))
       });
     });
   };
@@ -398,8 +408,7 @@ export default class App extends React.Component {
 
   render() {
     const style={height: '100vh'};
-    const { restaurants, ratingMin, ratingMax, center, userLocation,
-            loadingRestaurants, activeRest, flags } = this.state;
+    const { restaurants, ratingMin, ratingMax, center, userLocation, activeRest, flags } = this.state;
     const { handleMaxRate, handleMinRate, handleReset, handleActiveRest,
             handleCenterChange, handleNewData, handleZoomChange, handleRestSearch } = this;
 
@@ -410,8 +419,8 @@ export default class App extends React.Component {
           <Grid>
             <Grid.Row centered columns={2} only='computer' style={style}>
               <GridColumn width={9}>
-                <Dimmer.Dimmable dimmed={loadingRestaurants}>
-                  <Dimmer active={loadingRestaurants} inverted>
+                <Dimmer.Dimmable dimmed={flags.isLoadingRestaurants}>
+                  <Dimmer active={flags.isLoadingRestaurants} inverted>
                     <Loader>LoadingRestaurants</Loader>
                   </Dimmer>
 
@@ -430,8 +439,8 @@ export default class App extends React.Component {
                 </Dimmer.Dimmable>
               </GridColumn>
               <GridColumn width={7}>
-                <Dimmer.Dimmable dimmed={loadingRestaurants}>
-                  <Dimmer active={loadingRestaurants} inverted>
+                <Dimmer.Dimmable dimmed={flags.isLoadingRestaurants}>
+                  <Dimmer active={flags.isLoadingRestaurants} inverted>
                     <Loader>LoadingRestaurants</Loader>
                   </Dimmer>
                   <Map
@@ -461,8 +470,8 @@ export default class App extends React.Component {
         <Grid>
           <Grid.Row centered columns={2} only='tablet' style={style}>
             <GridColumn width={9}>
-              <Dimmer.Dimmable dimmed={loadingRestaurants}>
-                <Dimmer active={loadingRestaurants} inverted>
+              <Dimmer.Dimmable dimmed={flags.isLoadingRestaurants}>
+                <Dimmer active={flags.isLoadingRestaurants} inverted>
                   <Loader>LoadingRestaurants</Loader>
                 </Dimmer>
 
@@ -481,8 +490,8 @@ export default class App extends React.Component {
               </Dimmer.Dimmable>
             </GridColumn>
             <GridColumn width={7}>
-              <Dimmer.Dimmable dimmed={loadingRestaurants}>
-                <Dimmer active={loadingRestaurants} inverted>
+              <Dimmer.Dimmable dimmed={flags.isLoadingRestaurants}>
+                <Dimmer active={flags.isLoadingRestaurants} inverted>
                   <Loader>LoadingRestaurants</Loader>
                 </Dimmer>
 
@@ -511,8 +520,8 @@ export default class App extends React.Component {
         <Grid>
           <Grid.Row centered columns={1} only='mobile' style={style}>
             <GridColumn>
-              <Dimmer.Dimmable dimmed={loadingRestaurants}>
-                <Dimmer active={loadingRestaurants} inverted>
+              <Dimmer.Dimmable dimmed={flags.isLoadingRestaurants}>
+                <Dimmer active={flags.isLoadingRestaurants} inverted>
                   <Loader>LoadingRestaurants</Loader>
                 </Dimmer>
 
@@ -531,7 +540,6 @@ export default class App extends React.Component {
                   center={center}
                   flags={flags}
                   userLocation={userLocation}
-                  loadingRestaurants={loadingRestaurants}
 
                   handleRestSearch={handleRestSearch}
                   handleZoomChange={handleZoomChange}

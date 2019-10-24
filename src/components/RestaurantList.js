@@ -11,10 +11,6 @@ import RestaurantContent from "./RestaurantContent";
 //  this name component.. ????
 
 export default class RestaurantList extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
 
   handleAccordionClick = (e, titleProps) =>  {
     const { index } = titleProps;

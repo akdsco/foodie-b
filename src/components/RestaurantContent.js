@@ -7,6 +7,7 @@ import ReviewItem from "./ReviewItem";
 import {Container, GridColumn, List, Image, Button, Icon, Modal, Header, Segment, Loader} from "semantic-ui-react";
 import Grid from "semantic-ui-react/dist/commonjs/collections/Grid";
 import AddReview from "./AddReview";
+import ReviewItemAlt from "./ReviewItemAlt";
 
 export default class RestaurantContent extends React.Component {
   constructor(props) {
@@ -156,6 +157,10 @@ export default class RestaurantContent extends React.Component {
             <GridColumn>
               <h4>Most helpful reviews</h4>
               {getRestReviews()}
+              <ReviewItemAlt
+                item={restaurant.details.reviews[0]}
+                isFromFile={true}
+              />
             </GridColumn>
           </Grid.Row>
 
@@ -173,6 +178,7 @@ export default class RestaurantContent extends React.Component {
                           compact animated='vertical'
                           color='blue'
                           name='loadMoreReviewModalOpen'
+                          className='load-more-reviews'
                           value={true}
                   >
                     <Button.Content hidden>
