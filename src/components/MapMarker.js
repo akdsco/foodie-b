@@ -1,11 +1,10 @@
 // Import Components
-
 import React from "react";
 import { Marker, InfoWindow } from "react-google-maps";
 import {Card, Header, Icon, Image, Label} from "semantic-ui-react";
 
 const MapMarker = (props) =>  {
-  const { index } = props;
+  const { index, restaurant, activeRest, position } = props;
 
   const handleMarkerClick = () =>  {
     props.handleActiveRest(index);
@@ -13,35 +12,37 @@ const MapMarker = (props) =>  {
 
   return (
     <div>
-      {props.activeRest !== props.index &&
+      {activeRest !== index &&
       <Marker
-        position={{lat: props.position.lat, lng: props.position.lng}}
+        position={{lat: position.lat, lng: position.lng}}
         onClick={handleMarkerClick}
         {...props}
       />}
-      {props.activeRest === props.index &&
+      {activeRest === index &&
       <InfoWindow
-        position={{lat: props.position.lat, lng: props.position.lng}}
+        position={{lat: position.lat, lng: position.lng}}
         onCloseClick={handleMarkerClick}>
         <div>
           <Header as='h3' textAlign='center'>
-            {props.restaurant.restaurantName}
+            {restaurant.restaurantName}
           </Header>
           <Card>
-            <Image src={props.restaurant.isFromFile ? props.restaurant.details.photoUrl : props.restaurant.streetViewURL} wrapped ui={false} />
+            <Image src={restaurant.isFromFile ?
+              restaurant.details.photoUrl :
+              restaurant.streetViewURL} wrapped ui={false} />
             <Card.Content>
               <Card.Meta>
-                <Label tag color={props.restaurant.open ? 'green' : 'red'} size='small'>
-                  {props.restaurant.open ? 'Open' : 'Closed'}
+                <Label tag color={restaurant.open ? 'green' : 'red'} size='small'>
+                  {restaurant.open ? 'Open' : 'Closed'}
                 </Label>
               </Card.Meta>
               <Card.Description>
-                {props.restaurant.address}
+                {restaurant.address}
               </Card.Description>
             </Card.Content>
             <Card.Content extra>
               <Icon name='users' />
-              {props.restaurant.numberOfReviews} Reviews
+              {restaurant.numberOfReviews} Reviews
             </Card.Content>
           </Card>
         </div>

@@ -21,7 +21,7 @@ export default class AddRestaurant extends React.Component {
     this.props.closeInfoWindow();
   };
 
-  handleSubmit = async () => {
+  handleSubmit = () => {
     const { newRestData, restaurants } = this.props;
     const { restName, imageUrl } = this.state;
     const id = restaurants.length;
@@ -107,7 +107,7 @@ export default class AddRestaurant extends React.Component {
           </Modal.Content>
         </Modal>
       </div>
-
     )
   }
+
 }

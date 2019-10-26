@@ -3,15 +3,13 @@ import '../css/style.css'
 
 // Import images
 import logoImg from '../img/logo.png'
-import Sticky from "semantic-ui-react/dist/commonjs/modules/Sticky";
 
 // Import Components
 import React from 'react'
-import { Menu, Segment } from "semantic-ui-react";
-import ItemGroup from "semantic-ui-react/dist/commonjs/views/Item/ItemGroup"
+import Map from "./Map";
 import Filter from './Filter'
 import RestaurantList from "./RestaurantList";
-import Map from "./Map";
+import { Menu, Segment, Sticky, ItemGroup} from "semantic-ui-react";
 
 export default class DataDisplay extends React.Component {
   constructor(props) {
@@ -100,7 +98,6 @@ export default class DataDisplay extends React.Component {
             <Filter
               ratingMax={ratingMax}
               ratingMin={ratingMin}
-
               handleMinRate={handleMinRate}
               handleMaxRate={handleMaxRate}
               handleReset={handleReset}

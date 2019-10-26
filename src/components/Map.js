@@ -6,19 +6,20 @@ import '../css/style.css';
 
 // Import Components
 import React from 'react';
-import {withScriptjs, withGoogleMap, GoogleMap, Marker, InfoWindow} from "react-google-maps";
-import {compose, lifecycle, withProps} from "recompose";
 import MapMarker from "./MapMarker";
 import AddRestaurant from "./AddRestaurant";
-import {Form} from "semantic-ui-react";
+// Dependencies
 import Geocode from "react-geocode";
+import {Form} from "semantic-ui-react";
+import {compose, lifecycle, withProps} from "recompose";
+import {withScriptjs, withGoogleMap, GoogleMap, Marker, InfoWindow} from "react-google-maps";
 
-// const _ = require("lodash");
+// Import Map Styles
 const styles = require('../data/GoogleMapStyles.json');
 
 const MapConst = compose(
   withProps({
-    googleMapURL: "https://maps.googleapis.com/maps/api/js?key=" + process.env.REACT_APP_G_HTTP_RESTRICTED_API + "&v=3.exp&libraries=places,geometry,drawing",
+    googleMapURL: "https://maps.googleapis.com/maps/api/js?key=" + process.env.REACT_APP_G_API + "&v=3.exp&libraries=places,geometry,drawing",
     loadingElement: <div style={{ height: `100%` }} />,
     containerElement: <div style={{ height: `100vh` }} />,
     mapElement: <div style={{ height: `100%` }} />
@@ -28,8 +29,6 @@ const MapConst = compose(
       const refs = {};
 
       this.setState({
-        bounds: null,
-        markers: [],
         onMapMounted: ref => {
           refs.map = ref;
         },
@@ -37,9 +36,6 @@ const MapConst = compose(
           this.props.handleCenterChange( {
             lat: refs.map.getCenter().lat(),
             lng: refs.map.getCenter().lng()
-          });
-          this.setState({
-            bounds: refs.map.getBounds()
           });
         },
         onZoomChanged: () => {
@@ -68,7 +64,7 @@ const MapConst = compose(
     }}
   >
 
-    {/* Loading user Marker if browser locates, else hardcoded value for London, City of*/}
+    {/* Load user Marker */}
     {props.userMarker &&
       <Marker
         icon={{url: userLocationMarker}}
@@ -76,7 +72,7 @@ const MapConst = compose(
       />
     }
 
-    {/* Loading Restaurant Markers */}
+    {/* Load Restaurant Markers */}
     {props.restaurants.map( (r, id) =>
       <MapMarker
         key={id}
@@ -88,6 +84,7 @@ const MapConst = compose(
       />)
     }
 
+    {/* Load Add Restaurant InfoWindow on right click */}
     {props.mapState.isRestAddButtonDisplayed &&
       <InfoWindow
         position={{lat: props.mapState.newRestData.lat, lng: props.mapState.newRestData.lng}}
@@ -156,7 +153,7 @@ export default class Map extends React.PureComponent {
 
   render() {
     const { userLocation, restaurants, center, activeRest, handleRestSearch, flags,
-            handleActiveRest, handleCenterChange, handleNewData, handleZoomChange,   } = this.props;
+            handleActiveRest, handleCenterChange, handleNewData, handleZoomChange } = this.props;
     const { closeInfoWindow, openInfoWindow, state } = this;
 
     return(
@@ -177,14 +174,6 @@ export default class Map extends React.PureComponent {
           handleActiveRest={handleActiveRest}
           handleCenterChange={handleCenterChange}
         />
-        {/*<Button*/}
-        {/*  className='toggle-button'*/}
-        {/*  toggle*/}
-        {/*  active={true}*/}
-        {/*  onClick={() => {}}*/}
-        {/*>*/}
-        {/*  Updating Restaurants as you move the map*/}
-        {/*</Button>*/}
         <Form.Checkbox
           className='toggle-button'
           label='Search as I move the map'

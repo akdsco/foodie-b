@@ -47,6 +47,11 @@ body {
     background: rgba(255,255,255, .85);
 }
 
+.paragraph-link {
+    cursor: pointer;
+    color: dodgerblue;
+}
+
 @media (max-width: 768px) {
     .ui.styled.accordion {
         width: 100%;

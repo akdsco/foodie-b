@@ -16,9 +16,8 @@ export default class RestaurantContent extends React.Component {
       loadMoreReviewModalOpen: false,
       loadingImg: true,
     };
+    this.placeholderUrl = 'https://bit.ly/2JnrFZ6';
   }
-
-  // TODO is it a good approach from performance point of view, to have couple of functions sourcing same prop..
 
   componentDidMount() {
     if(this.props.restaurant.isFromFile) {
@@ -82,7 +81,7 @@ export default class RestaurantContent extends React.Component {
 
 
   getRestPhotoUrl = () => {
-    let url = 'https://react.semantic-ui.com/images/wireframe/image.png';
+    let url = this.placeholderUrl;
     const { restaurant } = this.props;
 
     if(restaurant.details) {
@@ -133,9 +132,10 @@ export default class RestaurantContent extends React.Component {
             <GridColumn width={9}>
               {/*Right Column - Photo */}
               <Segment>
-                {/*<Dimmer inverted active={this.state.loadingImg}>*/}
-                  <Loader active={this.state.loadingImg} content='Loading image' />
-                {/*</Dimmer>*/}
+                <Loader active={restaurant.isFromFile ? this.state.loadingImg :
+                  getRestPhotoUrl() === this.placeholderUrl}
+                        content='Loading image'
+                />
                 <Image
                   src={getRestPhotoUrl()}
                   fluid
@@ -222,7 +222,6 @@ export default class RestaurantContent extends React.Component {
                     <Header>Tell us what did you like about {restaurant.restaurantName}?</Header>
                     <AddReview
                       restaurant={restaurant}
-
                       handleClose={handleChange}
                       handleNewData={handleNewData}
                     />

@@ -6,26 +6,24 @@ import './css/style.css';
 
 // Import Components
 import React from 'react';
-import DataDisplay from './components/DataDisplay';
-import Container from "semantic-ui-react/dist/commonjs/elements/Container";
-import Grid from "semantic-ui-react/dist/commonjs/collections/Grid";
-import GridColumn from "semantic-ui-react/dist/commonjs/collections/Grid/GridColumn";
 import Map from "./components/Map";
-import {Dimmer, Loader} from "semantic-ui-react";
+import DataDisplay from './components/DataDisplay';
+import {Dimmer, Loader, Container, Grid, GridColumn} from "semantic-ui-react";
 
-// TODO implement loader for picture inside accordion item (take's 1-2 sec sometimes)
-// DONE TODO add scroll to currently open restaurant                                                                        --> Struggling to get that done, ask mentor for help.
+// DONE TODO implement loader for picture inside accordion item (take's 1-2 sec sometimes)                               --> Struggling to get that done, ask mentor for help.
 // TODO add placeholders? (Look into Semantic UI placeholders)
 
-// TODO design mobile and tablet version of the app (static UI elements + css)
-// TODO add dynamic content to mobile and tablet versions
+// DONE TODO design mobile and tablet version of the app (static UI elements + css)
+// DONE TODO add dynamic content to mobile and tablet versions
 // TODO redo opening times.. maybe just say: 'open today: hours' ?
+// TODO add form validation
 //
 // TODO FEATURE -- Search that looks through current list of rest and searches if name is in it
 
 // Errors -> Talk to Mentor
 // TODO Each child in a list should have a unique "key" prop. => check Accordion Content => when clicking on 10th G.Places
 //  loaded restaurant gaucho, only appears on first load, then it doesn't for any other item or click
+// TODO RestaurantContent => is it a good approach from performance point of view, to have couple of functions sourcing same prop..
 
 
 export default class App extends React.Component {
@@ -221,8 +219,8 @@ export default class App extends React.Component {
   //       lng: position.coords.longitude
   //     },
   //      flags: {
-  //     ...prevState.flags,
-  //     isUserMarkerShown: true
+  //       ...prevState.flags,
+  //       isUserMarkerShown: true
   //     }
   //      }), () => this.loadGooglePlacesRestaurants());
   //   }, (error) => {
@@ -239,8 +237,8 @@ export default class App extends React.Component {
   //           lng: -0.081679
   //         },
   //          flags: {
-  //          ...prevState.flags,
-  //          isUserMarkerShown: true,
+  //            ...prevState.flags,
+  //            isUserMarkerShown: true,
   //         }
   //         }), () => this.loadGooglePlacesRestaurants());
   //       // console.log('from locate user', this.state.restaurants);
@@ -306,7 +304,6 @@ export default class App extends React.Component {
       method: 'GET',
     }).then(response => {
       response.json().then(data => {
-        console.log('Google Places Restaurants (raw api data)', data);
         let count = restaurants.length - 1;
 
         data.results.forEach( r => {
@@ -328,7 +325,6 @@ export default class App extends React.Component {
             restaurants.push(restaurantObject);
           },
         );
-        // console.log('Restaurants after loading Google Places: ', restaurants);
 
         self.setState(prevState => ({
           restaurants: restaurants,
@@ -348,10 +344,9 @@ export default class App extends React.Component {
 
     // if details already fetched previously --> don't fetch again, otherwise yes
     if(!currentRestaurantsState[index].details) {
-      console.log('First time query, fetching placeID data now');
+      console.log('First time query, fetching placeID: ' + placeID);
 
       if(placeID) {
-        // console.log(placeID);
         let url = 'https://maps.googleapis.com/maps/api/place/details/json?placeid=' + placeID + '&key=' + process.env.REACT_APP_G_API;
 
         fetch(url, {

@@ -3,8 +3,8 @@ import '../css/style.css';
 
 // Import Components
 import React from 'react'
-import {Grid, Image, Header, GridColumn,} from 'semantic-ui-react'
 import { SingleRatingComponent } from "./RatingComponents";
+import {Grid, Image, Header, GridColumn,} from 'semantic-ui-react'
 
 export default class ReviewItem extends React.Component {
   constructor(props) {
@@ -13,7 +13,8 @@ export default class ReviewItem extends React.Component {
       isReviewLong: false,
       isFullReviewDisplayed: false,
       excerptReview: ''
-    }
+    };
+    this.placeholderUrl = 'https://bit.ly/2VPaipa';
   }
 
   /* =====================
@@ -53,7 +54,7 @@ export default class ReviewItem extends React.Component {
     // Component Props
     const { item } = this.props;
     const { isReviewLong, excerptReview, isFullReviewDisplayed } = this.state;
-    const genericReviewImgUrl = 'https://bit.ly/2VPaipa';
+    const { placeholderUrl, handleReviewOpen } = this;
 
     return(
       <Grid centered>
@@ -61,7 +62,7 @@ export default class ReviewItem extends React.Component {
           <Image
             className='center-image'
             size='small'
-            src={item.image_url ? item.image_url : genericReviewImgUrl}
+            src={item.image_url ? item.image_url : placeholderUrl}
           />
         </GridColumn>
 
@@ -70,8 +71,8 @@ export default class ReviewItem extends React.Component {
           <div>
             {!isReviewLong ? item.comment : isFullReviewDisplayed ? item.comment : excerptReview}
             {isReviewLong ? isFullReviewDisplayed ?
-              <a href='#' onClick={this.handleReviewOpen}><h5>show less</h5></a> :
-              <a href='#' onClick={this.handleReviewOpen}>read more</a> :
+              <p className='paragraph-link' onClick={handleReviewOpen}>show less</p> :
+              <p className='paragraph-link' onClick={handleReviewOpen}>read more</p> :
               ''
             }
           </div>
@@ -82,8 +83,8 @@ export default class ReviewItem extends React.Component {
             <div>
               {!isReviewLong ? item.comment : isFullReviewDisplayed ? item.comment : excerptReview}
               {isReviewLong ? isFullReviewDisplayed ?
-                <a href='#' onClick={this.handleReviewOpen}> Show less</a> :
-                <a href='#' onClick={this.handleReviewOpen}><p>read more</p></a> :
+                <p className='paragraph-link' onClick={handleReviewOpen}>show less</p> :
+                <p className='paragraph-link' onClick={handleReviewOpen}>read more</p> :
                 ''
               }
             </div>
