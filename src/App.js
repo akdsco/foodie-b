@@ -14,7 +14,7 @@ import Map from "./components/Map";
 import {Dimmer, Loader} from "semantic-ui-react";
 
 // TODO implement loader for picture inside accordion item (take's 1-2 sec sometimes)
-// TODO add scroll to currently open restaurant                                                                        --> Struggling to get that done, ask mentor for help.
+// DONE TODO add scroll to currently open restaurant                                                                        --> Struggling to get that done, ask mentor for help.
 // TODO add placeholders? (Look into Semantic UI placeholders)
 
 // TODO design mobile and tablet version of the app (static UI elements + css)
