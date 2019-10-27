@@ -74,6 +74,7 @@ export default class RestaurantList extends React.Component {
             <Accordion.Content  active={activeRest === restaurant.id}>
               <RestaurantContent
                 restaurant={restaurant}
+                activeRest={activeRest}
                 handleNewData={handleNewData}
               />
             </Accordion.Content>

@@ -10,11 +10,7 @@ import Map from "./components/Map";
 import DataDisplay from './components/DataDisplay';
 import {Dimmer, Loader, Container, Grid, GridColumn} from "semantic-ui-react";
 
-// DONE TODO implement loader for picture inside accordion item (take's 1-2 sec sometimes)                               --> Struggling to get that done, ask mentor for help.
 // TODO add placeholders? (Look into Semantic UI placeholders)
-
-// DONE TODO design mobile and tablet version of the app (static UI elements + css)
-// DONE TODO add dynamic content to mobile and tablet versions
 // TODO redo opening times.. maybe just say: 'open today: hours' ?
 // TODO add form validation
 //
@@ -24,7 +20,7 @@ import {Dimmer, Loader, Container, Grid, GridColumn} from "semantic-ui-react";
 // TODO Each child in a list should have a unique "key" prop. => check Accordion Content => when clicking on 10th G.Places
 //  loaded restaurant gaucho, only appears on first load, then it doesn't for any other item or click
 // TODO RestaurantContent => is it a good approach from performance point of view, to have couple of functions sourcing same prop..
-
+// TODO How to fetch data only when user requests it example: Restaurant Content google static map url images loaded only when user clicks on the map and is viewing on device with innerWidth lover than 768px
 
 export default class App extends React.Component {
   constructor(props) {

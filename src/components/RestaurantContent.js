@@ -67,7 +67,7 @@ export default class RestaurantContent extends React.Component {
   };
 
   getRestPhoneNum = () => {
-    let number = 'tel:';
+    let number = '';
     const { restaurant } = this.props;
 
     if(restaurant.details) {
@@ -78,7 +78,6 @@ export default class RestaurantContent extends React.Component {
 
     return number;
   };
-
 
   getRestPhotoUrl = () => {
     let url = this.placeholderUrl;
@@ -98,21 +97,28 @@ export default class RestaurantContent extends React.Component {
     return url
   };
 
+  getGoogleMapStaticUrl = () => {
+    const { restaurant } = this.props;
+    return 'https://maps.googleapis.com/maps/api/staticmap?center='+ restaurant.lat + ',' + restaurant.long + '&zoom=16&size=640x480&markers=color:red%7Clabel:Bronco%7C'+ restaurant.lat + ',' + restaurant.long + '&key=' + process.env.REACT_APP_G_API
+  };
+
+
+
   render() {
-    const { handleChange, getRestPhoneNum, getRestOpenTime, getRestPhotoUrl, getRestReviews } = this;
+    const { handleChange, getRestPhoneNum, getRestOpenTime, getRestPhotoUrl, getRestReviews, getGoogleMapStaticUrl } = this;
     const { addReviewModalOpen, loadMoreReviewModalOpen } = this.state;
-    const { restaurant, handleNewData } = this.props;
+    const { restaurant, handleNewData, activeRest } = this.props;
 
     return(
       <Container className='container-accordion'>
         <Grid>
-          <Grid.Row columns={2}>
-            <GridColumn width={7}>
+          <Grid.Row columns={2} only='computer tablet'>
+            <GridColumn width={7} >
               {/*  Left Column - Data  */}
               <List>
                 <List.Item key={0}>
                   <List.Icon name='phone' />
-                  <List.Content><a href={getRestPhoneNum()}>Call us</a></List.Content>
+                  <List.Content><a href={'tel:' + getRestPhoneNum()}>{getRestPhoneNum()}</a></List.Content>
                 </List.Item>
                 <List.Item key={1}>
                   <List.Icon name='linkify' />
@@ -149,6 +155,23 @@ export default class RestaurantContent extends React.Component {
                 />
               </Segment>
 
+            </GridColumn>
+          </Grid.Row>
+
+          <Grid.Row columns={2} only='mobile'>
+            <GridColumn>
+              <div className='my-2'>
+                <Icon name='phone'/><a className='mr-2' href={'tel:' + getRestPhoneNum()}>{getRestPhoneNum()}</a>
+                <Icon name='linkify'/><a href={restaurant.details && restaurant.details.link}>Visit Website</a>
+              </div>
+            </GridColumn>
+            <GridColumn textAlign='center'>
+              <div className='my-2'>
+                <p>Open today: 7am - 9pm</p>
+              </div>
+            </GridColumn>
+            <GridColumn width={16}>
+              <Image src={''/*getGoogleMapStaticUrl()*/} fluid />
             </GridColumn>
           </Grid.Row>
 
