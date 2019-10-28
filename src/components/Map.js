@@ -10,7 +10,7 @@ import MapMarker from "./MapMarker";
 import AddRestaurant from "./AddRestaurant";
 // Dependencies
 import Geocode from "react-geocode";
-import {Form} from "semantic-ui-react";
+import { Button, Icon } from "semantic-ui-react";
 import {compose, lifecycle, withProps} from "recompose";
 import {withScriptjs, withGoogleMap, GoogleMap, Marker, InfoWindow} from "react-google-maps";
 
@@ -20,9 +20,9 @@ const styles = require('../data/GoogleMapStyles.json');
 const MapConst = compose(
   withProps({
     googleMapURL: "https://maps.googleapis.com/maps/api/js?key=" + process.env.REACT_APP_G_API + "&v=3.exp&libraries=places,geometry,drawing",
-    loadingElement: <div style={{ height: `100%` }} />,
-    containerElement: <div style={{ height: `100vh` }} />,
-    mapElement: <div style={{ height: `100%` }} />
+    loadingElement: <div className='loadingElement'/>,
+    containerElement: <div className='containerElement'/>,
+    mapElement: <div className='mapElement' />
   }),
   lifecycle({
     componentDidMount() {
@@ -174,13 +174,13 @@ export default class Map extends React.PureComponent {
           handleActiveRest={handleActiveRest}
           handleCenterChange={handleCenterChange}
         />
-        <Form.Checkbox
-          className='toggle-button'
-          label='Search as I move the map'
-          checked={flags.isRestSearchAllowed}
-          name='searchToggle'
-          onChange={handleRestSearch}
-        />
+        <Button className='toggle-button' toggle active={flags.isRestSearchAllowed} onClick={handleRestSearch}>
+          {flags.isRestSearchAllowed &&
+          <p><Icon name='check square' />Search as I move the map</p>}
+          {!flags.isRestSearchAllowed &&
+          <p><Icon name='square outline' />Search as I move the map</p>}
+        </Button>
+
       </div>
     )
   }

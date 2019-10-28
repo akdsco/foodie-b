@@ -6,7 +6,7 @@ body {
 /* Custom Style Modifications */
 
 .data-display {
-    height: 100vh;
+    height: 102vh;
     overflow-y: visible;
     overflow-x: hidden;
 }
@@ -50,10 +50,10 @@ body {
 
 .toggle-button {
     position: absolute;
-    top: 30px;
-    left: 30px;
-    padding: 7px 16px;
-    background: rgba(255,255,255, .85);
+    top: 20px;
+    left: 20px;
+    padding: 7px 16px !important;
+    /*background: rgba(255,255,255, .85);*/
 }
 
 .paragraph-link {
@@ -61,10 +61,60 @@ body {
     color: dodgerblue;
 }
 
-@media (max-width: 768px) {
+.segment-test {
+    width: 85vh;
+}
+
+/* Map Style */
+
+.loadingElement {
+    height: 100%;
+}
+
+.containerElement {
+    height: 100vh;
+}
+
+.mapElement {
+    height: 100%;
+}
+
+@media (max-width: 767px) {
     .ui.styled.accordion {
         width: 100%;
     }
+
+    .loadingElement {
+        height: 100%;
+    }
+
+    .containerElement {
+        height: 82vh;
+    }
+
+    .mapElement {
+        height: 100%;
+    }
+
+    .segment-test {
+        width: 100%;
+    }
+
+    @media (max-height: 590px) {
+        .containerElement {
+            height: 75vh;
+        }
+    }
+
+    @media (min-height: 800px) {
+        .containerElement {
+            height: 87vh;
+        }
+    }
+
+    /*.data-display {*/
+    /*    height: 82vh;*/
+    /*}*/
 }
 
 @media (max-width: 390px) {

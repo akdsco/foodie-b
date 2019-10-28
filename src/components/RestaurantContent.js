@@ -23,7 +23,6 @@ export default class RestaurantContent extends React.Component {
     if(this.props.restaurant.isFromFile) {
       this.setState({loadingImg: false});
     }
-    console.log('done loadingImg to false');
   }
 
   handleChange = (e, { name, value }) => this.setState({ [name]: value });
@@ -102,6 +101,17 @@ export default class RestaurantContent extends React.Component {
     return 'https://maps.googleapis.com/maps/api/staticmap?center='+ restaurant.lat + ',' + restaurant.long + '&zoom=16&size=640x480&markers=color:red%7Clabel:Bronco%7C'+ restaurant.lat + ',' + restaurant.long + '&key=' + process.env.REACT_APP_G_API
   };
 
+  getOpeningHours = () => {
+    const today = new Date();
+    const { restaurant } = this.props;
+    let openingHours = '';
+
+    if(restaurant.details) {
+      openingHours = restaurant.details.openingHours ? 'api' : 'file'
+    }
+    // console.log(openingHours);
+    // return openingHours;
+  };
 
 
   render() {
@@ -167,7 +177,7 @@ export default class RestaurantContent extends React.Component {
             </GridColumn>
             <GridColumn textAlign='center'>
               <div className='my-2'>
-                <p>Open today: 7am - 9pm</p>
+                <p>Open today: 7am - 9pm {this.getOpeningHours()}</p>
               </div>
             </GridColumn>
             <GridColumn width={16}>

@@ -30,7 +30,7 @@ export default class AddReview extends React.Component {
   };
 
   render() {
-    const { reviewContent, reviewersName } = this.state;
+    const { reviewContent, reviewersName, reviewStars } = this.state;
     const { handleChange, handleSubmit } = this;
     const { handleClose } = this.props;
 
@@ -63,6 +63,9 @@ export default class AddReview extends React.Component {
         <Button
           name='addReviewModalOpen'
           value={false}
+          disabled={reviewStars === '' ||
+                    reviewersName.length < 3 ||
+                    reviewContent.length < 5}
           onClick={handleSubmit}
           positive
         >

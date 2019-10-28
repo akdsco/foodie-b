@@ -12,6 +12,7 @@ export default class AddRestaurant extends React.Component {
     modalOpen: false,
     restName: '',
     imageUrl: '',
+    isTermsChecked: false,
   };
 
   handleChange = (e, { name, value }) => this.setState({ [name]: value });
@@ -48,7 +49,7 @@ export default class AddRestaurant extends React.Component {
   };
 
   render() {
-    const { restName, imageUrl, modalOpen } = this.state;
+    const { restName, imageUrl, modalOpen, isTermsChecked } = this.state;
     const { closeInfoWindow } = this.props;
     const { handleChange, handleCancel, handleSubmit } = this;
 
@@ -95,10 +96,18 @@ export default class AddRestaurant extends React.Component {
                 </Form.Field>
 
                 <Form.Field required>
-                  <Checkbox label='I agree to the Terms and Conditions' />
+                  <Checkbox
+                    checked={isTermsChecked}
+                    name='isTermsChecked'
+                    onClick={handleChange}
+                    value={!isTermsChecked}
+                    label='I agree to the Terms and Conditions' required/>
                 </Form.Field>
                 <Button.Group>
-                  <Button onClick={handleSubmit} positive>Submit</Button>
+                  <Button
+                    disabled={restName.length <= 3 || !isTermsChecked}
+                    onClick={handleSubmit} positive
+                  >Submit</Button>
                   <Button.Or />
                   <Button onClick={handleCancel}>Cancel</Button>
                 </Button.Group>

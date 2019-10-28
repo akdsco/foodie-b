@@ -411,7 +411,7 @@ export default class App extends React.Component {
               <GridColumn width={9}>
                 <Dimmer.Dimmable dimmed={flags.isLoadingRestaurants}>
                   <Dimmer active={flags.isLoadingRestaurants} inverted>
-                    <Loader>LoadingRestaurants</Loader>
+                    <Loader>Loading Restaurants</Loader>
                   </Dimmer>
 
                   <DataDisplay
@@ -431,7 +431,7 @@ export default class App extends React.Component {
               <GridColumn width={7}>
                 <Dimmer.Dimmable dimmed={flags.isLoadingRestaurants}>
                   <Dimmer active={flags.isLoadingRestaurants} inverted>
-                    <Loader>LoadingRestaurants</Loader>
+                    <Loader>Loading Restaurants</Loader>
                   </Dimmer>
                   <Map
                     restaurants={restaurants.filter(restaurant =>
@@ -462,7 +462,7 @@ export default class App extends React.Component {
             <GridColumn width={9}>
               <Dimmer.Dimmable dimmed={flags.isLoadingRestaurants}>
                 <Dimmer active={flags.isLoadingRestaurants} inverted>
-                  <Loader>LoadingRestaurants</Loader>
+                  <Loader>Loading Restaurants</Loader>
                 </Dimmer>
 
                 <DataDisplay
@@ -482,7 +482,7 @@ export default class App extends React.Component {
             <GridColumn width={7}>
               <Dimmer.Dimmable dimmed={flags.isLoadingRestaurants}>
                 <Dimmer active={flags.isLoadingRestaurants} inverted>
-                  <Loader>LoadingRestaurants</Loader>
+                  <Loader>Loading Restaurants</Loader>
                 </Dimmer>
 
                 <Map
@@ -512,7 +512,7 @@ export default class App extends React.Component {
             <GridColumn>
               <Dimmer.Dimmable dimmed={flags.isLoadingRestaurants}>
                 <Dimmer active={flags.isLoadingRestaurants} inverted>
-                  <Loader>LoadingRestaurants</Loader>
+                  <Loader>Loading Restaurants</Loader>
                 </Dimmer>
 
                 <DataDisplay

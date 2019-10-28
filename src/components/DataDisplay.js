@@ -60,7 +60,7 @@ export default class DataDisplay extends React.Component {
               name='Explore Restaurants'
               active={activeItem === 'Explore Restaurants'}
               onClick={this.handleItemClick} />
-            {width < 767 &&
+            {width < 768 &&
             <Menu.Item
               name='Map'
               active={activeItem === 'Map'}
@@ -106,7 +106,7 @@ export default class DataDisplay extends React.Component {
           </Segment>
         }
         {activeItem === 'Map' &&
-          <Segment>
+          <Segment className='segment-test'>
               <Map
                 restaurants={restaurants.filter(restaurant =>
                   restaurant.avgRating >= ratingMin &&
