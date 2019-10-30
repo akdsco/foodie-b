@@ -67,6 +67,7 @@ export default class RestaurantList extends React.Component {
               index={restaurant.id}
               onClick={this.handleAccordionClick}>
                 <RestaurantTitle
+                  active={activeRest === restaurant.id}
                   item={restaurant}
                   avgRating={restaurant.avgRating}
                 />

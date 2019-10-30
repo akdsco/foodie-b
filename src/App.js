@@ -12,9 +12,9 @@ import {Dimmer, Loader, Container, Grid, GridColumn} from "semantic-ui-react";
 
 // TODO add placeholders? (Look into Semantic UI placeholders)
 // TODO redo opening times.. maybe just say: 'open today: hours' ?
-// TODO add form validation
-//
-// TODO FEATURE -- Search that looks through current list of rest and searches if name is in it
+// TODO redo to use react-google-maps/api
+// TODO reshape the app and implement use of React Hooks
+
 
 // Errors -> Talk to Mentor
 // TODO Each child in a list should have a unique "key" prop. => check Accordion Content => when clicking on 10th G.Places
@@ -306,7 +306,7 @@ export default class App extends React.Component {
             count++;
             let restaurantObject = {
               "id": count,
-              // "streetViewURL": 'https://maps.googleapis.com/maps/api/streetview?size=500x300&location='+ r.geometry.location.lat +','+ r.geometry.location.lng +'&heading=151.78&pitch=-0.76&key='+ process.env.REACT_APP_G_API,
+              "streetViewURL": 'https://maps.googleapis.com/maps/api/streetview?size=500x300&location='+ r.geometry.location.lat +','+ r.geometry.location.lng +'&heading=151.78&pitch=-0.76&key='+ process.env.REACT_APP_G_API,
               "place_id": r.place_id,
               "isFromFile": false,
               "numberOfReviews": r.user_ratings_total > 5 ? 5 : r.user_ratings_total,
@@ -397,7 +397,9 @@ export default class App extends React.Component {
   };
 
   render() {
-    const style={height: '100vh'};
+    const style={overflowY: 'hidden', paddingBottom: '0'};
+    const styleTablet={paddingTop: '2rem', paddingBottom: '0'};
+    const styleMobile={paddingTop: '2rem', paddingBottom: '0'};
     const { restaurants, ratingMin, ratingMax, center, userLocation, activeRest, flags } = this.state;
     const { handleMaxRate, handleMinRate, handleReset, handleActiveRest,
             handleCenterChange, handleNewData, handleZoomChange, handleRestSearch } = this;
@@ -458,7 +460,7 @@ export default class App extends React.Component {
 
         {/* Tablet Mode */}
         <Grid>
-          <Grid.Row centered columns={2} only='tablet' style={style}>
+          <Grid.Row centered columns={2} only='tablet' style={styleTablet}>
             <GridColumn width={9}>
               <Dimmer.Dimmable dimmed={flags.isLoadingRestaurants}>
                 <Dimmer active={flags.isLoadingRestaurants} inverted>
@@ -508,7 +510,7 @@ export default class App extends React.Component {
 
         {/*  Mobile Mode */}
         <Grid>
-          <Grid.Row centered columns={1} only='mobile' style={style}>
+          <Grid.Row centered columns={1} only='mobile' style={styleMobile}>
             <GridColumn>
               <Dimmer.Dimmable dimmed={flags.isLoadingRestaurants}>
                 <Dimmer active={flags.isLoadingRestaurants} inverted>

@@ -9,7 +9,7 @@ import React from 'react'
 import Map from "./Map";
 import Filter from './Filter'
 import RestaurantList from "./RestaurantList";
-import { Menu, Segment, Sticky, ItemGroup} from "semantic-ui-react";
+import { Menu, Segment, ItemGroup} from "semantic-ui-react";
 
 export default class DataDisplay extends React.Component {
   constructor(props) {
@@ -50,7 +50,6 @@ export default class DataDisplay extends React.Component {
 
     return (
       <div className='data-display'>
-        <Sticky>
           <Segment>
           <Menu size='mini'>
             <Menu.Item>
@@ -76,7 +75,6 @@ export default class DataDisplay extends React.Component {
             </Menu.Menu>
           </Menu>
           </Segment>
-        </Sticky>
 
         {activeItem === 'Explore Restaurants' &&
           <Segment>

@@ -4,20 +4,23 @@ import '../css/style.css';
 // Import Components
 import React from 'react';
 import ReviewItem from "./ReviewItem";
-import {Container, GridColumn, List, Image, Button, Icon, Modal, Header, Segment, Loader} from "semantic-ui-react";
-import Grid from "semantic-ui-react/dist/commonjs/collections/Grid";
+import {Container, GridColumn, Grid, List, Image, Button, Icon, Modal, Header, Segment, Loader, Placeholder} from "semantic-ui-react";
 import AddReview from "./AddReview";
 
+
+
+// TODO: rewrite this component, use state to hold all the data sourced from API, create one big function for all the data from API
+//  source it and update state. Do it when component mounts. Before that display placeholders for everything.
+
+
+
 export default class RestaurantContent extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
+  state = {
       addReviewModalOpen: false,
       loadMoreReviewModalOpen: false,
       loadingImg: true,
     };
-    this.placeholderUrl = 'https://bit.ly/2JnrFZ6';
-  }
+  placeholderUrl = 'https://bit.ly/2JnrFZ6';
 
   componentDidMount() {
     if(this.props.restaurant.isFromFile) {
@@ -56,10 +59,12 @@ export default class RestaurantContent extends React.Component {
     const { restaurant } = this.props;
 
     if(restaurant.details) {
+      let counter = -1;
       if(restaurant.details.openingHours) {
-        restaurant.details.openingHours.weekday_text.forEach(day => {
-          openingTimes.push(<p className='mb-2'>{day}</p>)
-        });
+        openingTimes = restaurant.details.openingHours.weekday_text.map( (day) => {
+          counter++;
+          return(<p key={counter} className='mb-2'>{day}</p>)}
+        );
       }
     }
     return openingTimes;
@@ -88,9 +93,10 @@ export default class RestaurantContent extends React.Component {
       if(data.photos) {
         // noinspection JSUnusedLocalSymbols
         let photoRef = data.photos[1] ? data.photos[1].photo_reference : (data.photos[0] ? data.photos[0].photo_reference : '');
-        // url = 'https://maps.googleapis.com/maps/api/place/photo?maxwidth=800&photoreference=' + photoRef + '&key=' + process.env.REACT_APP_G_API;
+        url = 'https://maps.googleapis.com/maps/api/place/photo?maxwidth=800&photoreference=' + photoRef + '&key=' + process.env.REACT_APP_G_API;
       } else if (typeof data.photoUrl !== 'undefined' && data.photoUrl !== '') {
         url = data.photoUrl;
+        // console.log('data.photoUrl', url);
       }
     }
     return url
@@ -102,13 +108,13 @@ export default class RestaurantContent extends React.Component {
   };
 
   getOpeningHours = () => {
-    const today = new Date();
-    const { restaurant } = this.props;
-    let openingHours = '';
-
-    if(restaurant.details) {
-      openingHours = restaurant.details.openingHours ? 'api' : 'file'
-    }
+    // const today = new Date();
+    // const { restaurant } = this.props;
+    // let openingHours = '';
+    //
+    // if(restaurant.details) {
+    //   openingHours = restaurant.details.openingHours ? 'api' : 'file'
+    // }
     // console.log(openingHours);
     // return openingHours;
   };
@@ -139,7 +145,7 @@ export default class RestaurantContent extends React.Component {
                   </List.Content>
                 </List.Item>
               </List>
-              <div>
+              <div key={0}>
                 <h4 className='mb-2'>Opening Times</h4>
                 {getRestOpenTime()}
               </div>
@@ -152,6 +158,11 @@ export default class RestaurantContent extends React.Component {
                   getRestPhotoUrl() === this.placeholderUrl}
                         content='Loading image'
                 />
+                {this.state.loadingImg ?
+                <Placeholder>
+                  <Placeholder.Image rectangular />
+                </Placeholder>
+                :
                 <Image
                   src={getRestPhotoUrl()}
                   fluid
@@ -163,6 +174,8 @@ export default class RestaurantContent extends React.Component {
                     ribbon: true,
                   }}
                 />
+                }
+
               </Segment>
 
             </GridColumn>
@@ -181,7 +194,7 @@ export default class RestaurantContent extends React.Component {
               </div>
             </GridColumn>
             <GridColumn width={16}>
-              <Image src={''/*getGoogleMapStaticUrl()*/} fluid />
+              <Image src={getGoogleMapStaticUrl()} fluid />
             </GridColumn>
           </Grid.Row>
 

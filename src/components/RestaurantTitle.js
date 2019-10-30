@@ -10,8 +10,8 @@ import {Button, Icon, Item } from "semantic-ui-react";
 import {AvgRatingComponent} from "./RatingComponents";
 
 const RestaurantTitle = (props) => {
-  // const photo = props.item.streetViewURL ? props.item.streetViewURL : (props.item.details.photoUrl ? props.item.details.photoUrl : fmjImg);
-  const photo = props.item.streetViewURL ? props.item.streetViewURL : fmjImg;
+  const photo = props.item.streetViewURL ? props.item.streetViewURL : (props.item.details.photoUrl ? props.item.details.photoUrl : fmjImg);
+  // const photo = props.item.streetViewURL ? props.item.streetViewURL : fmjImg;
 
   return(
     <Item>
@@ -24,7 +24,7 @@ const RestaurantTitle = (props) => {
         </Item.Meta>
         <Item.Extra>
           <AvgRatingComponent avgRating={props.avgRating}/>
-          <Button className='more-info' size='mini' floated='right'>More Info <Icon name='dropdown'/></Button>
+          <Button className='more-info' size='mini' floated='right'>{props.active ? 'Less' : 'More Info'}<Icon name='dropdown'/></Button>
         </Item.Extra>
       </Item.Content>
     </Item>)

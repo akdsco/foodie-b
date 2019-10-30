@@ -6,7 +6,7 @@ body {
 /* Custom Style Modifications */
 
 .data-display {
-    height: 102vh;
+    height: 100vh;
     overflow-y: visible;
     overflow-x: hidden;
 }
@@ -22,6 +22,11 @@ body {
 .center-image {
     margin: 0 auto;
     display: block !important;
+}
+
+.main-grid-row {
+    overflow-y: hidden;
+    padding-bottom: 0;
 }
 
 .ui.styled.accordion .accordion .content,
@@ -89,7 +94,7 @@ body {
     }
 
     .containerElement {
-        height: 82vh;
+        height: calc(100vh - 117px);
     }
 
     .mapElement {
@@ -99,22 +104,6 @@ body {
     .segment-test {
         width: 100%;
     }
-
-    @media (max-height: 590px) {
-        .containerElement {
-            height: 75vh;
-        }
-    }
-
-    @media (min-height: 800px) {
-        .containerElement {
-            height: 87vh;
-        }
-    }
-
-    /*.data-display {*/
-    /*    height: 82vh;*/
-    /*}*/
 }
 
 @media (max-width: 390px) {
