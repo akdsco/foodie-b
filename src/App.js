@@ -411,16 +411,17 @@ export default class App extends React.Component {
           <Grid>
             <Grid.Row centered columns={2} only='computer' style={style}>
               <GridColumn width={9}>
-                <Dimmer.Dimmable dimmed={flags.isLoadingRestaurants}>
-                  <Dimmer active={flags.isLoadingRestaurants} inverted>
-                    <Loader>Loading Restaurants</Loader>
-                  </Dimmer>
+                {/*<Dimmer.Dimmable dimmed={flags.isLoadingRestaurants}>*/}
+                {/*  <Dimmer active={flags.isLoadingRestaurants} inverted>*/}
+                {/*    <Loader>Loading Restaurants</Loader>*/}
+                {/*  </Dimmer>*/}
 
                   <DataDisplay
                     restaurants={restaurants}
                     ratingMax={ratingMax}
                     ratingMin={ratingMin}
                     activeRest={activeRest}
+                    flags={flags}
 
                     handleReset={handleReset}
                     handleMinRate={handleMinRate}
@@ -428,7 +429,7 @@ export default class App extends React.Component {
                     handleNewData={handleNewData}
                     handleActiveRest={handleActiveRest}
                   />
-                </Dimmer.Dimmable>
+                {/*</Dimmer.Dimmable>*/}
               </GridColumn>
               <GridColumn width={7}>
                 <Dimmer.Dimmable dimmed={flags.isLoadingRestaurants}>

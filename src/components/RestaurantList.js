@@ -6,6 +6,7 @@ import React from 'react'
 import Accordion from "semantic-ui-react/dist/commonjs/modules/Accordion";
 import RestaurantTitle from "./RestaurantTitle";
 import RestaurantContent from "./RestaurantContent";
+import {Dimmer, Loader} from "semantic-ui-react";
 
 export default class RestaurantList extends React.Component {
   constructor(props) {
@@ -55,7 +56,7 @@ export default class RestaurantList extends React.Component {
 
   render() {
     // Component Props
-    const {activeRest, handleNewData} = this.props;
+    const {activeRest, handleNewData, flags, restaurants} = this.props;
     let restaurantsList = [];
 
     this.sortRestaurants().forEach(restaurant => {
@@ -85,8 +86,13 @@ export default class RestaurantList extends React.Component {
 
     return(
       <div>
-        <p> Shortlisted Restaurants: {this.props.restaurants.length} </p>
-        {restaurantsList}
+        <p> Shortlisted Restaurants: {restaurants.length} </p>
+        <Dimmer.Dimmable dimmed={typeof flags === 'undefined' ? true : flags.isLoadingRestaurants}>
+          <Dimmer active={typeof flags === 'undefined' ? true : flags.isLoadingRestaurants} inverted>
+            <Loader>Loading Restaurants</Loader>
+          </Dimmer>
+          {restaurantsList}
+        </Dimmer.Dimmable>
       </div>
     )
   }
