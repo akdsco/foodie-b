@@ -5,7 +5,8 @@ import '../css/style.css';
 import React from 'react'
 import Accordion from "semantic-ui-react/dist/commonjs/modules/Accordion";
 import RestaurantTitle from "./RestaurantTitle";
-import RestaurantContent from "./RestaurantContent";
+import RestaurantContentAlt from "./RestaurantContentAlt";
+
 import {Dimmer, Loader} from "semantic-ui-react";
 
 export default class RestaurantList extends React.Component {
@@ -75,7 +76,7 @@ export default class RestaurantList extends React.Component {
             </Accordion.Title>
             {activeRest === restaurant.id &&
               <Accordion.Content active={activeRest === restaurant.id}>
-                <RestaurantContent
+                <RestaurantContentAlt
                   restaurant={restaurant}
                   handleNewData={handleNewData}
                 />
