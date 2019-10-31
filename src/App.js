@@ -11,14 +11,12 @@ import DataDisplay from './components/DataDisplay';
 import {Dimmer, Loader, Container, Grid, GridColumn} from "semantic-ui-react";
 
 // TODO add placeholders? (Look into Semantic UI placeholders)
+// TODO put red or blue dot marker where center of the map is
 // TODO redo opening times.. maybe just say: 'open today: hours' ?
 // TODO redo to use react-google-maps/api
 // TODO reshape the app and implement use of React Hooks
 
-
 // Errors -> Talk to Mentor
-// TODO Each child in a list should have a unique "key" prop. => check Accordion Content => when clicking on 10th G.Places
-//  loaded restaurant gaucho, only appears on first load, then it doesn't for any other item or click
 // TODO RestaurantContent => is it a good approach from performance point of view, to have couple of functions sourcing same prop..
 // TODO How to fetch data only when user requests it example: Restaurant Content google static map url images loaded only when user clicks on the map and is viewing on device with innerWidth lover than 768px
 
@@ -44,6 +42,7 @@ export default class App extends React.Component {
         lng: 1
       },
       activeRest: -1,
+      windowWidth: window.innerWidth,
     };
   }
 
@@ -55,12 +54,22 @@ export default class App extends React.Component {
   componentDidMount() {
     this.loadFileRestaurants(restaurantsFromFile);
     this.locateUser();
+
+    window.addEventListener('resize', this.handleWidthChange);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.handleWidthChange);
   }
 
   /* ===================
    *   Handler Methods
   _* ===================
 */
+
+  handleWidthChange = () => {
+    this.setState({windowWidth: window.innerWidth})
+  };
 
   handleCenterChange = (center) => {
     if (this.state.flags.isRestSearchAllowed) {
@@ -306,7 +315,7 @@ export default class App extends React.Component {
             count++;
             let restaurantObject = {
               "id": count,
-              "streetViewURL": 'https://maps.googleapis.com/maps/api/streetview?size=500x300&location='+ r.geometry.location.lat +','+ r.geometry.location.lng +'&heading=151.78&pitch=-0.76&key='+ process.env.REACT_APP_G_API,
+              // "streetViewURL": 'https://maps.googleapis.com/maps/api/streetview?size=500x300&location='+ r.geometry.location.lat +','+ r.geometry.location.lng +'&heading=151.78&pitch=-0.76&key='+ process.env.REACT_APP_G_API,
               "place_id": r.place_id,
               "isFromFile": false,
               "numberOfReviews": r.user_ratings_total > 5 ? 5 : r.user_ratings_total,
@@ -397,10 +406,10 @@ export default class App extends React.Component {
   };
 
   render() {
-    const style={overflowY: 'hidden', paddingBottom: '0'};
-    const styleTablet={paddingTop: '2rem', paddingBottom: '0'};
+    const styleDesktop={overflowY: 'hidden', paddingBottom: '0'};
     const styleMobile={paddingTop: '2rem', paddingBottom: '0'};
-    const { restaurants, ratingMin, ratingMax, center, userLocation, activeRest, flags } = this.state;
+    // const styleMobile={paddingTop: '2rem', paddingBottom: '0'};
+    const { restaurants, ratingMin, ratingMax, center, userLocation, activeRest, flags, windowWidth } = this.state;
     const { handleMaxRate, handleMinRate, handleReset, handleActiveRest,
             handleCenterChange, handleNewData, handleZoomChange, handleRestSearch } = this;
 
@@ -409,18 +418,14 @@ export default class App extends React.Component {
         {/* Full Desktop Mode */}
         <Container>
           <Grid>
-            <Grid.Row centered columns={2} only='computer' style={style}>
+            <Grid.Row centered columns={2} only='computer' style={styleDesktop}>
               <GridColumn width={9}>
-                {/*<Dimmer.Dimmable dimmed={flags.isLoadingRestaurants}>*/}
-                {/*  <Dimmer active={flags.isLoadingRestaurants} inverted>*/}
-                {/*    <Loader>Loading Restaurants</Loader>*/}
-                {/*  </Dimmer>*/}
-
                   <DataDisplay
                     restaurants={restaurants}
                     ratingMax={ratingMax}
                     ratingMin={ratingMin}
                     activeRest={activeRest}
+                    windowWidth={windowWidth}
                     flags={flags}
 
                     handleReset={handleReset}
@@ -429,7 +434,6 @@ export default class App extends React.Component {
                     handleNewData={handleNewData}
                     handleActiveRest={handleActiveRest}
                   />
-                {/*</Dimmer.Dimmable>*/}
               </GridColumn>
               <GridColumn width={7}>
                 <Dimmer.Dimmable dimmed={flags.isLoadingRestaurants}>
@@ -439,9 +443,7 @@ export default class App extends React.Component {
                   <Map
                     restaurants={restaurants.filter(restaurant =>
                       restaurant.avgRating >= ratingMin &&
-                      restaurant.avgRating <= ratingMax)
-                    }
-
+                      restaurant.avgRating <= ratingMax)}
                     center={center}
                     flags={flags}
                     userLocation={userLocation}
@@ -460,8 +462,10 @@ export default class App extends React.Component {
         </Container>
 
         {/* Tablet Mode */}
+
+        {windowWidth <= 991 &&
         <Grid>
-          <Grid.Row centered columns={2} only='tablet' style={styleTablet}>
+          <Grid.Row centered columns={2} only='tablet' style={styleMobile}>
             <GridColumn width={9}>
               <Dimmer.Dimmable dimmed={flags.isLoadingRestaurants}>
                 <Dimmer active={flags.isLoadingRestaurants} inverted>
@@ -473,6 +477,8 @@ export default class App extends React.Component {
                   ratingMax={ratingMax}
                   ratingMin={ratingMin}
                   activeRest={activeRest}
+                  flags={flags}
+                  windowWidth={windowWidth}
 
                   handleReset={handleReset}
                   handleMinRate={handleMinRate}
@@ -491,8 +497,7 @@ export default class App extends React.Component {
                 <Map
                   restaurants={restaurants.filter(restaurant =>
                     restaurant.avgRating >= ratingMin &&
-                    restaurant.avgRating <= ratingMax)
-                  }
+                    restaurant.avgRating <= ratingMax)}
                   center={center}
                   flags={flags}
                   userLocation={userLocation}
@@ -508,8 +513,11 @@ export default class App extends React.Component {
             </GridColumn>
           </Grid.Row>
         </Grid>
+        }
 
         {/*  Mobile Mode */}
+
+        {windowWidth < 768 &&
         <Grid>
           <Grid.Row centered columns={1} only='mobile' style={styleMobile}>
             <GridColumn>
@@ -523,6 +531,7 @@ export default class App extends React.Component {
                   ratingMax={ratingMax}
                   ratingMin={ratingMin}
                   activeRest={activeRest}
+                  windowWidth={windowWidth}
 
                   handleReset={handleReset}
                   handleMinRate={handleMinRate}
@@ -542,6 +551,7 @@ export default class App extends React.Component {
             </GridColumn>
           </Grid.Row>
         </Grid>
+        }
       </div>
     );
   }

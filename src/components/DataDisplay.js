@@ -16,17 +16,17 @@ export default class DataDisplay extends React.Component {
     super(props);
     this.state = {
       activeItem: 'Explore Restaurants',
-      width: window.innerWidth,
+      // width: window.innerWidth,
     };
   }
 
-  componentDidMount() {
-    window.addEventListener('resize', this.handleWidthChange);
-  }
-
-  componentWillUnmount() {
-    window.removeEventListener('resize', this.handleWidthChange);
-  }
+  // componentDidMount() {
+  //   window.addEventListener('resize', this.handleWidthChange);
+  // }
+  //
+  // componentWillUnmount() {
+  //   window.removeEventListener('resize', this.handleWidthChange);
+  // }
 
   handleItemClick = (e, { name }) => {
     console.log(e, name);
@@ -37,16 +37,12 @@ export default class DataDisplay extends React.Component {
     console.log(this.state.activeItem);
   };
 
-  handleWidthChange = () => {
-    this.setState({width: window.innerWidth})
-  };
-
   render() {
-    const { activeItem, width} = this.state;
+    const { activeItem } = this.state;
     const { restaurants, ratingMin, ratingMax, activeRest, handleActiveRest,
             handleNewData, handleMinRate, handleMaxRate, handleReset, center,
             userMarker, userLocation, handleZoomChange, handleRestSearch,
-            handleCenterChange, flags } = this.props;
+            handleCenterChange, flags, windowWidth } = this.props;
 
     return (
       <div className='data-display'>
@@ -59,7 +55,7 @@ export default class DataDisplay extends React.Component {
               name='Explore Restaurants'
               active={activeItem === 'Explore Restaurants'}
               onClick={this.handleItemClick} />
-            {width < 768 &&
+            {windowWidth < 768 &&
             <Menu.Item
               name='Map'
               active={activeItem === 'Map'}
@@ -104,7 +100,7 @@ export default class DataDisplay extends React.Component {
             />
           </Segment>
         }
-        {activeItem === 'Map' &&
+        {windowWidth < 768 && activeItem === 'Map' &&
           <Segment className='segment-test'>
               <Map
                 restaurants={restaurants.filter(restaurant =>

@@ -7,25 +7,37 @@ import ReviewItem from "./ReviewItem";
 import {Container, GridColumn, Grid, List, Image, Button, Icon, Modal, Header, Segment, Loader, Placeholder} from "semantic-ui-react";
 import AddReview from "./AddReview";
 
-
-
 // TODO: rewrite this component, use state to hold all the data sourced from API, create one big function for all the data from API
 //  source it and update state. Do it when component mounts. Before that display placeholders for everything.
-
-
 
 export default class RestaurantContent extends React.Component {
   state = {
       addReviewModalOpen: false,
       loadMoreReviewModalOpen: false,
       loadingImg: true,
+      content: {
+        reviews: [],
+        openingTimes: [],
+
+      },
     };
   placeholderUrl = 'https://bit.ly/2JnrFZ6';
+
 
   componentDidMount() {
     if(this.props.restaurant.isFromFile) {
       this.setState({loadingImg: false});
     }
+
+    // this.setState({
+    //   content: {
+    //     reviews: this.getRestReviews(),
+    //     openingTimes: this.getRestOpenTime(),
+    //     phoneNum: this.getRestPhoneNum(),
+    //     restPhotoUrl: this.getRestPhotoUrl(),
+    //
+    //   }
+    // })
   }
 
   handleChange = (e, { name, value }) => this.setState({ [name]: value });
@@ -123,7 +135,7 @@ export default class RestaurantContent extends React.Component {
   render() {
     const { handleChange, getRestPhoneNum, getRestOpenTime, getRestPhotoUrl, getRestReviews, getGoogleMapStaticUrl } = this;
     const { addReviewModalOpen, loadMoreReviewModalOpen } = this.state;
-    const { restaurant, handleNewData, activeRest } = this.props;
+    const { restaurant, handleNewData } = this.props;
 
     return(
       <Container className='container-accordion'>

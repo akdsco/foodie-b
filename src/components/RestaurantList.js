@@ -73,24 +73,26 @@ export default class RestaurantList extends React.Component {
                   avgRating={restaurant.avgRating}
                 />
             </Accordion.Title>
-            <Accordion.Content  active={activeRest === restaurant.id}>
-              <RestaurantContent
-                restaurant={restaurant}
-                activeRest={activeRest}
-                handleNewData={handleNewData}
-              />
-            </Accordion.Content>
+            {activeRest === restaurant.id &&
+              <Accordion.Content active={activeRest === restaurant.id}>
+                <RestaurantContent
+                  restaurant={restaurant}
+                  handleNewData={handleNewData}
+                />
+              </Accordion.Content>
+            }
           </Accordion>
         </div>)
     });
 
     return(
       <div>
-        <p> Shortlisted Restaurants: {restaurants.length} </p>
         <Dimmer.Dimmable dimmed={typeof flags === 'undefined' ? true : flags.isLoadingRestaurants}>
           <Dimmer active={typeof flags === 'undefined' ? true : flags.isLoadingRestaurants} inverted>
             <Loader>Loading Restaurants</Loader>
           </Dimmer>
+
+          <p> Shortlisted Restaurants: {restaurants.length} </p>
           {restaurantsList}
         </Dimmer.Dimmable>
       </div>
