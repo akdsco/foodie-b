@@ -114,7 +114,9 @@ body {
     .more-info {
         display: none !important;
     }
+}
 
+@media (max-width: 343px) {
     .load-more-reviews {
         margin-bottom: 10px !important;
     }

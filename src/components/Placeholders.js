@@ -32,7 +32,7 @@ const ReviewsPlaceholder = (props) => {
   }
 
   for (let i = 0; i < amount; i++) {
-    reviews.push(<Grid centered>
+    reviews.push(<Grid key={i} centered>
       <GridColumn width={4}>
         <Placeholder>
           <Placeholder.Image/>

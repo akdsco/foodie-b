@@ -5,7 +5,7 @@ import '../css/style.css';
 import React from 'react'
 import Accordion from "semantic-ui-react/dist/commonjs/modules/Accordion";
 import RestaurantTitle from "./RestaurantTitle";
-import RestaurantContentAlt from "./RestaurantContentAlt";
+import RestaurantContent from "./RestaurantContent";
 
 import {Dimmer, Loader} from "semantic-ui-react";
 
@@ -57,7 +57,7 @@ export default class RestaurantList extends React.Component {
 
   render() {
     // Component Props
-    const {activeRest, handleNewData, flags, restaurants} = this.props;
+    const {activeRest, handleNewData, flags, restaurants, windowWidth} = this.props;
     let restaurantsList = [];
 
     this.sortRestaurants().forEach(restaurant => {
@@ -76,8 +76,9 @@ export default class RestaurantList extends React.Component {
             </Accordion.Title>
             {activeRest === restaurant.id &&
               <Accordion.Content active={activeRest === restaurant.id}>
-                <RestaurantContentAlt
+                <RestaurantContent
                   restaurant={restaurant}
+                  windowWidth={windowWidth}
                   handleNewData={handleNewData}
                 />
               </Accordion.Content>

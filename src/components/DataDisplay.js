@@ -81,6 +81,7 @@ export default class DataDisplay extends React.Component {
                   restaurant.avgRating <= ratingMax)}
                 activeRest={activeRest}
                 flags={flags}
+                windowWidth={windowWidth}
 
                 handleNewData={handleNewData}
                 handleActiveRest={handleActiveRest}

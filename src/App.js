@@ -10,10 +10,11 @@ import Map from "./components/Map";
 import DataDisplay from './components/DataDisplay';
 import {Dimmer, Loader, Container, Grid, GridColumn} from "semantic-ui-react";
 
-// TODO add placeholders? (Look into Semantic UI placeholders)
 // TODO put red or blue dot marker where center of the map is
 // TODO redo opening times.. maybe just say: 'open today: hours' ?
 // TODO redo to use react-google-maps/api
+// TODO create placeholder for accordion content on mobile devices
+// TODO look into add review => force state update after adding review. it does not work after recent changes I made optimising the apps performance
 // TODO reshape the app and implement use of React Hooks
 
 // Errors -> Talk to Mentor
@@ -159,7 +160,6 @@ export default class App extends React.Component {
       restaurants[index].details.reviews.push(dataObject);
       restaurants[index].avgRating = restaurants[index].details.reviews.map(r => r.stars).reduce((a, b) => a + b) / (restaurants[index].details.reviews.length);
       restaurants[index].numberOfReviews = restaurants[index].details.reviews.length;
-      console.log(restaurants[index].avgRating);
     }
 
     this.setState({

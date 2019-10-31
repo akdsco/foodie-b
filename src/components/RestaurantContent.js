@@ -4,43 +4,51 @@ import '../css/style.css';
 // Import Components
 import React from 'react';
 import ReviewItem from "./ReviewItem";
-import {Container, GridColumn, Grid, List, Image, Button, Icon, Modal, Header, Segment, Loader, Placeholder} from "semantic-ui-react";
-import AddReview from "./AddReview";
-
-// TODO: rewrite this component, use state to hold all the data sourced from API, create one big function for all the data from API
-//  source it and update state. Do it when component mounts. Before that display placeholders for everything.
+import {AddReviewModal, MoreReviews} from "./Modals";
+import {LeftColumnPlaceholder, RightColumnPlaceholder, ReviewsPlaceholder} from "./Placeholders";
+import {Container, GridColumn, Grid, Image, Icon, Segment} from "semantic-ui-react";
 
 export default class RestaurantContent extends React.Component {
   state = {
-      addReviewModalOpen: false,
-      loadMoreReviewModalOpen: false,
-      loadingImg: true,
+      loadingData: true,
       content: {
         reviews: [],
         openingTimes: [],
-
+        phoneNum: '',
+        photoUrl: '',
+        staticMapUrl: '',
       },
     };
   placeholderUrl = 'https://bit.ly/2JnrFZ6';
 
 
   componentDidMount() {
-    if(this.props.restaurant.isFromFile) {
-      this.setState({loadingImg: false});
-    }
-
-    // this.setState({
-    //   content: {
-    //     reviews: this.getRestReviews(),
-    //     openingTimes: this.getRestOpenTime(),
-    //     phoneNum: this.getRestPhoneNum(),
-    //     restPhotoUrl: this.getRestPhotoUrl(),
-    //
-    //   }
-    // })
+    setTimeout(() => this.loadContent(), 1250);
   }
 
-  handleChange = (e, { name, value }) => this.setState({ [name]: value });
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    // if(prevProps.restaurant.details.reviews.length !== this.props.restaurant.details.reviews.length) {
+    // TODO in App about updating reviews.. probably mutating array and it affect this comparison
+      console.log(prevProps.restaurant.details.reviews.length);
+      console.log(this.props.restaurant.details.reviews.length);
+      // console.log(this.props);
+    // }
+  }
+
+  loadContent = () => {
+    let content = {
+        reviews: this.getRestReviews(),
+        openingTimes: this.getRestOpeningTimes(),
+        phoneNum: this.getRestPhoneNum(),
+        photoUrl: this.getRestPhotoUrl(),
+        staticMapUrl: this.getGoogleMapStaticUrl()
+      };
+
+    this.setState({
+      loadingData: false,
+      content
+    });
+  };
 
   getRestReviews = () => {
     let reviews = [];
@@ -66,7 +74,7 @@ export default class RestaurantContent extends React.Component {
     return reviews;
   };
 
-  getRestOpenTime = () => {
+  getRestOpeningTimes = () => {
     let openingTimes = [];
     const { restaurant } = this.props;
 
@@ -108,7 +116,6 @@ export default class RestaurantContent extends React.Component {
         url = 'https://maps.googleapis.com/maps/api/place/photo?maxwidth=800&photoreference=' + photoRef + '&key=' + process.env.REACT_APP_G_API;
       } else if (typeof data.photoUrl !== 'undefined' && data.photoUrl !== '') {
         url = data.photoUrl;
-        // console.log('data.photoUrl', url);
       }
     }
     return url
@@ -133,160 +140,95 @@ export default class RestaurantContent extends React.Component {
 
 
   render() {
-    const { handleChange, getRestPhoneNum, getRestOpenTime, getRestPhotoUrl, getRestReviews, getGoogleMapStaticUrl } = this;
-    const { addReviewModalOpen, loadMoreReviewModalOpen } = this.state;
-    const { restaurant, handleNewData } = this.props;
+    const { reviews, openingTimes, phoneNum, photoUrl, staticMapUrl } = this.state.content;
+    const { restaurant, handleNewData, windowWidth } = this.props;
+    const { loadingData } = this.state;
 
     return(
       <Container className='container-accordion'>
         <Grid>
+
+          {/* Restaurant information */}
+
           <Grid.Row columns={2} only='computer tablet'>
             <GridColumn width={7} >
               {/*  Left Column - Data  */}
-              <List>
-                <List.Item key={0}>
-                  <List.Icon name='phone' />
-                  <List.Content><a href={'tel:' + getRestPhoneNum()}>{getRestPhoneNum()}</a></List.Content>
-                </List.Item>
-                <List.Item key={1}>
-                  <List.Icon name='linkify' />
-                  <List.Content>
-                    <a href={restaurant.details && restaurant.details.link}>
-                      Visit Website
-                    </a>
-                  </List.Content>
-                </List.Item>
-              </List>
-              <div key={0}>
-                <h4 className='mb-2'>Opening Times</h4>
-                {getRestOpenTime()}
-              </div>
+              {loadingData ?
+                <LeftColumnPlaceholder/>
+                :
+                <div>
+                  <div key={0} className='mb-1'><Icon name='phone'/><a href={'tel:' + phoneNum}>{phoneNum}</a></div>
+                  <div key={1} className='mb-2'><Icon name='linkify' /><a href={restaurant.details && restaurant.details.link}>Visit Website</a></div>
+                  <div key={2}><h4 className='mb-2'>Opening Times</h4> {openingTimes}</div>
+                </div>
+              }
             </GridColumn>
-
             <GridColumn width={9}>
               {/*Right Column - Photo */}
-              <Segment>
-                <Loader active={restaurant.isFromFile ? this.state.loadingImg :
-                  getRestPhotoUrl() === this.placeholderUrl}
-                        content='Loading image'
-                />
-                {this.state.loadingImg ?
-                <Placeholder>
-                  <Placeholder.Image rectangular />
-                </Placeholder>
+              {loadingData ?
+                <Segment>
+                  <RightColumnPlaceholder/>
+                </Segment>
                 :
-                <Image
-                  src={getRestPhotoUrl()}
-                  fluid
-                  label={{
-                    as: 'a',
-                    color: 'green',
-                    content: 'Book Table',
-                    icon: 'food',
-                    ribbon: true,
-                  }}
-                />
-                }
-
-              </Segment>
-
+                <div>
+                  <Image src={photoUrl} fluid />
+                </div>
+              }
             </GridColumn>
           </Grid.Row>
 
-          <Grid.Row columns={2} only='mobile'>
-            <GridColumn>
-              <div className='my-2'>
-                <Icon name='phone'/><a className='mr-2' href={'tel:' + getRestPhoneNum()}>{getRestPhoneNum()}</a>
-                <Icon name='linkify'/><a href={restaurant.details && restaurant.details.link}>Visit Website</a>
-              </div>
-            </GridColumn>
-            <GridColumn textAlign='center'>
-              <div className='my-2'>
-                <p>Open today: 7am - 9pm {this.getOpeningHours()}</p>
-              </div>
-            </GridColumn>
-            <GridColumn width={16}>
-              <Image src={getGoogleMapStaticUrl()} fluid />
-            </GridColumn>
-          </Grid.Row>
+          {/* Restaurant information - Mobile Screens */}
+
+          {windowWidth < 768 &&
+            <Grid.Row columns={2} only='mobile'>
+              <GridColumn>
+                <div className='my-2'>
+                  <Icon name='phone'/><a className='mr-2' href={'tel:' + phoneNum}>{phoneNum}</a>
+                  <Icon name='linkify'/><a href={restaurant.details && restaurant.details.link}>Visit Website</a>
+                </div>
+              </GridColumn>
+              <GridColumn textAlign='center'>
+                <div className='my-2'>
+                  <p>Open today: 7am - 9pm</p>
+                </div>
+              </GridColumn>
+              <GridColumn width={16}>
+                <Image src={staticMapUrl} fluid/>
+              </GridColumn>
+            </Grid.Row>
+          }
+
+          {/* Reviews */}
 
           <Grid.Row>
             <GridColumn>
-              <h4>Most helpful reviews</h4>
-              {getRestReviews()}
+              {loadingData ?
+                <div>
+                  <ReviewsPlaceholder amount={restaurant.isFromFile ? restaurant.details.reviews.length : 5}/>
+                </div>
+                :
+                <div>
+                  <h3>Most helpful reviews</h3>
+                  {reviews}
+                </div>
+              }
             </GridColumn>
           </Grid.Row>
+
+          {/* More Reviews and Add Review Modals */}
 
           <Grid.Row>
             <GridColumn className='restaurant-item-buttons'>
-              <Modal
-                open={loadMoreReviewModalOpen}
-                onClose={handleChange}
-                name='loadMoreReviewModalOpen'
-                value={false}
-                basic
-                size='small'
-                trigger={
-                  <Button onClick={handleChange}
-                          compact animated='vertical'
-                          color='blue'
-                          name='loadMoreReviewModalOpen'
-                          className='load-more-reviews'
-                          value={true}
-                  >
-                    <Button.Content hidden>
-                      <Icon name='arrow down'/>
-                    </Button.Content>
-                    <Button.Content visible>Load more reviews</Button.Content>
-                  </Button>}
-              >
-                <Header icon='browser' content='Like this feature?' />
-                <Modal.Content>
-                  <h3>This feature is available only for subscribed users.</h3>
-                </Modal.Content>
-                <Modal.Actions>
-                  <Button color='green'
-                          onClick={handleChange}
-                          name='loadMoreReviewModalOpen'
-                          value={false}
-                          inverted>
-                    <Icon name='checkmark' /> Got it
-                  </Button>
-                </Modal.Actions>
-              </Modal>
-
-              <Modal
-                open={addReviewModalOpen}
-                onClose={handleChange}
-                name='addReviewModalOpen'
-                value={false}
-                trigger={
-                  <Button onClick={handleChange}
-                          name='addReviewModalOpen'
-                          value={true}
-                          animated
-                          compact
-                          color='green'>
-                    <Button.Content hidden>Write it now!</Button.Content>
-                    <Button.Content visible>
-                      <Icon name='write'/>Add a Review
-                    </Button.Content>
-                  </Button>}
-              >
-                <Modal.Header>Share your experience with us</Modal.Header>
-                <Modal.Content image>
-                  <Image wrapped size='medium' src={getRestPhotoUrl()} />
-                  <Modal.Description>
-                    <Header>Tell us what did you like about {restaurant.restaurantName}?</Header>
-                    <AddReview
-                      restaurant={restaurant}
-                      handleClose={handleChange}
-                      handleNewData={handleNewData}
-                    />
-                  </Modal.Description>
-                </Modal.Content>
-              </Modal>
-
+              {restaurant.details &&
+                <MoreReviews />
+              }
+              {restaurant.details &&
+                <AddReviewModal
+                  photoUrl={photoUrl}
+                  restaurant={restaurant}
+                  handleNewData={handleNewData}
+                />
+              }
             </GridColumn>
           </Grid.Row>
 
