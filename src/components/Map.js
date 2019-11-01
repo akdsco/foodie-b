@@ -1,5 +1,6 @@
 // Import Images
 import userLocationMarker from '../img/user.png'
+import dotMarker from '../img/dot10.png'
 
 // Import CSS
 import '../css/style.css';
@@ -69,6 +70,14 @@ const MapConst = compose(
       <Marker
         icon={{url: userLocationMarker}}
         position={{lat: props.userLocation.lat, lng: props.userLocation.lng}}
+      />
+    }
+
+    {/* Center Marker */}
+    {props.center && ((props.center.lat !== props.userLocation.lat) && (props.center.lng !== props.userLocation.lng)) &&
+      <Marker
+        icon={{url: dotMarker}}
+        position={{lat: props.center.lat, lng: props.center.lng}}
       />
     }
 
@@ -159,10 +168,10 @@ export default class Map extends React.PureComponent {
     return(
       <div>
         <MapConst
-          userMarker={flags.isUserMarkerShown}
-          userLocation={userLocation}
           restaurants={restaurants}
           center={center}
+          userLocation={userLocation}
+          userMarker={flags.isUserMarkerShown}
           activeRest={activeRest}
           mapState={state}
 

@@ -203,8 +203,8 @@ export default class App extends React.Component {
       restaurant.numberOfReviews = restaurant.details.reviews.length;
       withAvgRating.push(restaurant)
     });
-    this.setState({
-      restaurants: this.state.restaurants.concat(withAvgRating)
+    this.setState( {
+      restaurants: withAvgRating
     });
   };
 
