@@ -9,7 +9,7 @@ import React from 'react'
 import {Button, Icon, Item } from "semantic-ui-react";
 import {AvgRatingComponent} from "./RatingComponents";
 
-const RestaurantTitle = (props) => {
+const RestTitle = (props) => {
   // const photo = props.item.streetViewURL ? props.item.streetViewURL : (props.item.details.photoUrl ? props.item.details.photoUrl : fmjImg);
   const photo = props.item.streetViewURL ? props.item.streetViewURL : fmjImg;
 
@@ -30,4 +30,4 @@ const RestaurantTitle = (props) => {
     </Item>)
 };
 
-export default RestaurantTitle
+export default RestTitle

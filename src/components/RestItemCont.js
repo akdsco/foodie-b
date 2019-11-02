@@ -8,7 +8,7 @@ import {AddReviewModal, MoreReviews} from "./Modals";
 import {LeftColumnPlaceholder, RightColumnPlaceholder, ReviewsPlaceholder} from "./Placeholders";
 import {Container, GridColumn, Grid, Image, Icon, Segment} from "semantic-ui-react";
 
-export default class RestaurantContent extends React.Component {
+export default class RestItemCont extends React.Component {
   state = {
       loadingData: true,
       content: {
@@ -24,15 +24,6 @@ export default class RestaurantContent extends React.Component {
 
   componentDidMount() {
     setTimeout(() => this.loadContent(), 1250);
-  }
-
-  componentDidUpdate(prevProps, prevState, snapshot) {
-    // if(prevProps.restaurant.details.reviews.length !== this.props.restaurant.details.reviews.length) {
-    // TODO in App about updating reviews.. probably mutating array and it affect this comparison
-      console.log(prevProps.restaurant.details.reviews.length);
-      console.log(this.props.restaurant.details.reviews.length);
-      // console.log(this.props);
-    // }
   }
 
   loadContent = () => {

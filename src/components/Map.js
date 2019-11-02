@@ -7,8 +7,8 @@ import '../css/style.css';
 
 // Import Components
 import React from 'react';
-import MapMarker from "./MapMarker";
-import AddRestaurant from "./AddRestaurant";
+import RestMarker from "./RestMarker";
+import AddRest from "./AddRest";
 // Dependencies
 import Geocode from "react-geocode";
 import { Button, Icon } from "semantic-ui-react";
@@ -83,7 +83,7 @@ const MapConst = compose(
 
     {/* Load Restaurant Markers */}
     {props.restaurants.map( (r, id) =>
-      <MapMarker
+      <RestMarker
         key={id}
         position={{lat: r.lat, lng: r.long}}
         index={r.id}
@@ -102,7 +102,7 @@ const MapConst = compose(
         <div>
           <h4>Add restaurant</h4>
           <p>{props.mapState.newRestData.address}</p>
-          <AddRestaurant
+          <AddRest
             restaurants={props.restaurants}
             newRestData={props.mapState.newRestData}
             closeInfoWindow={props.closeInfoWindow}

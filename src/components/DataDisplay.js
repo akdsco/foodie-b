@@ -8,37 +8,26 @@ import logoImg from '../img/logo.png'
 import React from 'react'
 import Map from "./Map";
 import Filter from './Filter'
-import RestaurantList from "./RestaurantList";
+import RestList from "./RestList";
 import { Menu, Segment, ItemGroup} from "semantic-ui-react";
 
 export default class DataDisplay extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      activeItem: 'Explore Restaurants',
-      // width: window.innerWidth,
+      activeMenuItem: 'Restaurants',
     };
   }
 
-  // componentDidMount() {
-  //   window.addEventListener('resize', this.handleWidthChange);
-  // }
-  //
-  // componentWillUnmount() {
-  //   window.removeEventListener('resize', this.handleWidthChange);
-  // }
-
-  handleItemClick = (e, { name }) => {
-    console.log(e, name);
-    this.setState({ activeItem: name });
+  handleMenuItemClick = (e, { name }) => {
+    this.setState({ activeMenuItem: name });
     if(e.target.value === 'reset') {
       this.props.handleReset()
     }
-    console.log(this.state.activeItem);
   };
 
   render() {
-    const { activeItem } = this.state;
+    const { activeMenuItem } = this.state;
     const { restaurants, ratingMin, ratingMax, activeRest, handleActiveRest,
             handleNewData, handleMinRate, handleMaxRate, handleReset, center,
             userMarker, userLocation, handleZoomChange, handleRestSearch,
@@ -52,30 +41,30 @@ export default class DataDisplay extends React.Component {
               <img src={logoImg} alt='logo'/>
             </Menu.Item>
             <Menu.Item
-              name='Explore Restaurants'
-              active={activeItem === 'Explore Restaurants'}
-              onClick={this.handleItemClick} />
+              name='Restaurants'
+              active={activeMenuItem === 'Restaurants'}
+              onClick={this.handleMenuItemClick} />
             {windowWidth < 768 &&
             <Menu.Item
               name='Map'
-              active={activeItem === 'Map'}
-              onClick={this.handleItemClick}
+              active={activeMenuItem === 'Map'}
+              onClick={this.handleMenuItemClick}
             />
             }
             <Menu.Menu position='right'>
               <Menu.Item
                 name='Filter'
-                active={activeItem === 'Filter'}
-                onClick={this.handleItemClick}
+                active={activeMenuItem === 'Filter'}
+                onClick={this.handleMenuItemClick}
               />
             </Menu.Menu>
           </Menu>
           </Segment>
 
-        {activeItem === 'Explore Restaurants' &&
+        {activeMenuItem === 'Restaurants' &&
           <Segment>
             <ItemGroup divided>
-              <RestaurantList
+              <RestList
                 restaurants={restaurants.filter(restaurant =>
                   restaurant.avgRating >= ratingMin &&
                   restaurant.avgRating <= ratingMax)}
@@ -89,7 +78,7 @@ export default class DataDisplay extends React.Component {
             </ItemGroup>
           </Segment>
         }
-        {activeItem === 'Filter' &&
+        {activeMenuItem === 'Filter' &&
           <Segment>
             <Filter
               ratingMax={ratingMax}
@@ -97,11 +86,11 @@ export default class DataDisplay extends React.Component {
               handleMinRate={handleMinRate}
               handleMaxRate={handleMaxRate}
               handleReset={handleReset}
-              handleItemClick={this.handleItemClick}
+              handleItemClick={this.handleMenuItemClick}
             />
           </Segment>
         }
-        {windowWidth < 768 && activeItem === 'Map' &&
+        {windowWidth < 768 && activeMenuItem === 'Map' &&
           <Segment className='segment-test'>
               <Map
                 restaurants={restaurants.filter(restaurant =>

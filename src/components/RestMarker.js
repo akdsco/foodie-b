@@ -3,7 +3,7 @@ import React from "react";
 import { Marker, InfoWindow } from "react-google-maps";
 import {Card, Header, Icon, Image, Label} from "semantic-ui-react";
 
-const MapMarker = (props) =>  {
+const RestMarker = (props) =>  {
   const { index, restaurant, activeRest, position } = props;
 
   const handleMarkerClick = () =>  {
@@ -51,4 +51,4 @@ const MapMarker = (props) =>  {
   );
 };
 
-export default MapMarker;
+export default RestMarker;

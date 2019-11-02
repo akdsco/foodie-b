@@ -192,8 +192,6 @@ export default class App extends React.Component {
   _* ==================
 */
 
-  scrollToRef = (ref) => window.scrollTo(0, ref.current.offsetTop);
-
   loadFileRestaurants = (restaurants) => {
     const withAvgRating = [];
     // calculate average rating for each restaurant
@@ -408,7 +406,6 @@ export default class App extends React.Component {
   render() {
     const styleDesktop={overflowY: 'hidden', paddingBottom: '0'};
     const styleMobile={paddingTop: '2rem', paddingBottom: '0'};
-    // const styleMobile={paddingTop: '2rem', paddingBottom: '0'};
     const { restaurants, ratingMin, ratingMax, center, userLocation, activeRest, flags, windowWidth } = this.state;
     const { handleMaxRate, handleMinRate, handleReset, handleActiveRest,
             handleCenterChange, handleNewData, handleZoomChange, handleRestSearch } = this;
