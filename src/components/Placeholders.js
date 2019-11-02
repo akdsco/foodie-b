@@ -1,6 +1,9 @@
+// Import CSS
+import '../css/style.css';
+
 // Import Components
 import React from 'react'
-import { Placeholder, Grid, GridColumn } from 'semantic-ui-react'
+import {Placeholder, Grid, GridColumn } from 'semantic-ui-react'
 
 const LeftColumnPlaceholder = () =>
   <Placeholder>
@@ -23,7 +26,7 @@ const RightColumnPlaceholder = () =>
     <Placeholder.Image rectangular />
   </Placeholder>;
 
-const ReviewsPlaceholder = (props) => {
+const ReviewsPlaceholder = props => {
   let reviews = [];
   let amount = 1;
 
@@ -51,4 +54,24 @@ const ReviewsPlaceholder = (props) => {
   return reviews;
 };
 
-export {LeftColumnPlaceholder, RightColumnPlaceholder, ReviewsPlaceholder};
+const MobilePlaceholder = () =>
+  <Grid.Row>
+    <GridColumn width={8} className='mb-2'>
+      <Placeholder>
+        <Placeholder.Line length='very long' />
+      </Placeholder>
+    </GridColumn>
+    <GridColumn width={8} className='mb-2'>
+      <Placeholder>
+        <Placeholder.Line length='very long' />
+      </Placeholder>
+    </GridColumn>
+    <GridColumn width={16} className='mt-2'>
+      <Placeholder className='center-image'>
+        <Placeholder.Image rectangular />
+      </Placeholder>
+    </GridColumn>
+  </Grid.Row>;
+
+
+export {LeftColumnPlaceholder, RightColumnPlaceholder, ReviewsPlaceholder, MobilePlaceholder};

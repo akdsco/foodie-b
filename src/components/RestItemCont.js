@@ -5,7 +5,7 @@ import '../css/style.css';
 import React from 'react';
 import ReviewItem from "./ReviewItem";
 import {AddReviewModal, MoreReviews} from "./Modals";
-import {LeftColumnPlaceholder, RightColumnPlaceholder, ReviewsPlaceholder} from "./Placeholders";
+import {LeftColumnPlaceholder, RightColumnPlaceholder, ReviewsPlaceholder, MobilePlaceholder} from "./Placeholders";
 import {Container, GridColumn, Grid, Image, Icon, Segment} from "semantic-ui-react";
 
 export default class RestItemCont extends React.Component {
@@ -13,6 +13,7 @@ export default class RestItemCont extends React.Component {
       loadingData: true,
       content: {
         reviews: [],
+
         openingTimes: [],
         phoneNum: '',
         photoUrl: '',
@@ -171,6 +172,9 @@ export default class RestItemCont extends React.Component {
           {/* Restaurant information - Mobile Screens */}
 
           {windowWidth < 768 &&
+          loadingData ?
+            <MobilePlaceholder />
+          :
             <Grid.Row columns={2} only='mobile'>
               <GridColumn>
                 <div className='my-2'>
@@ -194,9 +198,7 @@ export default class RestItemCont extends React.Component {
           <Grid.Row>
             <GridColumn>
               {loadingData ?
-                <div>
-                  <ReviewsPlaceholder amount={restaurant.isFromFile ? restaurant.details.reviews.length : 5}/>
-                </div>
+                <ReviewsPlaceholder amount={restaurant.isFromFile ? restaurant.details.reviews.length : 5}/>
                 :
                 <div>
                   <h3>Most helpful reviews</h3>
