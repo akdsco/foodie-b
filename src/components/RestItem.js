@@ -11,13 +11,18 @@ export default class RestItem extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
+
     // Scrolls only once after opening up Accordion, then it doesn't until you close and open it again.
+    if(this.props.activeRest === -1) {
+      this.scrollFlag = true;
+    }
     if(this.scrollFlag) {
       if(this.props.activeRest === this.props.restaurant.id) {
         this.scrollToItem();
         this.scrollFlag = false;
       }
     }
+
   }
 
   scrollToItem = () => {

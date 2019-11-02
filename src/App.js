@@ -12,7 +12,6 @@ import {Dimmer, Loader, Container, Grid, GridColumn} from "semantic-ui-react";
 
 // TODO redo opening times.. maybe just say: 'open today: hours' ?
 // TODO redo to use react-google-maps/api
-// DONE TODO look into add review => force state update after adding review. it does not work after recent changes I made optimising the apps performance
 // TODO reshape the app and implement use of React Hooks
 
 // Errors -> Talk to Mentor
