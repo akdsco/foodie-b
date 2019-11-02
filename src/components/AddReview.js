@@ -32,10 +32,9 @@ export default class AddReview extends React.Component {
   render() {
     const { reviewContent, reviewersName, reviewStars } = this.state;
     const { handleChange, handleSubmit } = this;
-    const { handleClose } = this.props;
 
     return(
-      <Form onSubmit={handleClose}>
+      <Form>
         <Form.Field required>
           <label>How many stars?</label>
           <AddReviewRatingComponent handleChange={handleChange} />

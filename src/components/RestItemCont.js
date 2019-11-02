@@ -27,6 +27,18 @@ export default class RestItemCont extends React.Component {
     setTimeout(() => this.loadContent(), 1250);
   }
 
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    // updating local state of reviews if user adds new one (re-rendering reviews)
+    if(this.props.restaurant.details.reviews.length !== this.state.content.reviews.length) {
+      this.setState(prevState => ({
+        content: {
+          ...prevState.content,
+          reviews: this.getRestReviews(),
+        }
+      }))
+    }
+  }
+
   loadContent = () => {
     let content = {
         reviews: this.getRestReviews(),

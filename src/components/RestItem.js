@@ -7,10 +7,17 @@ export default class RestItem extends React.Component {
   constructor(props) {
     super(props);
     this.reference = React.createRef();
+    this.scrollFlag = true;
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
-    if(this.props.activeRest === this.props.restaurant.id) this.scrollToItem();
+    // Scrolls only once after opening up Accordion, then it doesn't until you close and open it again.
+    if(this.scrollFlag) {
+      if(this.props.activeRest === this.props.restaurant.id) {
+        this.scrollToItem();
+        this.scrollFlag = false;
+      }
+    }
   }
 
   scrollToItem = () => {
