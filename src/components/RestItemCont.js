@@ -6,7 +6,7 @@ import React from 'react';
 import ReviewItem from "./ReviewItem";
 import {AddReviewModal, MoreReviews} from "./Modals";
 import {LeftColumnPlaceholder, RightColumnPlaceholder, ReviewsPlaceholder, MobilePlaceholder} from "./Placeholders";
-import {Container, GridColumn, Grid, Image, Icon, Segment} from "semantic-ui-react";
+import {Container, GridColumn, Grid, Image, Icon, Segment, Label} from "semantic-ui-react";
 
 export default class RestItemCont extends React.Component {
   state = {
@@ -82,13 +82,25 @@ export default class RestItemCont extends React.Component {
     let openingTimes = [];
     const { restaurant } = this.props;
 
-    if(restaurant.details) {
-      let counter = -1;
-      if(restaurant.details.openingHours) {
-        openingTimes = restaurant.details.openingHours.weekday_text.map( (day) => {
-          counter++;
-          return(<p key={counter} className='mb-2'>{day}</p>)}
-        );
+    if(restaurant.isFromFile) {
+      openingTimes = [
+        <p key={0} className='mb-2'>Mon: 11am - 10pm</p>,
+        <p key={0} className='mb-2'>Tue: 11am - 10pm</p>,
+        <p key={0} className='mb-2'>Wed: 11am - 10pm</p>,
+        <p key={0} className='mb-2'>Thu: 11am - 10pm</p>,
+        <p key={0} className='mb-2'>Fri: 11am - 10pm</p>,
+        <p key={0} className='mb-2'>Sat: 11am - 10pm</p>,
+        <p key={0} className='mb-2'>Sun: 11am - 10pm</p>
+      ];
+    } else {
+      if(restaurant.details) {
+        let counter = -1;
+        if(restaurant.details.openingHours) {
+          openingTimes = restaurant.details.openingHours.weekday_text.map( (day) => {
+            counter++;
+            return(<p key={counter} className='mb-2'>{day}</p>)}
+          );
+        }
       }
     }
     return openingTimes;
@@ -130,19 +142,6 @@ export default class RestItemCont extends React.Component {
     return 'https://maps.googleapis.com/maps/api/staticmap?center='+ restaurant.lat + ',' + restaurant.long + '&zoom=16&size=640x480&markers=color:red%7Clabel:Bronco%7C'+ restaurant.lat + ',' + restaurant.long + '&key=' + process.env.REACT_APP_G_API
   };
 
-  getOpeningHours = () => {
-    // const today = new Date();
-    // const { restaurant } = this.props;
-    // let openingHours = '';
-    //
-    // if(restaurant.details) {
-    //   openingHours = restaurant.details.openingHours ? 'api' : 'file'
-    // }
-    // console.log(openingHours);
-    // return openingHours;
-  };
-
-
   render() {
     const { reviews, openingTimes, phoneNum, photoUrl, staticMapUrl } = this.state.content;
     const { restaurant, handleNewData, windowWidth } = this.props;
@@ -162,7 +161,7 @@ export default class RestItemCont extends React.Component {
                 :
                 <div>
                   <div key={0} className='mb-1'><Icon name='phone'/><a href={'tel:' + phoneNum}>{phoneNum}</a></div>
-                  <div key={1} className='mb-2'><Icon name='linkify' /><a href={restaurant.details && restaurant.details.link}>Visit Website</a></div>
+                  <div key={1} className='mb-2'><Icon name='linkify' /><a href={restaurant.isFromFile ? '#' : restaurant.details && restaurant.details.link}>Visit Website</a></div>
                   <div key={2}><h4 className='mb-2'>Opening Times</h4> {openingTimes}</div>
                 </div>
               }
@@ -196,7 +195,9 @@ export default class RestItemCont extends React.Component {
               </GridColumn>
               <GridColumn textAlign='center'>
                 <div className='my-2'>
-                  <p>Open today: 7am - 9pm</p>
+                  <Label tag color={restaurant.open ? 'green' : 'red'} size='small'>
+                    {restaurant.open ? 'Open Now' : 'Closed'}
+                  </Label>
                 </div>
               </GridColumn>
               <GridColumn width={16}>

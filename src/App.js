@@ -10,7 +10,7 @@ import Map from "./components/Map";
 import DataDisplay from './components/DataDisplay';
 import {Dimmer, Loader, Container, Grid, GridColumn} from "semantic-ui-react";
 
-// TODO redo opening times.. maybe just say: 'open today: hours' ?
+// DONE TODO redo opening times.. maybe just say: 'open today: hours' ?
 // TODO redo to use react-google-maps/api
 // TODO reshape the app and implement use of React Hooks
 

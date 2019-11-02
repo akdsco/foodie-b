@@ -33,7 +33,7 @@ const RestMarker = (props) =>  {
             <Card.Content>
               <Card.Meta>
                 <Label tag color={restaurant.open ? 'green' : 'red'} size='small'>
-                  {restaurant.open ? 'Open' : 'Closed'}
+                  {restaurant.open ? 'Open Now' : 'Closed'}
                 </Label>
               </Card.Meta>
               <Card.Description>
