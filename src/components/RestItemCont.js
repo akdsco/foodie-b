@@ -161,7 +161,7 @@ export default class RestItemCont extends React.Component {
                 :
                 <div>
                   <div key={0} className='mb-1'><Icon name='phone'/><a href={'tel:' + phoneNum}>{phoneNum}</a></div>
-                  <div key={1} className='mb-2'><Icon name='linkify' /><a href={restaurant.isFromFile ? '#' : restaurant.details && restaurant.details.link}>Visit Website</a></div>
+                  <div key={1} className='mb-2'><Icon name='linkify' /><a href={restaurant.isFromFile ? 'http://blank.org/' : restaurant.details && restaurant.details.link}>Visit Website</a></div>
                   <div key={2}><h4 className='mb-2'>Opening Times</h4> {openingTimes}</div>
                 </div>
               }
