@@ -1,9 +1,23 @@
+/*--------------------------------------- General */
+
+
 body {
-    background: #EFEFEA url('../img/left-bg.png') no-repeat;
+    background: #EFEFEA url('../img/background-main.png') no-repeat;
     background-size: cover;
 }
 
-/* Custom Style Modifications */
+
+/*--------------------------------------- Direct change to Semantic UI */
+
+
+.ui.styled.accordion .accordion .content,
+.ui.styled.accordion .content {
+    padding: 0 0 .2em !important;
+}
+
+
+/*--------------------------------------- Additional Style Modifications */
+
 
 .data-display {
     height: 100vh;
@@ -11,9 +25,47 @@ body {
     overflow-x: hidden;
 }
 
-.container-accordion {
+.rest-item-cont {
     padding: .3em .5em;
 }
+
+.rest-item-buttons {
+    padding: 0;
+    text-align: center;
+    margin-bottom: 1em !important;
+}
+
+.search-toggle-button {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    padding: 7px 16px !important;
+}
+
+.paragraph-link {
+    cursor: pointer;
+    color: dodgerblue;
+}
+
+
+/*--------------------------------------- Custom Map Style */
+
+
+.loadingElement {
+    height: 100%;
+}
+
+.containerElement {
+    height: 100vh;
+}
+
+.mapElement {
+    height: 100%;
+}
+
+
+/*--------------------------------------- Helper Classes */
+
 
 .center-text {
     text-align: center !important;
@@ -23,17 +75,6 @@ body {
     margin: 0 auto;
     display: block !important;
 }
-
-.main-grid-row {
-    overflow-y: hidden;
-    padding-bottom: 0;
-}
-
-.ui.styled.accordion .accordion .content,
-.ui.styled.accordion .content {
-    padding: 0 0 .2em !important;
-}
-
 .mb-1 {
     margin-bottom: .2em;
 }
@@ -55,64 +96,38 @@ body {
     margin-top: .4em;
  }
 
-.restaurant-item-buttons {
-    padding: 0;
-    text-align: center;
-    margin-bottom: 1em !important;
-}
-
-.toggle-button {
-    position: absolute;
-    top: 20px;
-    left: 20px;
-    padding: 7px 16px !important;
-    /*background: rgba(255,255,255, .85);*/
-}
-
-.paragraph-link {
-    cursor: pointer;
-    color: dodgerblue;
-}
-
-.segment-test {
+.data-display-menu-segment {
     width: 85vh;
 }
 
-/* Map Style */
 
-.loadingElement {
-    height: 100%;
-}
+/*--------------------------------------- Responsive Adjustments */
 
-.containerElement {
-    height: 100vh;
-}
 
-.mapElement {
-    height: 100%;
-}
+/* Mobile */
 
 @media (max-width: 767px) {
+
+    /* Direct change to Semantic UI */
+
     .ui.styled.accordion {
         width: 100%;
     }
 
-    .loadingElement {
-        height: 100%;
-    }
+    /* Custom Map Style */
 
     .containerElement {
         height: calc(100vh - 117px);
     }
 
-    .mapElement {
-        height: 100%;
-    }
+    /* Additional Style Modifications */
 
-    .segment-test {
+    .data-display-menu-segment {
         width: 100%;
     }
 }
+
+/* Custom Mobile */
 
 @media (max-width: 390px) {
     .more-info {
@@ -123,11 +138,5 @@ body {
 @media (max-width: 343px) {
     .load-more-reviews {
         margin-bottom: 10px !important;
-    }
-}
-
-@media (max-width: 420px) {
-    .data-display {
-        height: 105vh;
     }
 }

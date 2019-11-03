@@ -1,9 +1,10 @@
-// Import CSS
-import '../css/style.css';
-
-// Import Components
+// Imports
 import React from 'react'
+// CSS
+import '../css/style.css';
+// Components
 import { SingleRatingComponent } from "./RatingComponents";
+// Dependencies
 import {Grid, Image, Header, GridColumn,} from 'semantic-ui-react'
 
 export default class ReviewItem extends React.Component {
@@ -51,10 +52,9 @@ export default class ReviewItem extends React.Component {
   };
 
   render() {
-    // Component Props
     const { item } = this.props;
-    const { isReviewLong, excerptReview, isFullReviewDisplayed } = this.state;
     const { placeholderUrl, handleReviewOpen } = this;
+    const { isReviewLong, excerptReview, isFullReviewDisplayed } = this.state;
 
     return(
       <Grid centered>

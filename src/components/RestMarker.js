@@ -1,9 +1,10 @@
-// Import Components
+// Imports
 import React from "react";
+// Dependencies
 import { Marker, InfoWindow } from "react-google-maps";
 import {Card, Header, Icon, Image, Label} from "semantic-ui-react";
 
-const RestMarker = (props) =>  {
+const RestMarker = props =>  {
   const { index, restaurant, activeRest, position } = props;
 
   const handleMarkerClick = () =>  {

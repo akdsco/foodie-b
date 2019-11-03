@@ -3,6 +3,7 @@
 #idea + misc
 /.idea
 deploy-plan.md
+DevCode.txt
 
 # dependencies
 /node_modules

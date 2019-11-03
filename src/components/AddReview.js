@@ -1,7 +1,9 @@
-// Import Components
+// Imports
 import React from 'react'
-import {Button, Form} from "semantic-ui-react";
+// Components
 import {AddReviewRatingComponent} from './RatingComponents';
+// Dependencies
+import {Button, Form} from "semantic-ui-react";
 
 export default class AddReview extends React.Component {
   state = {
@@ -10,6 +12,11 @@ export default class AddReview extends React.Component {
     reviewersName: '',
     reviewersImgUrl: ''
   };
+
+  /* ===================
+   *   Handler Methods
+  _* ===================
+*/
 
   handleChange = (e, { name, value }) => this.setState({ [name]: value });
 
@@ -42,7 +49,7 @@ export default class AddReview extends React.Component {
         <Form.Field required>
           <label>What did you like in particular?</label>
           <Form.TextArea
-            placeholder='Tell us your thoughts...'
+            placeholder='Tell us your thoughts. (min. 5 characters)'
             name='reviewContent'
             type='text'
             value={reviewContent}
@@ -52,7 +59,7 @@ export default class AddReview extends React.Component {
         <Form.Field required>
           <label>Your Name</label>
           <Form.Input
-            placeholder="e.g. John Dough"
+            placeholder="e.g. John Dough (min. 3 characters)"
             name='reviewersName'
             value={reviewersName}
             onChange={handleChange}

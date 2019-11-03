@@ -1,11 +1,11 @@
-// Import CSS
-import '../css/style.css';
-
-// Import Components
+// Imports
 import React from 'react'
-
-import {Dimmer, Loader} from "semantic-ui-react";
+// CSS
+import '../css/style.css';
+// Components
 import RestItem from "./RestItem";
+// Dependencies
+import {Dimmer, Loader} from "semantic-ui-react";
 
 export default class RestList extends React.Component {
 

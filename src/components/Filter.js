@@ -1,5 +1,6 @@
-// Import Components
+// Imports
 import React from 'react'
+// Dependencies
 import {Container, Button, Rating} from "semantic-ui-react";
 
 export default class Filter extends React.Component {

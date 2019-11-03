@@ -1,11 +1,9 @@
-// Import Images
-import logoImg from '../img/logo.png';
-
-// Import Components
+// Imports
 import React from 'react';
+// Images
+import logoImg from '../img/logo.png';
+// Dependencies
 import {Form, Checkbox, Button, Modal, Image, Header} from 'semantic-ui-react';
-
-//TODO make sure required fields work, as of now you can fill form without lat and lng and it will still add new restaurant
 
 export default class AddRest extends React.Component {
   state = {
@@ -14,6 +12,11 @@ export default class AddRest extends React.Component {
     imageUrl: '',
     isTermsChecked: false,
   };
+
+  /* ===================
+   *   Handler Methods
+  _* ===================
+*/
 
   handleChange = (e, { name, value }) => this.setState({ [name]: value });
 
@@ -50,9 +53,9 @@ export default class AddRest extends React.Component {
   };
 
   render() {
-    const { restName, imageUrl, modalOpen, isTermsChecked } = this.state;
     const { closeInfoWindow } = this.props;
     const { handleChange, handleCancel, handleSubmit } = this;
+    const { restName, imageUrl, modalOpen, isTermsChecked } = this.state;
 
     return(
       <div>
@@ -80,7 +83,7 @@ export default class AddRest extends React.Component {
                 <Form.Field required>
                   <label>Restaurant Name</label>
                   <Form.Input
-                    placeholder="e.g. Pizza Express"
+                    placeholder="e.g. Pizza Express (min. 4 characters)"
                     name='restName'
                     value={restName}
                     onChange={handleChange}

@@ -1,6 +1,9 @@
+// Imports
 import React from 'react';
+// Components
 import RestTitle from "./RestTitle";
 import RestItemCont from "./RestItemCont";
+// Dependencies
 import Accordion from "semantic-ui-react/dist/commonjs/modules/Accordion";
 
 export default class RestItem extends React.Component {
@@ -10,20 +13,42 @@ export default class RestItem extends React.Component {
     this.scrollFlag = true;
   }
 
+  /* =====================
+   *   Lifecycle Methods
+  _* =====================
+*/
+
   componentDidUpdate(prevProps, prevState, snapshot) {
+    const { activeRest, restaurant } = this.props;
 
     // Scrolls only once after opening up Accordion, then it doesn't until you close and open it again.
-    if(this.props.activeRest === -1) {
+    if(activeRest === -1) {
       this.scrollFlag = true;
     }
     if(this.scrollFlag) {
-      if(this.props.activeRest === this.props.restaurant.id) {
+      if(activeRest === restaurant.id) {
         this.scrollToItem();
         this.scrollFlag = false;
       }
     }
 
   }
+
+  /* ===================
+   *   Handler Methods
+  _* ===================
+*/
+
+  handleAccordionClick = (e, titleProps) =>  {
+    this.scrollToItem();
+    const { index } = titleProps;
+    this.props.handleActiveRest(index);
+  };
+
+  /* ==================
+   *   Custom Methods
+  _* ==================
+*/
 
   scrollToItem = () => {
     setTimeout(() =>
@@ -33,22 +58,19 @@ export default class RestItem extends React.Component {
     }), 220);
   };
 
-  handleAccordionClick = (e, titleProps) =>  {
-    this.scrollToItem();
-    const { index } = titleProps;
-    this.props.handleActiveRest(index);
-  };
+
 
   render() {
     const { activeRest, handleNewData, restaurant, windowWidth } = this.props;
+    const { reference, handleAccordionClick } = this;
 
     return(
-      <div ref={this.reference}>
+      <div ref={reference}>
         <Accordion className='mb-2' styled>
           <Accordion.Title
             active={activeRest === restaurant.id}
             index={restaurant.id}
-            onClick={this.handleAccordionClick}>
+            onClick={handleAccordionClick}>
             <RestTitle
               active={activeRest === restaurant.id}
               item={restaurant}

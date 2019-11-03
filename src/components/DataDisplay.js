@@ -1,23 +1,25 @@
-// Import CSS
-import '../css/style.css'
-
-// Import images
-import logoImg from '../img/logo.png'
-
-// Import Components
+// Imports
 import React from 'react'
+// CSS
+import '../css/style.css'
+// Images
+import logoImg from '../img/logo.png'
+// Components
 import Map from "./Map";
 import Filter from './Filter'
 import RestList from "./RestList";
+// Dependencies
 import { Menu, Segment, ItemGroup} from "semantic-ui-react";
 
 export default class DataDisplay extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      activeMenuItem: 'Restaurants',
-    };
-  }
+  state = {
+    activeMenuItem: 'Restaurants',
+  };
+
+  /* ===================
+   *   Handler Methods
+  _* ===================
+*/
 
   handleMenuItemClick = (e, { name }) => {
     this.setState({ activeMenuItem: name });
@@ -91,7 +93,7 @@ export default class DataDisplay extends React.Component {
           </Segment>
         }
         {windowWidth < 768 && activeMenuItem === 'Map' &&
-          <Segment className='segment-test'>
+          <Segment className='data-display-menu-segment'>
               <Map
                 restaurants={restaurants.filter(restaurant =>
                   restaurant.avgRating >= ratingMin &&

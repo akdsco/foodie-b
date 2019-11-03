@@ -1,21 +1,19 @@
-// Import Images
-import userLocationMarker from '../img/user.png'
-import dotMarker from '../img/dot10.png'
-
-// Import CSS
-import '../css/style.css';
-
-// Import Components
+// Imports
 import React from 'react';
-import RestMarker from "./RestMarker";
+// Images
+import markerUser from '../img/marker-user.png'
+import markerCenter from '../img/marker-center.png'
+// CSS
+import '../css/style.css';
+// Components
 import AddRest from "./AddRest";
+import RestMarker from "./RestMarker";
 // Dependencies
 import Geocode from "react-geocode";
 import { Button, Icon } from "semantic-ui-react";
 import {compose, lifecycle, withProps} from "recompose";
 import {withScriptjs, withGoogleMap, GoogleMap, Marker, InfoWindow} from "react-google-maps";
-
-// Import Map Styles
+// Map Styles
 const styles = require('../data/GoogleMapStyles.json');
 
 const MapConst = compose(
@@ -68,7 +66,7 @@ const MapConst = compose(
     {/* Load user Marker */}
     {props.userMarker &&
       <Marker
-        icon={{url: userLocationMarker}}
+        icon={{url: markerUser}}
         position={{lat: props.userLocation.lat, lng: props.userLocation.lng}}
       />
     }
@@ -76,7 +74,8 @@ const MapConst = compose(
     {/* Center Marker */}
     {props.center && ((props.center.lat !== props.userLocation.lat) && (props.center.lng !== props.userLocation.lng)) &&
       <Marker
-        icon={{url: dotMarker}}
+        defaultClickable={false}
+        icon={{url: markerCenter}}
         position={{lat: props.center.lat, lng: props.center.lng}}
       />
     }
@@ -126,6 +125,11 @@ export default class Map extends React.PureComponent {
       lng: ''
     }
   };
+
+  /* ===================
+   *   Handler Methods
+  _* ===================
+*/
 
   closeInfoWindow = () => {
     this.setState({
@@ -183,7 +187,7 @@ export default class Map extends React.PureComponent {
           handleActiveRest={handleActiveRest}
           handleCenterChange={handleCenterChange}
         />
-        <Button className='toggle-button' toggle active={flags.isRestSearchAllowed} onClick={handleRestSearch}>
+        <Button className='search-toggle-button' toggle active={flags.isRestSearchAllowed} onClick={handleRestSearch}>
           {flags.isRestSearchAllowed &&
           <p><Icon name='check square' />Search as I move the map</p>}
           {!flags.isRestSearchAllowed &&

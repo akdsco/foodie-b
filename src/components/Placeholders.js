@@ -1,8 +1,8 @@
-// Import CSS
-import '../css/style.css';
-
-// Import Components
+// Imports
 import React from 'react'
+// CSS
+import '../css/style.css';
+// Dependencies
 import {Placeholder, Grid, GridColumn } from 'semantic-ui-react'
 
 const LeftColumnPlaceholder = () =>

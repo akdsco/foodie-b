@@ -1,11 +1,12 @@
-// Import CSS
-import '../css/style.css';
-
-// Import Components
+// Imports
 import React from 'react';
+// CSS
+import '../css/style.css';
+// Components
 import ReviewItem from "./ReviewItem";
 import {AddReviewModal, MoreReviews} from "./Modals";
 import {LeftColumnPlaceholder, RightColumnPlaceholder, ReviewsPlaceholder, MobilePlaceholder} from "./Placeholders";
+// Dependencies
 import {Container, GridColumn, Grid, Image, Icon, Segment, Label} from "semantic-ui-react";
 
 export default class RestItemCont extends React.Component {
@@ -22,6 +23,10 @@ export default class RestItemCont extends React.Component {
     };
   placeholderUrl = 'https://bit.ly/2JnrFZ6';
 
+  /* =====================
+   *   Lifecycle Methods
+  _* =====================
+*/
 
   componentDidMount() {
     setTimeout(() => this.loadContent(), 1250);
@@ -38,6 +43,11 @@ export default class RestItemCont extends React.Component {
       }))
     }
   }
+
+  /* ==================
+   *   Custom Methods
+  _* ==================
+*/
 
   loadContent = () => {
     let content = {
@@ -85,12 +95,12 @@ export default class RestItemCont extends React.Component {
     if(restaurant.isFromFile) {
       openingTimes = [
         <p key={0} className='mb-2'>Mon: 11am - 10pm</p>,
-        <p key={0} className='mb-2'>Tue: 11am - 10pm</p>,
-        <p key={0} className='mb-2'>Wed: 11am - 10pm</p>,
-        <p key={0} className='mb-2'>Thu: 11am - 10pm</p>,
-        <p key={0} className='mb-2'>Fri: 11am - 10pm</p>,
-        <p key={0} className='mb-2'>Sat: 11am - 10pm</p>,
-        <p key={0} className='mb-2'>Sun: 11am - 10pm</p>
+        <p key={1} className='mb-2'>Tue: 11am - 10pm</p>,
+        <p key={2} className='mb-2'>Wed: 11am - 10pm</p>,
+        <p key={3} className='mb-2'>Thu: 11am - 10pm</p>,
+        <p key={4} className='mb-2'>Fri: 11am - 10pm</p>,
+        <p key={5} className='mb-2'>Sat: 11am - 10pm</p>,
+        <p key={6} className='mb-2'>Sun: 11am - 10pm</p>
       ];
     } else {
       if(restaurant.details) {
@@ -127,7 +137,6 @@ export default class RestItemCont extends React.Component {
       let data = restaurant.details;
 
       if(data.photos) {
-        // noinspection JSUnusedLocalSymbols
         let photoRef = data.photos[1] ? data.photos[1].photo_reference : (data.photos[0] ? data.photos[0].photo_reference : '');
         url = 'https://maps.googleapis.com/maps/api/place/photo?maxwidth=800&photoreference=' + photoRef + '&key=' + process.env.REACT_APP_G_API;
       } else if (typeof data.photoUrl !== 'undefined' && data.photoUrl !== '') {
@@ -142,13 +151,14 @@ export default class RestItemCont extends React.Component {
     return 'https://maps.googleapis.com/maps/api/staticmap?center='+ restaurant.lat + ',' + restaurant.long + '&zoom=16&size=640x480&markers=color:red%7Clabel:Bronco%7C'+ restaurant.lat + ',' + restaurant.long + '&key=' + process.env.REACT_APP_G_API
   };
 
+
   render() {
     const { reviews, openingTimes, phoneNum, photoUrl, staticMapUrl } = this.state.content;
     const { restaurant, handleNewData, windowWidth } = this.props;
     const { loadingData } = this.state;
 
     return(
-      <Container className='container-accordion'>
+      <Container className='rest-item-cont'>
         <Grid>
 
           {/* Restaurant information */}
@@ -224,7 +234,7 @@ export default class RestItemCont extends React.Component {
           {/* More Reviews and Add Review Modals */}
 
           <Grid.Row>
-            <GridColumn className='restaurant-item-buttons'>
+            <GridColumn className='rest-item-buttons'>
               {restaurant.details &&
                 <MoreReviews />
               }

@@ -1,5 +1,8 @@
+// Imports
 import React, { useState } from 'react'
+// Components
 import AddReview from "./AddReview";
+// Dependencies
 import {Modal, Button, Icon, Header, Image} from 'semantic-ui-react'
 
 const MoreReviews = () => {
@@ -40,7 +43,7 @@ const MoreReviews = () => {
   )
 };
 
-const AddReviewModal = (props) => {
+const AddReviewModal = props => {
   const[ modalOpen, setModelOpen ] = useState();
   const { restaurant, photoUrl, handleNewData } = props;
 

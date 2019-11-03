@@ -1,17 +1,16 @@
-// Import Images
-import fmjImg from '../img/fmj.jpg'
-
-// Import CSS
-import '../css/style.css';
-
-// Import Components
+// Imports
 import React from 'react'
-import {Button, Icon, Item } from "semantic-ui-react";
+// Images
+import foodPlate from '../img/food-plate.jpg'
+// CSS
+import '../css/style.css';
+// Components
 import {AvgRatingComponent} from "./RatingComponents";
+// Dependencies
+import {Button, Icon, Item } from "semantic-ui-react";
 
 const RestTitle = (props) => {
-  // const photo = props.item.streetViewURL ? props.item.streetViewURL : (props.item.details.photoUrl ? props.item.details.photoUrl : fmjImg);
-  const photo = props.item.streetViewURL ? props.item.streetViewURL : fmjImg;
+  const photo = props.item.streetViewURL ? props.item.streetViewURL : (props.item.details.photoUrl ? props.item.details.photoUrl : foodPlate);
 
   return(
     <Item>

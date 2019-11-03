@@ -1,48 +1,37 @@
-// Import Data
-import restaurantsFromFile from './data/restaurants'
-
-// Import CSS
-import './css/style.css';
-
-// Import Components
+// Imports
 import React from 'react';
+// Data
+import restaurantsFromFile from './data/restaurants'
+// CSS
+import './css/style.css';
+// Components
 import Map from "./components/Map";
 import DataDisplay from './components/DataDisplay';
+// Dependencies
 import {Dimmer, Loader, Container, Grid, GridColumn} from "semantic-ui-react";
 
-// DONE TODO redo opening times.. maybe just say: 'open today: hours' ?
-// TODO redo to use react-google-maps/api
-// TODO reshape the app and implement use of React Hooks
-
-// Errors -> Talk to Mentor
-// TODO RestaurantContent => is it a good approach from performance point of view, to have couple of functions sourcing same prop..
-// TODO How to fetch data only when user requests it example: Restaurant Content google static map url images loaded only when user clicks on the map and is viewing on device with innerWidth lover than 768px
-
 export default class App extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      restaurants: [],
-      ratingMin: 0,
-      ratingMax: 5,
-      flags: {
-        isLoadingRestaurants: false,
-        isRestSearchAllowed: true,
-        isUserMarkerShown: false,
-      },
-      searchRadius: 750,
-      userLocation: {
-        lat: 1,
-        lng: 1
-      },
-      center: {
-        lat: 1,
-        lng: 1
-      },
-      activeRest: -1,
-      windowWidth: window.innerWidth,
-    };
-  }
+  state = {
+    restaurants: [],
+    ratingMin: 0,
+    ratingMax: 5,
+    flags: {
+      isLoadingRestaurants: true,
+      isRestSearchAllowed: true,
+      isUserMarkerShown: false,
+    },
+    searchRadius: 750,
+    userLocation: {
+      lat: 1,
+      lng: 1
+    },
+    center: {
+      lat: 1,
+      lng: 1
+    },
+    activeRest: -1,
+    windowWidth: window.innerWidth,
+  };
 
   /* =====================
    *   Lifecycle Methods
@@ -203,89 +192,46 @@ export default class App extends React.Component {
     });
   };
 
-  // locateUser() {
-  //   if(navigator.geolocation) {
-  //     navigator.geolocation.getCurrentPosition(
-  //         position => {
-  //     console.log('User Successfully located');
-  //     this.setState(prevState => ({
-  //     userLocation: {
-  //       lat: position.coords.latitude,
-  //       lng: position.coords.longitude
-  //     },
-  //     center: {
-  //       ...prevState.center,
-  //       lat: position.coords.latitude,
-  //       lng: position.coords.longitude
-  //     },
-  //      flags: {
-  //       ...prevState.flags,
-  //       isUserMarkerShown: true
-  //     }
-  //      }), () => this.loadGooglePlacesRestaurants());
-  //   }, (error) => {
-  //       console.log(error);
-  //       // console.log('Error: The Geolocation service failed.');
-  //       this.setState(prevState => ({
-  //         userLocation: {
-  //           lat: 51.516126,
-  //           lng: -0.081679
-  //         },
-  //         center: {
-  //           ...prevState.center,
-  //           lat: 51.516126,
-  //           lng: -0.081679
-  //         },
-  //          flags: {
-  //            ...prevState.flags,
-  //            isUserMarkerShown: true,
-  //         }
-  //         }), () => this.loadGooglePlacesRestaurants());
-  //       // console.log('from locate user', this.state.restaurants);
-  //       }
-  //     )
-  //   }
-  // }
-
   locateUser() {
     if(navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
-        position => {
-          console.log('User Successfully located');
-          this.setState(prevState => ({
-            userLocation: {
-              lat: position.coords.latitude,
-              lng: position.coords.longitude
-            },
-            center: {
-              ...prevState.center,
-              lat: position.coords.latitude,
-              lng: position.coords.longitude
-            },
-            flags: {
-              ...prevState.flags,
-              isUserMarkerShown: true
-            }
-          })/*, () => this.loadGooglePlacesRestaurants()*/);
-        }, (error) => {
-          console.log(error);
-          // console.log('Error: The Geolocation service failed.');
-          this.setState(prevState => ({
-            userLocation: {
-              lat: 51.516126,
-              lng: -0.081679
-            },
-            center: {
-              ...prevState.center,
-              lat: 51.516126,
-              lng: -0.081679
-            },
-            flags: {
-              ...prevState.flags,
-              isUserMarkerShown: true,
-            }
-          })/*, () => this.loadGooglePlacesRestaurants()*/);
-          // console.log('from locate user', this.state.restaurants);
+          position => {
+      // debug log
+      // console.log('User Successfully located');
+      this.setState(prevState => ({
+      userLocation: {
+        lat: position.coords.latitude,
+        lng: position.coords.longitude
+      },
+      center: {
+        ...prevState.center,
+        lat: position.coords.latitude,
+        lng: position.coords.longitude
+      },
+       flags: {
+        ...prevState.flags,
+        isUserMarkerShown: true
+      }
+       }), () => this.loadGooglePlacesRestaurants());
+    }, error => {
+        console.log('Error locating user: ', error);
+        // debug log
+        // console.log('Error: The Geolocation service failed.');
+        this.setState(prevState => ({
+          userLocation: {
+            lat: 51.516126,
+            lng: -0.081679
+          },
+          center: {
+            ...prevState.center,
+            lat: 51.516126,
+            lng: -0.081679
+          },
+           flags: {
+             ...prevState.flags,
+             isUserMarkerShown: true,
+          }
+          }), () => this.loadGooglePlacesRestaurants());
         }
       )
     }
@@ -298,7 +244,8 @@ export default class App extends React.Component {
     const url = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=' + center.lat + ',' + center.lng + '&radius=' + searchRadius + '&type=restaurant&key=' + process.env.REACT_APP_G_API;
     const restaurants = self.state.restaurants.slice().filter(restaurant => restaurant.isFromFile);
 
-    console.log('Restaurants before loading Google Places: ', restaurants);
+    // debug log
+    // console.log('Restaurants before loading Google Places: ', restaurants);
 
     fetch(url, {
       method: 'GET',
@@ -310,7 +257,7 @@ export default class App extends React.Component {
             count++;
             let restaurantObject = {
               "id": count,
-              // "streetViewURL": 'https://maps.googleapis.com/maps/api/streetview?size=500x300&location='+ r.geometry.location.lat +','+ r.geometry.location.lng +'&heading=151.78&pitch=-0.76&key='+ process.env.REACT_APP_G_API,
+              "streetViewURL": 'https://maps.googleapis.com/maps/api/streetview?size=500x300&location='+ r.geometry.location.lat +','+ r.geometry.location.lng +'&heading=151.78&pitch=-0.76&key='+ process.env.REACT_APP_G_API,
               "place_id": r.place_id,
               "isFromFile": false,
               "numberOfReviews": r.user_ratings_total > 5 ? 5 : r.user_ratings_total,
@@ -334,6 +281,8 @@ export default class App extends React.Component {
           }
         }))
       });
+    }, error => {
+      console.log('Failed to load Google Places Restaurants', error)
     });
   };
 
@@ -342,9 +291,10 @@ export default class App extends React.Component {
     const currentRestaurantsState = [...self.state.restaurants];
     const placeID = this.state.restaurants[index].place_id;
 
-    // if details already fetched previously --> don't fetch again, otherwise yes
+    // if details already fetched previously --> don't fetch again
     if(!currentRestaurantsState[index].details) {
-      console.log('First time query, fetching placeID: ' + placeID);
+      // debug log
+      // console.log('First time query, fetching placeID: ' + placeID);
 
       if(placeID) {
         let url = 'https://maps.googleapis.com/maps/api/place/details/json?placeid=' + placeID + '&key=' + process.env.REACT_APP_G_API;
@@ -354,7 +304,8 @@ export default class App extends React.Component {
         }).then(response => {
           response.json().then(data => {
             if(data.status === 'OK') {
-              console.log('PlaceID details ', data);
+              // debug log
+              // console.log('PlaceID details ', data);
 
               const revs = () => {
                 let array = [];
@@ -391,6 +342,8 @@ export default class App extends React.Component {
               console.log('API call unsuccessful');
             }
           })
+        }, error => {
+          console.log('Failed to load Google Place Details: ', error);
         })
       } else {
         console.log('Sorry no placeID supplied.');
@@ -461,11 +414,6 @@ export default class App extends React.Component {
         <Grid>
           <Grid.Row centered columns={2} only='tablet' style={styleMobile}>
             <GridColumn width={9}>
-              <Dimmer.Dimmable dimmed={flags.isLoadingRestaurants}>
-                <Dimmer active={flags.isLoadingRestaurants} inverted>
-                  <Loader>Loading Restaurants</Loader>
-                </Dimmer>
-
                 <DataDisplay
                   restaurants={restaurants}
                   ratingMax={ratingMax}
@@ -480,7 +428,6 @@ export default class App extends React.Component {
                   handleNewData={handleNewData}
                   handleActiveRest={handleActiveRest}
                 />
-              </Dimmer.Dimmable>
             </GridColumn>
             <GridColumn width={7}>
               <Dimmer.Dimmable dimmed={flags.isLoadingRestaurants}>
