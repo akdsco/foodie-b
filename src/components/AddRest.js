@@ -9,7 +9,9 @@ export default class AddRest extends React.Component {
   state = {
     modalOpen: false,
     restName: '',
+    phoneNumber: '',
     imageUrl: '',
+    restUrl: '',
     isTermsChecked: false,
   };
 
@@ -27,7 +29,7 @@ export default class AddRest extends React.Component {
 
   handleSubmit = () => {
     const { newRestData, restaurants } = this.props;
-    const { restName, imageUrl } = this.state;
+    const { restName, imageUrl, phoneNumber, restUrl } = this.state;
     const id = restaurants.length;
 
     const newRestaurant = {
@@ -43,7 +45,9 @@ export default class AddRest extends React.Component {
       "numberOfReviews": 0,
       "details": {
         "reviews": [],
-        "photoUrl": imageUrl
+        "photoUrl": imageUrl,
+        "phoneNumber": phoneNumber,
+        "link": restUrl,
       }
     };
 
@@ -55,7 +59,7 @@ export default class AddRest extends React.Component {
   render() {
     const { closeInfoWindow } = this.props;
     const { handleChange, handleCancel, handleSubmit } = this;
-    const { restName, imageUrl, modalOpen, isTermsChecked } = this.state;
+    const { restName, imageUrl, modalOpen, isTermsChecked, phoneNumber,restUrl } = this.state;
 
     return(
       <div>
@@ -95,6 +99,24 @@ export default class AddRest extends React.Component {
                     placeholder='e.g. http://mcdonalds.com/main-photo.jpg'
                     name='imageUrl'
                     value={imageUrl}
+                    onChange={handleChange}
+                  />
+                </Form.Field>
+                <Form.Field>
+                  <label>Phone Number</label>
+                  <Form.Input
+                    placeholder='e.g. 07456066789'
+                    name='phoneNumber'
+                    value={phoneNumber}
+                    onChange={handleChange}
+                  />
+                </Form.Field>
+                <Form.Field>
+                  <label>Restaurant Website</label>
+                  <Form.Input
+                    placeholder='e.g. http://www.restaurant-name.com'
+                    name='restUrl'
+                    value={restUrl}
                     onChange={handleChange}
                   />
                 </Form.Field>

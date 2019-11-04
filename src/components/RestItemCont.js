@@ -14,7 +14,6 @@ export default class RestItemCont extends React.Component {
       loadingData: true,
       content: {
         reviews: [],
-
         openingTimes: [],
         phoneNum: '',
         photoUrl: '',
@@ -171,7 +170,9 @@ export default class RestItemCont extends React.Component {
                 :
                 <div>
                   <div key={0} className='mb-1'><Icon name='phone'/><a href={'tel:' + phoneNum}>{phoneNum}</a></div>
-                  <div key={1} className='mb-2'><Icon name='linkify' /><a href={restaurant.isFromFile ? 'http://blank.org/' : restaurant.details && restaurant.details.link}>Visit Website</a></div>
+                  <div key={1} className='mb-2'><Icon name='linkify' />
+                    <a target='_blank' rel="noopener noreferrer" href={restaurant.details && restaurant.details.link}>Visit Website</a>
+                  </div>
                   <div key={2}><h4 className='mb-2'>Opening Times</h4> {openingTimes}</div>
                 </div>
               }
@@ -197,15 +198,17 @@ export default class RestItemCont extends React.Component {
             <MobilePlaceholder />
           :
             <Grid.Row columns={2} only='mobile'>
-              <GridColumn>
+              <GridColumn width={11}>
                 <div className='my-2'>
-                  <Icon name='phone'/><a className='mr-2' href={'tel:' + phoneNum}>{phoneNum}</a>
-                  <Icon name='linkify'/><a href={restaurant.details && restaurant.details.link}>Visit Website</a>
+                  <div className='display-inline'><Icon name='phone'/><a className='mr-2' href={'tel:' + phoneNum}>{phoneNum}</a></div>
+                  <div className='display-inline'><Icon name='linkify'/>
+                    <a target='_blank' rel="noopener noreferrer" href={restaurant.details && restaurant.details.link}>Visit Website</a>
+                  </div>
                 </div>
               </GridColumn>
-              <GridColumn textAlign='center'>
+              <GridColumn width={5} textAlign='center'>
                 <div className='my-2'>
-                  <Label tag color={restaurant.open ? 'green' : 'red'} size='small'>
+                  <Label tag color={restaurant.open ? 'green' : 'red'} size='tiny'>
                     {restaurant.open ? 'Open Now' : 'Closed'}
                   </Label>
                 </div>
