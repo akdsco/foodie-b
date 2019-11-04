@@ -9,6 +9,8 @@ import {LeftColumnPlaceholder, RightColumnPlaceholder, ReviewsPlaceholder, Mobil
 // Dependencies
 import {Container, GridColumn, Grid, Image, Icon, Segment, Label} from "semantic-ui-react";
 
+const REACT_APP_G_API = process.env.REACT_APP_G_API;
+
 export default class RestItemCont extends React.Component {
   state = {
       loadingData: true,
@@ -137,7 +139,7 @@ export default class RestItemCont extends React.Component {
 
       if(data.photos) {
         let photoRef = data.photos[1] ? data.photos[1].photo_reference : (data.photos[0] ? data.photos[0].photo_reference : '');
-        url = 'https://maps.googleapis.com/maps/api/place/photo?maxwidth=800&photoreference=' + photoRef + '&key=' + process.env.REACT_APP_G_API;
+        url = 'https://maps.googleapis.com/maps/api/place/photo?maxwidth=800&photoreference=' + photoRef + '&key=' + REACT_APP_G_API;
       } else if (typeof data.photoUrl !== 'undefined' && data.photoUrl !== '') {
         url = data.photoUrl;
       }
@@ -147,7 +149,7 @@ export default class RestItemCont extends React.Component {
 
   getGoogleMapStaticUrl = () => {
     const { restaurant } = this.props;
-    return 'https://maps.googleapis.com/maps/api/staticmap?center='+ restaurant.lat + ',' + restaurant.long + '&zoom=16&size=640x480&markers=color:red%7Clabel:Bronco%7C'+ restaurant.lat + ',' + restaurant.long + '&key=' + process.env.REACT_APP_G_API
+    return 'https://maps.googleapis.com/maps/api/staticmap?center='+ restaurant.lat + ',' + restaurant.long + '&zoom=16&size=640x480&markers=color:red%7Clabel:Bronco%7C'+ restaurant.lat + ',' + restaurant.long + '&key=' + REACT_APP_G_API
   };
 
 
