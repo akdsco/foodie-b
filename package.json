@@ -4,11 +4,6 @@
   "private": true,
   "dependencies": {
     "@mars/heroku-js-runtime-env": "^3.0.2",
-    "@types/googlemaps": "^3.38.0",
-    "@types/markerclustererplus": "^2.1.33",
-    "@types/react": "^16.9.11",
-    "compose": "^0.1.2",
-    "jquery": "^3.4.1",
     "react": "^16.11.0",
     "react-dom": "^16.11.0",
     "react-geocode": "^0.2.0",
