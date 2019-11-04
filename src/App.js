@@ -9,8 +9,10 @@ import Map from "./components/Map";
 import DataDisplay from './components/DataDisplay';
 // Dependencies
 import {Dimmer, Loader, Container, Grid, GridColumn} from "semantic-ui-react";
+import runtimeEnv from '@mars/heroku-js-runtime-env'
 
-const REACT_APP_G_API = process.env.REACT_APP_G_API;
+const env = runtimeEnv();
+const REACT_APP_G_API = env.REACT_APP_G_API;
 
 export default class App extends React.Component {
   state = {

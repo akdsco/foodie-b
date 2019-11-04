@@ -8,8 +8,10 @@ import {AddReviewModal, MoreReviews} from "./Modals";
 import {LeftColumnPlaceholder, RightColumnPlaceholder, ReviewsPlaceholder, MobilePlaceholder} from "./Placeholders";
 // Dependencies
 import {Container, GridColumn, Grid, Image, Icon, Segment, Label} from "semantic-ui-react";
+import runtimeEnv from "@mars/heroku-js-runtime-env";
 
-const REACT_APP_G_API = process.env.REACT_APP_G_API;
+const env = runtimeEnv();
+const REACT_APP_G_API = env.REACT_APP_G_API;
 
 export default class RestItemCont extends React.Component {
   state = {
