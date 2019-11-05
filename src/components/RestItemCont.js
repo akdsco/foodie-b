@@ -162,7 +162,7 @@ export default class RestItemCont extends React.Component {
 
     return(
       <Container className='rest-item-cont'>
-        <Grid>
+        <Grid className='margin-zero'>
 
           {/* Restaurant information */}
 

@@ -9,7 +9,8 @@
     "react-geocode": "^0.2.0",
     "react-google-maps": "^9.4.5",
     "react-scripts": "3.2.0",
-    "semantic-ui-react": "^0.88.1"
+    "semantic-ui-react": "^0.88.1",
+    "http-proxy-middleware": "latest"
   },
   "scripts": {
     "start": "react-scripts start",
