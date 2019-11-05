@@ -141,7 +141,7 @@ export default class RestItemCont extends React.Component {
 
       if(data.photos) {
         let photoRef = data.photos[1] ? data.photos[1].photo_reference : (data.photos[0] ? data.photos[0].photo_reference : '');
-        url = 'https://maps.googleapis.com/maps/api/place/photo?maxwidth=800&photoreference=' + photoRef + '&key=' + REACT_APP_G_API;
+        url = 'google-maps-api/maps/api/place/photo?maxwidth=800&photoreference=' + photoRef + '&key=' + REACT_APP_G_API;
       } else if (typeof data.photoUrl !== 'undefined' && data.photoUrl !== '') {
         url = data.photoUrl;
       }
@@ -151,7 +151,7 @@ export default class RestItemCont extends React.Component {
 
   getGoogleMapStaticUrl = () => {
     const { restaurant } = this.props;
-    return 'https://maps.googleapis.com/maps/api/staticmap?center='+ restaurant.lat + ',' + restaurant.long + '&zoom=16&size=640x480&markers=color:red%7Clabel:Bronco%7C'+ restaurant.lat + ',' + restaurant.long + '&key=' + REACT_APP_G_API
+    return 'google-maps-api/maps/api/staticmap?center='+ restaurant.lat + ',' + restaurant.long + '&zoom=16&size=640x480&markers=color:red%7Clabel:Bronco%7C'+ restaurant.lat + ',' + restaurant.long + '&key=' + REACT_APP_G_API
   };
 
 

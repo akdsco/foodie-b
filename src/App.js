@@ -245,7 +245,7 @@ export default class App extends React.Component {
     const {center, searchRadius} = this.state;
     const self = this;
 
-    const url = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=' + center.lat + ',' + center.lng + '&radius=' + searchRadius + '&type=restaurant&key=' + REACT_APP_G_API;
+    const url = 'google-maps-api/maps/api/place/nearbysearch/json?location=' + center.lat + ',' + center.lng + '&radius=' + searchRadius + '&type=restaurant&key=' + REACT_APP_G_API;
     const restaurants = self.state.restaurants.slice().filter(restaurant => restaurant.isFromFile);
 
     // debug log
@@ -261,7 +261,7 @@ export default class App extends React.Component {
             count++;
             let restaurantObject = {
               "id": count,
-              "streetViewURL": 'https://maps.googleapis.com/maps/api/streetview?size=500x300&location='+ r.geometry.location.lat +','+ r.geometry.location.lng +'&heading=151.78&pitch=-0.76&key='+ REACT_APP_G_API,
+              "streetViewURL": 'google-maps-api/maps/api/streetview?size=500x300&location='+ r.geometry.location.lat +','+ r.geometry.location.lng +'&heading=151.78&pitch=-0.76&key='+ REACT_APP_G_API,
               "place_id": r.place_id,
               "isFromFile": false,
               "numberOfReviews": r.user_ratings_total > 5 ? 5 : r.user_ratings_total,
@@ -301,7 +301,7 @@ export default class App extends React.Component {
       // console.log('First time query, fetching placeID: ' + placeID);
 
       if(placeID) {
-        let url = 'https://maps.googleapis.com/maps/api/place/details/json?placeid=' + placeID + '&key=' + REACT_APP_G_API;
+        let url = 'google-maps-api/maps/api/place/details/json?placeid=' + placeID + '&key=' + REACT_APP_G_API;
 
         fetch(url, {
           method: 'GET',

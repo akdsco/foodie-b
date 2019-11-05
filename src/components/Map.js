@@ -13,12 +13,16 @@ import Geocode from "react-geocode";
 import { Button, Icon } from "semantic-ui-react";
 import {compose, lifecycle, withProps} from "recompose";
 import {withScriptjs, withGoogleMap, GoogleMap, Marker, InfoWindow} from "react-google-maps";
+import runtimeEnv from "@mars/heroku-js-runtime-env";
 // Map Styles
 const styles = require('../data/GoogleMapStyles.json');
 
+const env = runtimeEnv();
+const REACT_APP_G_API = env.REACT_APP_G_API;
+
 const MapConst = compose(
   withProps({
-    googleMapURL: "https://maps.googleapis.com/maps/api/js?key=" + process.env.REACT_APP_G_API + "&v=3.exp&libraries=places,geometry,drawing",
+    googleMapURL: "google-maps-api/maps/api/js?key=" + REACT_APP_G_API + "&v=3.exp&libraries=places,geometry,drawing",
     loadingElement: <div className='loadingElement'/>,
     containerElement: <div className='containerElement'/>,
     mapElement: <div className='mapElement' />

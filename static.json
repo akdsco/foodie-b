@@ -1,0 +1,11 @@
+{
+  "root": "build/",
+  "routes": {
+    "/**": "index.html"
+  },
+  "proxies": {
+    "/google-maps-api/": {
+      "origin": "${GOOGLE_MAPS_API_URL}"
+    }
+  }
+}
