@@ -24,7 +24,7 @@ I made sure to create for any user; therefore, it's fully responsive and accessi
 
 ### Links
 
- - [Live App](https://foodie-bible.herokuapp.com/)
+ - [Live App](https://foodie-b.herokuapp.com/)
 
 ### Skills Learned
 
