@@ -1,7 +1,7 @@
 `Imaginary Portfolio Project`
 
 
-[Foodie Bible - Restaurant Reviews](https://foodie-bible.herokuapp.com/)
+[Foodie B - Restaurant Reviews](https://foodie-b.herokuapp.com/)
 =======================================
 
 Creating an application prototype with ReactJS
