@@ -1,95 +1,70 @@
 // Imports
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 // CSS
 import '../css/style.css';
 // Components
-import { SingleRatingComponent } from "./RatingComponents";
+import {SingleRatingComponent} from "./RatingComponents";
 // Dependencies
-import {Grid, Image, Header, GridColumn,} from 'semantic-ui-react'
+import {Grid, Image, Header, GridColumn} from 'semantic-ui-react'
 
-export default class ReviewItem extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      isReviewLong: false,
-      isFullReviewDisplayed: false,
-      excerptReview: ''
-    };
-    this.placeholderUrl = 'https://bit.ly/2VPaipa';
-  }
+export default function ReviewItem(props) {
+  const PLACEHOLDER_URL = 'https://bit.ly/2VPaipa';
+  const {image_url, name, comment, stars} = props.item;
 
-  /* =====================
-   *   Lifecycle Methods
-  _* =====================
-*/
+  const [isReviewLong, setIsReviewLong] = useState(false);
+  const [isFullReviewDisplayed, setIsFullReviewDisplayed] = useState(false);
+  const [excerptReview, setExcerptReview] = useState('');
 
-  componentDidMount() {
-    if (this.props.item.comment.length > 255) {
-      const excerptReview = this.shortenString(this.props.item.comment, 255);
-      this.setState({ isReviewLong: true, excerptReview: excerptReview });
-    }
-  };
-
-  /* ===================
-   *   Handler Methods
-  _* ===================
-*/
-
-  handleReviewOpen = () => {
-    this.setState(prevState => ({
-      isFullReviewDisplayed: !prevState.isFullReviewDisplayed,
-    }))
-  };
-
-  /* ==================
-   *   Custom Methods
-  _* ==================
-*/
-
-  shortenString = (str, maxLen, separator = ' ') => {
+  function shortenString(str, maxLen, separator = ' ') {
     if (str.length <= maxLen) return str;
     return str.substr(0, str.lastIndexOf(separator, maxLen)) + '... ';
-  };
+  }
 
-  render() {
-    const { item } = this.props;
-    const { placeholderUrl, handleReviewOpen } = this;
-    const { isReviewLong, excerptReview, isFullReviewDisplayed } = this.state;
+  function toggleView() {
+    setIsFullReviewDisplayed(prevState => !prevState);
+  }
 
-    return(
-      <Grid centered>
-        <GridColumn width={4} only='computer tablet'>
-          <Image
-            className='center-image'
-            size='small'
-            src={item.image_url ? item.image_url : placeholderUrl}
-          />
-        </GridColumn>
+  useEffect(() => {
+    if (comment.length > 255) {
+      const excerptReview = shortenString(comment, 255);
+      setIsReviewLong(true);
+      setExcerptReview(excerptReview);
+    }
+  },[]);
 
-        <GridColumn width={12} only='computer tablet'>
-          <Header as='h4'>{item.name} <SingleRatingComponent rating={item.stars} /></Header>
+  return(
+    <Grid centered>
+      <GridColumn width={4} only='computer tablet'>
+        <Image
+          className='center-image'
+          size='small'
+          src={image_url ? image_url : PLACEHOLDER_URL}
+        />
+      </GridColumn>
+
+      <GridColumn width={12} only='computer tablet'>
+        <Header as='h4'>{name} <SingleRatingComponent rating={stars} /></Header>
+        <div>
+          {!isReviewLong ? comment : isFullReviewDisplayed ? comment : excerptReview}
+          {isReviewLong ? isFullReviewDisplayed ?
+            <p className='paragraph-link' onClick={toggleView}>show less</p> :
+            <p className='paragraph-link' onClick={toggleView}>read more</p> :
+            ''
+          }
+        </div>
+      </GridColumn>
+
+      <GridColumn textAlign='center' width={16} only='mobile'>
+          <Header as='h4'>{name} <SingleRatingComponent rating={stars} /></Header>
           <div>
-            {!isReviewLong ? item.comment : isFullReviewDisplayed ? item.comment : excerptReview}
+            {!isReviewLong ? comment : isFullReviewDisplayed ? comment : excerptReview}
             {isReviewLong ? isFullReviewDisplayed ?
-              <p className='paragraph-link' onClick={handleReviewOpen}>show less</p> :
-              <p className='paragraph-link' onClick={handleReviewOpen}>read more</p> :
+              <p className='paragraph-link' onClick={toggleView}>show less</p> :
+              <p className='paragraph-link' onClick={toggleView}>read more</p> :
               ''
             }
           </div>
-        </GridColumn>
-
-        <GridColumn textAlign='center' width={16} only='mobile'>
-            <Header as='h4'>{item.name} <SingleRatingComponent rating={item.stars} /></Header>
-            <div>
-              {!isReviewLong ? item.comment : isFullReviewDisplayed ? item.comment : excerptReview}
-              {isReviewLong ? isFullReviewDisplayed ?
-                <p className='paragraph-link' onClick={handleReviewOpen}>show less</p> :
-                <p className='paragraph-link' onClick={handleReviewOpen}>read more</p> :
-                ''
-              }
-            </div>
-        </GridColumn>
-      </Grid>
-    )
-  }
+      </GridColumn>
+    </Grid>
+  )
 }
