@@ -1,3 +1,4 @@
+/*global google*/
 // Imports
 import React from 'react';
 // Data
@@ -10,9 +11,10 @@ import DataDisplay from './components/DataDisplay';
 // Dependencies
 import {Dimmer, Loader, Container, Grid, GridColumn} from "semantic-ui-react";
 import runtimeEnv from '@mars/heroku-js-runtime-env'
+import {DataDisplayWH} from "./components/DataDisplayWH";
 
-const env = runtimeEnv();
-const REACT_APP_G_API = env.REACT_APP_G_API;
+// const env = runtimeEnv();
+// const REACT_APP_G_API = env.REACT_APP_G_API;
 
 export default class App extends React.Component {
   state = {
@@ -244,8 +246,8 @@ export default class App extends React.Component {
   loadGooglePlacesRestaurants = () => {
     const {center, searchRadius} = this.state;
     const self = this;
-
-    const url = 'google-maps-api/maps/api/place/nearbysearch/json?location=' + center.lat + ',' + center.lng + '&radius=' + searchRadius + '&type=restaurant&key=' + REACT_APP_G_API;
+    //https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=49.0609792,1.115059199999997&radius=5050&type=restaurant&key=AIzaSyCMq5GjFu_-qp-j6oDL4a52aHIvOMMW4Tk
+    const url = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=' + center.lat + ',' + center.lng + '&radius=' + searchRadius + '&type=restaurant&key=' + process.env.REACT_APP_G_API;
     const restaurants = self.state.restaurants.slice().filter(restaurant => restaurant.isFromFile);
 
     // debug log
@@ -261,7 +263,7 @@ export default class App extends React.Component {
             count++;
             let restaurantObject = {
               "id": count,
-              "streetViewURL": 'google-maps-api/maps/api/streetview?size=500x300&location='+ r.geometry.location.lat +','+ r.geometry.location.lng +'&heading=151.78&pitch=-0.76&key='+ REACT_APP_G_API,
+              "streetViewURL": 'https://maps.googleapis.com/maps/api/streetview?size=500x300&location='+ r.geometry.location.lat +','+ r.geometry.location.lng +'&heading=151.78&pitch=-0.76&key='+ process.env.REACT_APP_G_API,
               "place_id": r.place_id,
               "isFromFile": false,
               "numberOfReviews": r.user_ratings_total > 5 ? 5 : r.user_ratings_total,
@@ -301,7 +303,7 @@ export default class App extends React.Component {
       // console.log('First time query, fetching placeID: ' + placeID);
 
       if(placeID) {
-        let url = 'google-maps-api/maps/api/place/details/json?placeid=' + placeID + '&key=' + REACT_APP_G_API;
+        let url = 'https://maps.googleapis.com/maps/api/place/details/json?placeid=' + placeID + '&key=' + process.env.REACT_APP_G_API;
 
         fetch(url, {
           method: 'GET',
@@ -337,8 +339,8 @@ export default class App extends React.Component {
               };
 
               const updatedRestaurants = [...self.state.restaurants];
-              updatedRestaurants[index].loadedDetails = true;
               updatedRestaurants[index].details = details;
+              updatedRestaurants[index].loadedDetails = true;
               self.setState({
                 restaurants :updatedRestaurants
               });
@@ -371,7 +373,7 @@ export default class App extends React.Component {
           <Grid>
             <Grid.Row centered columns={2} only='computer' style={styleDesktop}>
               <GridColumn width={9}>
-                  <DataDisplay
+                  <DataDisplayWH
                     restaurants={restaurants}
                     ratingMax={ratingMax}
                     ratingMin={ratingMin}
@@ -418,7 +420,7 @@ export default class App extends React.Component {
         <Grid>
           <Grid.Row centered columns={2} only='tablet' style={styleMobile}>
             <GridColumn width={9}>
-                <DataDisplay
+                <DataDisplayWH
                   restaurants={restaurants}
                   ratingMax={ratingMax}
                   ratingMin={ratingMin}
@@ -471,7 +473,7 @@ export default class App extends React.Component {
                   <Loader>Loading Restaurants</Loader>
                 </Dimmer>
 
-                <DataDisplay
+                <DataDisplayWH
                   restaurants={restaurants}
                   ratingMax={ratingMax}
                   ratingMin={ratingMin}
