@@ -7,7 +7,7 @@ import markerCenter from '../img/marker-center.png'
 import '../css/style.css';
 // Components
 import AddRest from "./AddRest";
-import {RestMarker} from "./RestMarker";
+import RestMarker from "./RestMarker";
 import {AltMap} from "./AltMap";
 // Dependencies
 import Geocode from "react-geocode";

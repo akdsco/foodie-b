@@ -2,7 +2,7 @@ import React from "react";
 
 // Components
 import {GoogleMap, LoadScript, Marker, InfoWindow} from "@react-google-maps/api";
-import {RestMarker} from "./RestMarker";
+import RestMarker from "./RestMarker";
 import AddRest from "./AddRest";
 
 // Icons

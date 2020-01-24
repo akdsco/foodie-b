@@ -9,10 +9,10 @@ import {Dimmer, Loader} from "semantic-ui-react";
 
 export default function RestList(props) {
 
-  const sortRestaurants = () => {
+  function sortRestaurants() {
     // converts object into array (add sorting if you'd like)
     return Object.keys(props.restaurants).map((rid) => props.restaurants[rid])
-  };
+  }
 
   // Component Props
   const {activeRest, handleNewData, flags, restaurants, windowWidth, handleActiveRest} = props;

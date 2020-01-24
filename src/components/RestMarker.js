@@ -1,28 +1,24 @@
 // Imports
 import React from "react";
 // Dependencies
-import { Marker, InfoWindow } from "react-google-maps";
+import {Marker, InfoWindow} from "@react-google-maps/api";
 import {Card, Header, Icon, Image, Label} from "semantic-ui-react";
 
-export const RestMarker = props =>  {
-  const { index, restaurant, activeRest, position } = props;
-
-  const handleMarkerClick = () =>  {
-    props.handleActiveRest(index);
-  };
+export default function RestMarker(props) {
+  const {index, restaurant, activeRest, position, handleActiveRest} = props;
 
   return (
     <div>
       {activeRest !== index &&
       <Marker
         position={{lat: position.lat, lng: position.lng}}
-        onClick={handleMarkerClick}
+        onClick={() => {handleActiveRest(index)}}
         {...props}
       />}
       {activeRest === index &&
       <InfoWindow
         position={{lat: position.lat, lng: position.lng}}
-        onCloseClick={handleMarkerClick}>
+        onCloseClick={() => {handleActiveRest(index)}}>
         <div>
           <Header as='h3' textAlign='center'>
             {restaurant.restaurantName}
