@@ -245,7 +245,7 @@ export default class App extends React.Component {
   loadGooglePlacesRestaurants = () => {
     const {center, searchRadius} = this.state;
     const self = this;
-    //https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=49.0609792,1.115059199999997&radius=5050&type=restaurant&key=AIzaSyCMq5GjFu_-qp-j6oDL4a52aHIvOMMW4Tk
+    //https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=49.0609792,1.115059199999997&radius=5050&type=restaurant&key=
     const url = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=' + center.lat + ',' + center.lng + '&radius=' + searchRadius + '&type=restaurant&key=' + process.env.REACT_APP_G_API;
     const restaurants = self.state.restaurants.slice().filter(restaurant => restaurant.isFromFile);
 
