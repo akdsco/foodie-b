@@ -1,4 +1,3 @@
-/*global google*/
 // Imports
 import React from 'react';
 // Data

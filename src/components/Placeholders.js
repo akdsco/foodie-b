@@ -3,7 +3,7 @@ import React from 'react'
 // CSS
 import '../css/style.css';
 // Dependencies
-import {Placeholder, Grid, GridColumn } from 'semantic-ui-react'
+import {Placeholder, Grid, GridColumn} from 'semantic-ui-react'
 
 const LeftColumnPlaceholder = () =>
   <Placeholder>

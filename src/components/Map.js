@@ -7,7 +7,8 @@ import markerCenter from '../img/marker-center.png'
 import '../css/style.css';
 // Components
 import AddRest from "./AddRest";
-import RestMarker from "./RestMarker";
+import {RestMarker} from "./RestMarker";
+import {AltMap} from "./AltMap";
 // Dependencies
 import Geocode from "react-geocode";
 import { Button, Icon } from "semantic-ui-react";
@@ -17,12 +18,12 @@ import runtimeEnv from "@mars/heroku-js-runtime-env";
 // Map Styles
 const styles = require('../data/GoogleMapStyles.json');
 
-const env = runtimeEnv();
-const REACT_APP_G_API = env.REACT_APP_G_API;
+// const env = runtimeEnv();
+// const REACT_APP_G_API = env.REACT_APP_G_API;
 
 const MapConst = compose(
   withProps({
-    googleMapURL: "google-maps-api/maps/api/js?key=" + REACT_APP_G_API + "&v=3.exp&libraries=places,geometry,drawing",
+    googleMapURL: "google-maps-api/maps/api/js?key=" + process.env.REACT_APP_G_API + "&v=3.exp&libraries=places,geometry,drawing",
     loadingElement: <div className='loadingElement'/>,
     containerElement: <div className='containerElement'/>,
     mapElement: <div className='mapElement' />
@@ -175,7 +176,7 @@ export default class Map extends React.PureComponent {
 
     return(
       <div>
-        <MapConst
+        <AltMap
           restaurants={restaurants}
           center={center}
           userLocation={userLocation}
