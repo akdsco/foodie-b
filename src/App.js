@@ -6,11 +6,11 @@ import restaurantsFromFile from './data/restaurants'
 import './css/style.css';
 // Components
 import Map from "./components/Map";
-import DataDisplay from './components/DataDisplay';
+import DataDisplay from "./components/DataDisplay";
+
 // Dependencies
 import {Dimmer, Loader, Container, Grid, GridColumn} from "semantic-ui-react";
 import runtimeEnv from '@mars/heroku-js-runtime-env'
-import {DataDisplayWH} from "./components/DataDisplayWH";
 
 // const env = runtimeEnv();
 // const REACT_APP_G_API = env.REACT_APP_G_API;
@@ -374,7 +374,7 @@ export default class App extends React.Component {
           <Grid>
             <Grid.Row centered columns={2} only='computer' style={styleDesktop}>
               <GridColumn width={9}>
-                  <DataDisplayWH
+                  <DataDisplay
                     restaurants={restaurants}
                     ratingMax={ratingMax}
                     ratingMin={ratingMin}
@@ -421,7 +421,7 @@ export default class App extends React.Component {
         <Grid>
           <Grid.Row centered columns={2} only='tablet' style={styleMobile}>
             <GridColumn width={9}>
-                <DataDisplayWH
+                <DataDisplay
                   restaurants={restaurants}
                   ratingMax={ratingMax}
                   ratingMin={ratingMin}
@@ -474,7 +474,7 @@ export default class App extends React.Component {
                   <Loader>Loading Restaurants</Loader>
                 </Dimmer>
 
-                <DataDisplayWH
+                <DataDisplay
                   restaurants={restaurants}
                   ratingMax={ratingMax}
                   ratingMin={ratingMin}
