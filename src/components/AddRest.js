@@ -4,37 +4,21 @@ import React, {useState} from 'react';
 import logoImg from '../img/logo.png';
 // Dependencies
 import {Form, Checkbox, Button, Modal, Image, Header} from 'semantic-ui-react';
+import useUpdate from "./hooks/useUpdate";
 
 export default function AddRest(props) {
-  const [state, setState] = useState({
-    modalOpen: false,
-    restName: '',
-    phoneNumber: '',
-    imageUrl: '',
-    restUrl: '',
-    isTermsChecked: false,
-  });
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isTermsChecked, setIsTermsChecked] = useState(false);
+
+  const [restName, setRestName] = useUpdate('');
+  const [phoneNumber,setPhoneNumber] = useUpdate('');
+  const [imageUrl, setImageUrl] = useUpdate('');
+  const [restUrl, setRestUrl] = useUpdate('');
 
   const {closeInfoWindow, newRestData, restaurants, handleNewData} = props;
-  const {restName, imageUrl, modalOpen, isTermsChecked, phoneNumber, restUrl} = state;
-
-  /* =====================
-   *   Handler Functions
-  _* =====================
-*/
-
-  function handleChange(e, { name, value }) {
-    setState(prevState => ({
-      ...prevState,
-      [name]: value
-    }));
-  }
 
   function handleCancel () {
-    setState(prevState => ({
-      ...prevState,
-      modalOpen: false
-    }));
+    setIsModalOpen(false);
     props.closeInfoWindow();
   }
 
@@ -74,7 +58,7 @@ export default function AddRest(props) {
     <div>
       <Button.Group>
         <Button
-          onClick={handleChange}
+          onClick={setIsModalOpen}
           positive
           value={true}
           name='modalOpen'
@@ -84,7 +68,7 @@ export default function AddRest(props) {
       </Button.Group>
 
       <Modal
-        open={modalOpen}
+        open={isModalOpen}
         onClose={handleCancel}
       >
         <Modal.Content image>
@@ -99,7 +83,7 @@ export default function AddRest(props) {
                   placeholder="e.g. Pizza Express (min. 4 characters)"
                   name='restName'
                   value={restName}
-                  onChange={handleChange}
+                  onChange={setRestName}
                 />
               </Form.Field>
               <Form.Field>
@@ -108,7 +92,7 @@ export default function AddRest(props) {
                   placeholder='e.g. http://mcdonalds.com/main-photo.jpg'
                   name='imageUrl'
                   value={imageUrl}
-                  onChange={handleChange}
+                  onChange={setImageUrl}
                 />
               </Form.Field>
               <Form.Field>
@@ -117,7 +101,7 @@ export default function AddRest(props) {
                   placeholder='e.g. 07456066789'
                   name='phoneNumber'
                   value={phoneNumber}
-                  onChange={handleChange}
+                  onChange={setPhoneNumber}
                 />
               </Form.Field>
               <Form.Field>
@@ -126,7 +110,7 @@ export default function AddRest(props) {
                   placeholder='e.g. http://www.restaurant-name.com'
                   name='restUrl'
                   value={restUrl}
-                  onChange={handleChange}
+                  onChange={setRestUrl}
                 />
               </Form.Field>
 
@@ -134,7 +118,7 @@ export default function AddRest(props) {
                 <Checkbox
                   checked={isTermsChecked}
                   name='isTermsChecked'
-                  onClick={handleChange}
+                  onClick={setIsTermsChecked}
                   value={!isTermsChecked}
                   label='I agree to the Terms and Conditions' required/>
               </Form.Field>
