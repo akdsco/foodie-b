@@ -15,6 +15,8 @@ import {DataDisplayWH} from "./components/DataDisplayWH";
 // const env = runtimeEnv();
 // const REACT_APP_G_API = env.REACT_APP_G_API;
 
+// TODO change 'long' to 'lng' in .json data file and consecutive use in components
+
 export default class App extends React.Component {
   state = {
     restaurants: [],
@@ -224,12 +226,12 @@ export default class App extends React.Component {
         // console.log('Error: The Geolocation service failed.');
         this.setState(prevState => ({
           userLocation: {
-            lat: 51.516126,
+            lat: 51.556126,
             lng: -0.081679
           },
           center: {
             ...prevState.center,
-            lat: 51.516126,
+            lat: 51.556126,
             lng: -0.081679
           },
            flags: {

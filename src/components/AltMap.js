@@ -17,7 +17,6 @@ import runtimeEnv from "@mars/heroku-js-runtime-env";
 const styles = require('../data/GoogleMapStyles.json');
 
 export const AltMap = (props) => {
-  console.log(props.center);
 
   const onDragEnd = () => {
     console.log('implement onDragEnd');

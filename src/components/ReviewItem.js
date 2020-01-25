@@ -30,7 +30,7 @@ export default function ReviewItem(props) {
       setIsReviewLong(true);
       setExcerptReview(excerptReview);
     }
-  },[]);
+  },[comment]);
 
   return(
     <Grid centered>

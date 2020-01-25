@@ -21,6 +21,7 @@ export default class AddReview extends React.Component {
   handleChange = (e, { name, value }) => this.setState({ [name]: value });
 
   handleSubmit = (e, { name, value }) => {
+    e.preventDefault();
     const { reviewStars, reviewContent, reviewersName, reviewersImgUrl } = this.state;
     const { restaurant, handleNewData, handleClose} = this.props;
 
