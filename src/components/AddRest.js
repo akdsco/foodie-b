@@ -37,7 +37,7 @@ export default class AddRest extends React.Component {
       "restaurantName": restName,
       "address": newRestData.address,
       "lat": newRestData.lat,
-      "long": newRestData.lng,
+      "lng": newRestData.lng,
       "streetViewURL": 'https://maps.googleapis.com/maps/api/streetview?size=500x300&location='+ newRestData.lat +','+ newRestData.lng +'&heading=151.78&pitch=-0.76&key='+ process.env.REACT_APP_G_API,
       "isFromFile": true,
       "place_id": "",

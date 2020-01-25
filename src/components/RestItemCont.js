@@ -18,7 +18,7 @@ export default function RestItemCont(props) {
 
   const PLACEHOLDER_URL = 'https://bit.ly/2JnrFZ6';
   const {restaurant, handleNewData, windowWidth} = props;
-  const {details, isFromFile, open, reviews} = props.restaurant;
+  const {details, isFromFile, open} = props.restaurant;
 
   useEffect(() => {
     setTimeout(() => setLoadingData(false), 1250);
@@ -82,7 +82,7 @@ export default function RestItemCont(props) {
   }
 
   function getGoogleMapStaticUrl() {
-    return 'https://maps.googleapis.com/maps/api/staticmap?center='+ restaurant.lat + ',' + restaurant.long + '&zoom=16&size=640x480&markers=color:red%7Clabel:Bronco%7C'+ restaurant.lat + ',' + restaurant.long + '&key=' + process.env.REACT_APP_G_API
+    return 'https://maps.googleapis.com/maps/api/staticmap?center='+ restaurant.lat + ',' + restaurant.lng + '&zoom=16&size=640x480&markers=color:red%7Clabel:Bronco%7C'+ restaurant.lat + ',' + restaurant.lng + '&key=' + process.env.REACT_APP_G_API
   }
 
   return(
@@ -158,7 +158,7 @@ export default function RestItemCont(props) {
         <Grid.Row>
           <GridColumn>
             {loadingData ?
-              <ReviewsPlaceholder amount={isFromFile ? reviews.length : 5}/>
+              <ReviewsPlaceholder amount={isFromFile ? details.reviews.length : 5}/>
               :
               <div>
                 <h3>Most helpful reviews</h3>

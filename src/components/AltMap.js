@@ -72,7 +72,7 @@ export const AltMap = (props) => {
           {props.restaurants.map( (r, id) =>
             <RestMarker
               key={id}
-              position={{lat: r.lat, lng: r.long}}
+              position={{lat: r.lat, lng: r.lng}}
               index={r.id}
               restaurant={r}
               activeRest={props.activeRest}

@@ -15,7 +15,7 @@ import {DataDisplayWH} from "./components/DataDisplayWH";
 // const env = runtimeEnv();
 // const REACT_APP_G_API = env.REACT_APP_G_API;
 
-// TODO change 'long' to 'lng' in .json data file and consecutive use in components
+// TODO fix open_now as the API has changed ?
 
 export default class App extends React.Component {
   state = {
@@ -272,7 +272,7 @@ export default class App extends React.Component {
               "restaurantName": r.name,
               "address": r.vicinity,
               "lat": r.geometry.location.lat,
-              "long": r.geometry.location.lng,
+              "lng": r.geometry.location.lng,
               "open": r.opening_hours ? r.opening_hours.open_now : true,
               "loadedDetails": false,
             };
