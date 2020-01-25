@@ -22,7 +22,8 @@ export default function AddRest(props) {
     props.closeInfoWindow();
   }
 
-  function handleSubmit() {
+  function handleSubmit(e) {
+    e.preventDefault();
     const id = restaurants.length;
     const {address, lat, lng} = newRestData;
 
@@ -76,7 +77,7 @@ export default function AddRest(props) {
 
           <Modal.Description>
             <Header>Add New Restaurant Details</Header>
-            <Form>
+            <Form onSubmit={handleSubmit}>
               <Form.Field required>
                 <label>Restaurant Name</label>
                 <Form.Input
@@ -125,7 +126,7 @@ export default function AddRest(props) {
               <Button.Group>
                 <Button
                   disabled={restName.length <= 3 || !isTermsChecked}
-                  onClick={handleSubmit} positive
+                  positive
                 >
                   Submit
                 </Button>
