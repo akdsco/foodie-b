@@ -1,22 +1,26 @@
-import React from "react";
+import runtimeEnv from "@mars/heroku-js-runtime-env";
 
-// Components
+import React from 'react';
+// Dependencies
 import {GoogleMap, LoadScript, Marker, InfoWindow} from "@react-google-maps/api";
-import RestMarker from "./RestMarker";
+// Components
 import AddRest from "./AddRest";
-
+import RestMarker from "./RestMarker";
 // Icons
-import markerUser from "../img/marker-user.png";
-import markerCenter from "../img/marker-center.png";
+import markerUserIcon from "../img/marker-user.png";
+import markerCenterIcon from "../img/marker-center.png";
+// Map Style
+const styles = require('../data/GoogleMapStyles.json');
 
 // Production
-import runtimeEnv from "@mars/heroku-js-runtime-env";
+
 // const env = runtimeEnv();
 // const REACT_APP_G_API = env.REACT_APP_G_API;
 
-const styles = require('../data/GoogleMapStyles.json');
-
 export const AltMap = (props) => {
+  const {center, userMarker, openInfoWindow, closeInfoWindow, activeRest, handleActiveRest,
+         mapState, restaurants, handleNewData } = props;
+  const {lat, lng} = props.userLocation;
 
   const onDragEnd = () => {
     console.log('implement onDragEnd');
@@ -39,8 +43,8 @@ export const AltMap = (props) => {
             width: "100%"
           }}
           zoom={15}
-          center={props.center}
-          onRightClick={e => props.openInfoWindow(e)}
+          center={center}
+          onRightClick={e => openInfoWindow(e)}
           onDragEnd={onDragEnd}
           options={{
             disableDefaultUI: true,
@@ -52,19 +56,19 @@ export const AltMap = (props) => {
           }}
         >
           {/* Load user Marker */}
-          {props.userMarker &&
+          {userMarker &&
           <Marker
-            icon={{url: markerUser}}
-            position={{lat: props.userLocation.lat, lng: props.userLocation.lng}}
+            icon={{url: markerUserIcon}}
+            position={{lat, lng}}
           />
           }
 
           {/* Center Marker */}
-          {props.center && ((props.center.lat !== props.userLocation.lat) && (props.center.lng !== props.userLocation.lng)) &&
+          {center && ((center.lat !== lat) && (center.lng !== lng)) &&
           <Marker
             defaultClickable={false}
-            icon={{url: markerCenter}}
-            position={{lat: props.center.lat, lng: props.center.lng}}
+            icon={{url: markerCenterIcon}}
+            position={{lat: center.lat, lng: center.lng}}
           />
           }
 
@@ -75,26 +79,26 @@ export const AltMap = (props) => {
               position={{lat: r.lat, lng: r.lng}}
               index={r.id}
               restaurant={r}
-              activeRest={props.activeRest}
-              handleActiveRest={props.handleActiveRest}
+              activeRest={activeRest}
+              handleActiveRest={handleActiveRest}
             />)
           }
 
           {/* Load Add Restaurant InfoWindow on right click */}
-          {props.mapState.isRestAddButtonDisplayed &&
+          {mapState.isRestAddButtonDisplayed &&
           <InfoWindow
-            position={{lat: props.mapState.newRestData.lat, lng: props.mapState.newRestData.lng}}
-            onCloseClick={props.closeInfoWindow}
+            position={{lat: mapState.newRestData.lat, lng: mapState.newRestData.lng}}
+            onCloseClick={closeInfoWindow}
           >
             <div>
               <h4>Add restaurant</h4>
-              <p>{props.mapState.newRestData.address}</p>
+              <p>{mapState.newRestData.address}</p>
               <AddRest
-                restaurants={props.restaurants}
-                newRestData={props.mapState.newRestData}
-                closeInfoWindow={props.closeInfoWindow}
+                restaurants={restaurants}
+                newRestData={mapState.newRestData}
+                closeInfoWindow={closeInfoWindow}
 
-                handleNewData={props.handleNewData}
+                handleNewData={handleNewData}
               />
             </div>
           </InfoWindow>

@@ -2,16 +2,17 @@
 import React, {useState} from 'react';
 // Images
 import logoImg from '../img/logo.png';
+// Custom Hooks
+import useUpdate from "./hooks/useUpdate";
 // Dependencies
 import {Form, Checkbox, Button, Modal, Image, Header} from 'semantic-ui-react';
-import useUpdate from "./hooks/useUpdate";
 
 export default function AddRest(props) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isTermsChecked, setIsTermsChecked] = useState(false);
 
   const [restName, setRestName] = useUpdate('');
-  const [phoneNumber,setPhoneNumber] = useUpdate('');
+  const [phoneNumber, setPhoneNumber] = useUpdate('');
   const [imageUrl, setImageUrl] = useUpdate('');
   const [restUrl, setRestUrl] = useUpdate('');
 
