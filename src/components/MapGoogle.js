@@ -17,7 +17,7 @@ const styles = require('../data/GoogleMapStyles.json');
 // const env = runtimeEnv();
 // const REACT_APP_G_API = env.REACT_APP_G_API;
 
-export default function AltMap(props) {
+export default function MapGoogle(props) {
   const {center, userMarker, openInfoWindow, closeInfoWindow, activeRest, handleActiveRest,
          mapState, restaurants, handleNewData } = props;
   const {lat, lng} = props.userLocation;

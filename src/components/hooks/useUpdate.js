@@ -1,6 +1,6 @@
 import {useState} from 'react'
 
-export  default function useUpdate(initialState) {
+export default function useUpdate(initialState) {
   const [data, setData] = useState(initialState);
 
   function handleData(e, {value}) {
