@@ -1,6 +1,6 @@
 import runtimeEnv from "@mars/heroku-js-runtime-env";
 
-import React from 'react';
+import React, {useState} from 'react';
 // Dependencies
 import {GoogleMap, LoadScript, Marker, InfoWindow} from "@react-google-maps/api";
 // Components
@@ -17,18 +17,25 @@ const styles = require('../data/GoogleMapStyles.json');
 // const env = runtimeEnv();
 // const REACT_APP_G_API = env.REACT_APP_G_API;
 
-export const AltMap = (props) => {
+export default function AltMap(props) {
   const {center, userMarker, openInfoWindow, closeInfoWindow, activeRest, handleActiveRest,
          mapState, restaurants, handleNewData } = props;
   const {lat, lng} = props.userLocation;
+  const [map, setMap] = useState();
 
-  const onDragEnd = () => {
-    console.log('implement onDragEnd');
-    // props.handleCenterChange( {
-    //   lat: refs.map.getCenter().lat(),
-    //   lng: refs.map.getCenter().lng()
-    // });
-  };
+  function onDragEnd() {
+    props.handleCenterChange( {
+      lat: map.getCenter().lat(),
+      lng: map.getCenter().lng()
+    });
+  }
+
+  function onZoomChanged() {
+    if(map){
+      const zoom = map.getZoom();
+      props.handleZoomChange(zoom);
+    }
+  }
 
   return (
     <div>
@@ -37,6 +44,7 @@ export const AltMap = (props) => {
         googleMapsApiKey={process.env.REACT_APP_G_API}
       >
         <GoogleMap
+          onLoad={map => {setMap(map)}}
           id='restaurants-map'
           mapContainerStyle={{
             height: "100vh",
@@ -46,6 +54,7 @@ export const AltMap = (props) => {
           center={center}
           onRightClick={e => openInfoWindow(e)}
           onDragEnd={onDragEnd}
+          onZoomChanged={onZoomChanged}
           options={{
             disableDefaultUI: true,
             keyboardShortcuts: false,

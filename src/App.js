@@ -15,6 +15,15 @@ import runtimeEnv from '@mars/heroku-js-runtime-env'
 // const env = runtimeEnv();
 // const REACT_APP_G_API = env.REACT_APP_G_API;
 
+/* TODO The way things should be done in the first place:
+ *  1. Application loads and establishes where user is located
+ *  2. If user is not located (disabled auto location service) it uses hard coded value and creates a center of map
+ *  3. Application loads restaurants from file if they are within the search area from current center (withing the range)
+ *  4. Application loads restaurants from google service that are within the area
+ *  5. If user drags the map, new center of search is established
+ *  6. The above triggers another search and steps 3-4 are done again and new restaurants are displayed.
+*/
+
 // TODO fix open_now as the API has changed ?
 
 export default class App extends React.Component {
@@ -226,12 +235,12 @@ export default class App extends React.Component {
         // console.log('Error: The Geolocation service failed.');
         this.setState(prevState => ({
           userLocation: {
-            lat: 51.556126,
+            lat: 51.516126,
             lng: -0.081679
           },
           center: {
             ...prevState.center,
-            lat: 51.556126,
+            lat: 51.516126,
             lng: -0.081679
           },
            flags: {
@@ -247,7 +256,6 @@ export default class App extends React.Component {
   loadGooglePlacesRestaurants = () => {
     const {center, searchRadius} = this.state;
     const self = this;
-    //https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=49.0609792,1.115059199999997&radius=5050&type=restaurant&key=
     const url = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=' + center.lat + ',' + center.lng + '&radius=' + searchRadius + '&type=restaurant&key=' + process.env.REACT_APP_G_API;
     const restaurants = self.state.restaurants.slice().filter(restaurant => restaurant.isFromFile);
 
