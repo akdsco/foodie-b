@@ -1,93 +1,67 @@
 // Imports
-import React from 'react';
+import React, {useEffect, useState, useRef} from 'react';
 // Components
 import RestTitle from "./RestTitle";
 import RestItemCont from "./RestItemCont";
 // Dependencies
-import Accordion from "semantic-ui-react/dist/commonjs/modules/Accordion";
+import {Accordion} from "semantic-ui-react";
 
-export default class RestItem extends React.Component {
-  constructor(props) {
-    super(props);
-    this.reference = React.createRef();
-    this.scrollFlag = true;
-  }
+export default function RestItem(props) {
+  const {activeRest, handleNewData, restaurant, windowWidth} = props;
+  const [scrollFlag, setScrollFlag] = useState(true);
+  const restItemRef = useRef(null);
 
-  /* =====================
-   *   Lifecycle Methods
-  _* =====================
-*/
-
-  componentDidUpdate(prevProps, prevState, snapshot) {
-    const { activeRest, restaurant } = this.props;
-
-    // Scrolls only once after opening up Accordion, then it doesn't until you close and open it again.
+  useEffect(() => {
     if(activeRest === -1) {
-      this.scrollFlag = true;
+      setScrollFlag(true);
     }
-    if(this.scrollFlag) {
+    if(scrollFlag) {
       if(activeRest === restaurant.id) {
-        this.scrollToItem();
-        this.scrollFlag = false;
+        scrollToItem();
+        setScrollFlag(false);
       }
     }
+  });
 
+  function handleAccordionClick(e, titleProps) {
+    scrollToItem();
+    const {index} = titleProps;
+    props.handleActiveRest(index);
   }
 
-  /* ===================
-   *   Handler Methods
-  _* ===================
-*/
-
-  handleAccordionClick = (e, titleProps) =>  {
-    this.scrollToItem();
-    const { index } = titleProps;
-    this.props.handleActiveRest(index);
-  };
-
-  /* ==================
-   *   Custom Methods
-  _* ==================
-*/
-
-  scrollToItem = () => {
+  function scrollToItem() {
     setTimeout(() =>
-    this.reference.current.scrollIntoView({
+    restItemRef.current.scrollIntoView({
       behavior: 'smooth',
       block: 'start'
     }), 220);
-  };
-
-
-
-  render() {
-    const { activeRest, handleNewData, restaurant, windowWidth } = this.props;
-    const { reference, handleAccordionClick } = this;
-
-    return(
-      <div ref={reference}>
-        <Accordion className='mb-2' styled>
-          <Accordion.Title
-            active={activeRest === restaurant.id}
-            index={restaurant.id}
-            onClick={handleAccordionClick}>
-            <RestTitle
-              active={activeRest === restaurant.id}
-              item={restaurant}
-              avgRating={restaurant.avgRating}
-            />
-          </Accordion.Title>
-          {activeRest === restaurant.id &&
-          <Accordion.Content active={activeRest === restaurant.id}>
-            <RestItemCont
-              restaurant={restaurant}
-              windowWidth={windowWidth}
-              handleNewData={handleNewData}
-            />
-          </Accordion.Content>
-          }
-        </Accordion>
-      </div>
-    )
   }
+
+  const {id, avgRating} = restaurant;
+
+  return(
+    <div ref={restItemRef}>
+      <Accordion className='mb-2' styled>
+        <Accordion.Title
+          active={activeRest === id}
+          index={id}
+          onClick={handleAccordionClick}>
+          <RestTitle
+            active={activeRest === id}
+            item={restaurant}
+            avgRating={avgRating}
+          />
+        </Accordion.Title>
+        {activeRest === id &&
+        <Accordion.Content active={activeRest === id}>
+          <RestItemCont
+            restaurant={restaurant}
+            windowWidth={windowWidth}
+            handleNewData={handleNewData}
+          />
+        </Accordion.Content>
+        }
+      </Accordion>
+    </div>
+  )
 }
