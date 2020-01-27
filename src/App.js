@@ -24,7 +24,9 @@ import runtimeEnv from '@mars/heroku-js-runtime-env'
  *  6. The above triggers another search and steps 3-4 are done again and new restaurants are displayed.
 */
 
-// TODO fix open_now as the API has changed ?
+// TODO fix open_now as the API has changed?
+
+// TODO redo APP and switch it to a functional component with hooks?
 
 export default class App extends React.Component {
   state = {
