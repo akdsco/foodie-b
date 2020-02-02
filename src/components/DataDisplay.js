@@ -58,9 +58,9 @@ export default function DataDisplay(props) {
         <Segment>
           <ItemGroup divided>
             <RestList
-              restaurants={restaurants.filter(restaurant =>
-                restaurant.avgRating >= ratingMin &&
-                restaurant.avgRating <= ratingMax)}
+              restaurants={restaurants.filter(rest =>
+                rest.avgRating >= ratingMin &&
+                rest.avgRating <= ratingMax)}
               activeRest={activeRest}
               flags={flags}
               windowWidth={windowWidth}
@@ -86,9 +86,9 @@ export default function DataDisplay(props) {
       {windowWidth < 768 && activeMenuItem === 'Map' &&
         <Segment className='data-display-menu-segment'>
             <Map
-              restaurants={restaurants.filter(restaurant =>
-                restaurant.avgRating >= ratingMin &&
-                restaurant.avgRating <= ratingMax)
+              restaurants={restaurants.filter(rest =>
+                rest.avgRating >= ratingMin &&
+                rest.avgRating <= ratingMax)
               }
               center={center}
               flags={flags}

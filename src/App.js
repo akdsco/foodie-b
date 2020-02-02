@@ -28,6 +28,12 @@ import runtimeEnv from '@mars/heroku-js-runtime-env'
 
 // TODO redo APP and switch it to a functional component with hooks?
 
+// TODO improve application by fully integrating Google API with it (letting user sort, categorise results etc.)
+//  use google docs to learn how you can make this happen
+
+// TODO add prop-types library and use it throughout the application to make it more robust
+//  https://reactjs.org/docs/typechecking-with-proptypes.html#proptypes
+
 export default class App extends React.Component {
   state = {
     restaurants: [],
@@ -374,6 +380,7 @@ export default class App extends React.Component {
     const styleDesktop={overflowY: 'hidden', paddingBottom: '0'};
     const styleMobile={paddingTop: '2rem', paddingBottom: '0'};
     const { restaurants, ratingMin, ratingMax, center, userLocation, activeRest, flags, windowWidth } = this.state;
+    const { isLoadingRestaurants } = this.state.flags;
     const { handleMaxRate, handleMinRate, handleReset, handleActiveRest,
             handleCenterChange, handleNewData, handleZoomChange, handleRestSearch } = this;
 
@@ -400,14 +407,14 @@ export default class App extends React.Component {
                   />
               </GridColumn>
               <GridColumn width={7}>
-                <Dimmer.Dimmable dimmed={flags.isLoadingRestaurants}>
-                  <Dimmer active={flags.isLoadingRestaurants} inverted>
+                <Dimmer.Dimmable dimmed={isLoadingRestaurants}>
+                  <Dimmer active={isLoadingRestaurants} inverted>
                     <Loader>Loading Restaurants</Loader>
                   </Dimmer>
                   <Map
-                    restaurants={restaurants.filter(restaurant =>
-                      restaurant.avgRating >= ratingMin &&
-                      restaurant.avgRating <= ratingMax)}
+                    restaurants={restaurants.filter(rest =>
+                      rest.avgRating >= ratingMin &&
+                      rest.avgRating <= ratingMax)}
                     center={center}
                     flags={flags}
                     userLocation={userLocation}
@@ -447,15 +454,15 @@ export default class App extends React.Component {
                 />
             </GridColumn>
             <GridColumn width={7}>
-              <Dimmer.Dimmable dimmed={flags.isLoadingRestaurants}>
-                <Dimmer active={flags.isLoadingRestaurants} inverted>
+              <Dimmer.Dimmable dimmed={isLoadingRestaurants}>
+                <Dimmer active={isLoadingRestaurants} inverted>
                   <Loader>Loading Restaurants</Loader>
                 </Dimmer>
 
                 <Map
-                  restaurants={restaurants.filter(restaurant =>
-                    restaurant.avgRating >= ratingMin &&
-                    restaurant.avgRating <= ratingMax)}
+                  restaurants={restaurants.filter(rest =>
+                    rest.avgRating >= ratingMin &&
+                    rest.avgRating <= ratingMax)}
                   center={center}
                   flags={flags}
                   userLocation={userLocation}
@@ -479,8 +486,8 @@ export default class App extends React.Component {
         <Grid>
           <Grid.Row centered columns={1} only='mobile' style={styleMobile}>
             <GridColumn>
-              <Dimmer.Dimmable dimmed={flags.isLoadingRestaurants}>
-                <Dimmer active={flags.isLoadingRestaurants} inverted>
+              <Dimmer.Dimmable dimmed={isLoadingRestaurants}>
+                <Dimmer active={isLoadingRestaurants} inverted>
                   <Loader>Loading Restaurants</Loader>
                 </Dimmer>
 

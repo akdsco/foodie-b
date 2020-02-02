@@ -7,9 +7,11 @@ import useUpdate from "./hooks/useUpdate";
 // Dependencies
 import {Form, Checkbox, Button, Modal, Image, Header} from 'semantic-ui-react';
 
+// TODO investigate why {} is supplied to isTermsChecked state instead of boolean
+
 export default function AddRest(props) {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isTermsChecked, setIsTermsChecked] = useState(false);
+  const [isTermsChecked, setIsTermsChecked] = useUpdate(false);
 
   const [restName, setRestName] = useUpdate('');
   const [phoneNumber, setPhoneNumber] = useUpdate('');
@@ -20,6 +22,7 @@ export default function AddRest(props) {
 
   function handleCancel () {
     setIsModalOpen(false);
+    setIsTermsChecked({value: false});
     props.closeInfoWindow();
   }
 
@@ -58,6 +61,7 @@ export default function AddRest(props) {
 
   return(
     <div>
+      {console.log('isTermsChecked: ' + isTermsChecked)}
       <Button.Group>
         <Button
           onClick={setIsModalOpen}
