@@ -42,7 +42,7 @@ export default function AddRest(props) {
       "address": address,
       "lat": lat,
       "lng": lng,
-      "streetViewURL": `/maps/api/streetview?`+
+      "streetViewURL": `/google-proxy/maps/api/streetview?`+
         `size=500x300`+
         `&location=${lat},${lng}`+
         `&heading=151.78`+
