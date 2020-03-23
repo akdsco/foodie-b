@@ -5,7 +5,7 @@
   },
   "proxies": {
     "/maps/": {
-      "origin": "${REACT_APP_G_API_URL}"
+      "origin": "https://maps.googleapis.com/"
     }
   }
 }
