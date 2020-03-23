@@ -266,7 +266,7 @@ export default class App extends React.Component {
   loadGooglePlacesRestaurants = () => {
     const {center, searchRadius} = this.state;
     const self = this;
-    const url = `/maps/api/place/nearbysearch/json?`+
+    const url = `google-proxy/maps/api/place/nearbysearch/json?`+
       `location=${center.lat},${center.lng}`+
       `&radius=${searchRadius}`+
       `&type=restaurant`+
@@ -286,7 +286,7 @@ export default class App extends React.Component {
             count++;
             let restaurantObject = {
               "id": count,
-              "streetViewURL": `/maps/api/streetview?`+
+              "streetViewURL": `google-proxy/maps/api/streetview?`+
                 `size=500x300`+
                 `&location=${r.geometry.location.lat},${r.geometry.location.lng}`+
                 `&heading=151.78`+
@@ -331,7 +331,7 @@ export default class App extends React.Component {
       // console.log('First time query, fetching placeID: ' + placeID);
 
       if(placeID) {
-        let url = `/maps/api/place/details/json?`+
+        let url = `google-proxy/maps/api/place/details/json?`+
           `placeid=${placeID}`+
           `&key=${REACT_APP_G_API_KEY}`;
 

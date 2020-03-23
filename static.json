@@ -4,7 +4,7 @@
     "/**": "index.html"
   },
   "proxies": {
-    "/maps/": {
+    "/google-proxy/": {
       "origin": "https://maps.googleapis.com/"
     }
   }
