@@ -42,7 +42,7 @@ export default function AddRest(props) {
       "address": address,
       "lat": lat,
       "lng": lng,
-      "streetViewURL": `/api/streetview?`+
+      "streetViewURL": `/maps/api/streetview?`+
         `size=500x300`+
         `&location=${lat},${lng}`+
         `&heading=151.78`+
@@ -144,7 +144,7 @@ export default function AddRest(props) {
                 <Button onClick={handleCancel}>
                   Cancel
                 </Button>
-              </Button.Group>REACT_APP_G_API_KEY
+              </Button.Group>
             </Form>
           </Modal.Description>
         </Modal.Content>

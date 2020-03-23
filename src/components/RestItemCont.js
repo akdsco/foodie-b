@@ -76,7 +76,7 @@ export default function RestItemCont(props) {
     if(details) {
       if(details.photos) {
         let photoRef = details.photos[1] ? details.photos[1].photo_reference : (details.photos[0] ? details.photos[0].photo_reference : '');
-        url = `/api/place/photo?maxwidth=800&photoreference=${photoRef}&key=${REACT_APP_G_API_KEY}`;
+        url = `/maps/api/place/photo?maxwidth=800&photoreference=${photoRef}&key=${REACT_APP_G_API_KEY}`;
       } else if (typeof details.photoUrl !== 'undefined' && details.photoUrl !== '') {
         url = details.photoUrl;
       }
@@ -85,7 +85,7 @@ export default function RestItemCont(props) {
   }
 
   function getGoogleMapStaticUrl() {
-    return `/api/staticmap?`+
+    return `/maps/api/staticmap?`+
       `center=${restaurant.lat},${restaurant.lng}`+
       `&zoom=16`+
       `&size=640x480`+

@@ -4,7 +4,7 @@
     "/**": "index.html"
   },
   "proxies": {
-    "/google-maps-api/": {
+    "/maps": {
       "origin": "${REACT_APP_G_API_URL}"
     }
   }
