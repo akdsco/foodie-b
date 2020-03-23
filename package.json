@@ -2,6 +2,7 @@
   "name": "f-end-react-restaurant-review-site",
   "version": "0.1.0",
   "private": true,
+  "homepage": ".",
   "dependencies": {
     "@mars/heroku-js-runtime-env": "^3.0.2",
     "@react-google-maps/api": "^1.8.6",
