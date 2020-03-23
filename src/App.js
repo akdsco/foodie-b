@@ -12,10 +12,12 @@ import DataDisplay from "./components/DataDisplay";
 import {Dimmer, Loader, Container, Grid, GridColumn} from "semantic-ui-react";
 import runtimeEnv from '@mars/heroku-js-runtime-env'
 
-// const env = runtimeEnv();
-// const REACT_APP_G_API = env.REACT_APP_G_API;
+const development = true;
 
-/* TODO The way things should be done in the first place:
+const env = development ? runtimeEnv() : process.env;
+const REACT_APP_G_API_KEY = env.REACT_APP_G_API_KEY;
+
+/* TODO The way I'd like to change the app flow:
  *  1. Application loads and establishes where user is located
  *  2. If user is not located (disabled auto location service) it uses hard coded value and creates a center of map
  *  3. Application loads restaurants from file if they are within the search area from current center (withing the range)
@@ -264,7 +266,11 @@ export default class App extends React.Component {
   loadGooglePlacesRestaurants = () => {
     const {center, searchRadius} = this.state;
     const self = this;
-    const url = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=' + center.lat + ',' + center.lng + '&radius=' + searchRadius + '&type=restaurant&key=' + process.env.REACT_APP_G_API;
+    const url = `/maps/api/place/nearbysearch/json?`+
+      `location=${center.lat},${center.lng}`+
+      `&radius=${searchRadius}`+
+      `&type=restaurant`+
+      `&key=${REACT_APP_G_API_KEY}`;
     const restaurants = self.state.restaurants.slice().filter(restaurant => restaurant.isFromFile);
 
     // debug log
@@ -280,7 +286,12 @@ export default class App extends React.Component {
             count++;
             let restaurantObject = {
               "id": count,
-              "streetViewURL": 'https://maps.googleapis.com/maps/api/streetview?size=500x300&location='+ r.geometry.location.lat +','+ r.geometry.location.lng +'&heading=151.78&pitch=-0.76&key='+ process.env.REACT_APP_G_API,
+              "streetViewURL": `/maps/api/streetview?`+
+                `size=500x300`+
+                `&location=${r.geometry.location.lat},${r.geometry.location.lng}`+
+                `&heading=151.78`+
+                `&pitch=-0.76`+
+                `&key=${REACT_APP_G_API_KEY}`,
               "place_id": r.place_id,
               "isFromFile": false,
               "numberOfReviews": r.user_ratings_total > 5 ? 5 : r.user_ratings_total,
@@ -320,7 +331,9 @@ export default class App extends React.Component {
       // console.log('First time query, fetching placeID: ' + placeID);
 
       if(placeID) {
-        let url = 'https://maps.googleapis.com/maps/api/place/details/json?placeid=' + placeID + '&key=' + process.env.REACT_APP_G_API;
+        let url = `/maps/api/place/details/json?`+
+          `placeid=${placeID}`+
+          `&key=${REACT_APP_G_API_KEY}`;
 
         fetch(url, {
           method: 'GET',

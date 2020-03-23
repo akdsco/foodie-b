@@ -1,5 +1,7 @@
+import runtimeEnv from "@mars/heroku-js-runtime-env";
+
 // Imports
-import React, {useState} from 'react';
+import React from 'react';
 // CSS
 import '../css/style.css';
 // Components
@@ -7,14 +9,12 @@ import MapGoogle from "./MapGoogle";
 // Dependencies
 import Geocode from "react-geocode";
 import {Button, Icon} from "semantic-ui-react";
-import runtimeEnv from "@mars/heroku-js-runtime-env";
 import useObjectState from "./hooks/useObjectState";
 
-// Map Styles
-const styles = require('../data/GoogleMapStyles.json');
-
-// const env = runtimeEnv();
-// const REACT_APP_G_API = env.REACT_APP_G_API;
+// Deployment
+const development = true;
+const env = development ? runtimeEnv() : process.env;
+const REACT_APP_G_API_KEY = env.REACT_APP_G_API_KEY;
 
 export default function Map(props) {
   const emptyRestData = {address: '', lat: '', lng: ''};
@@ -35,7 +35,7 @@ export default function Map(props) {
   function openInfoWindow(e) {
     let restData = {};
 
-    Geocode.setApiKey(process.env.REACT_APP_G_API);
+    Geocode.setApiKey(REACT_APP_G_API_KEY);
     Geocode.fromLatLng(e.latLng.lat(), e.latLng.lng()).then(
       response => {
         const address = response.results[0].formatted_address;

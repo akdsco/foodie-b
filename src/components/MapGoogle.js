@@ -9,13 +9,14 @@ import RestMarker from "./RestMarker";
 // Icons
 import markerUserIcon from "../img/marker-user.png";
 import markerCenterIcon from "../img/marker-center.png";
+
 // Map Style
 const styles = require('../data/GoogleMapStyles.json');
 
-// Production
-
-// const env = runtimeEnv();
-// const REACT_APP_G_API = env.REACT_APP_G_API;
+// Deployment
+const development = true;
+const env = development ? runtimeEnv() : process.env;
+const REACT_APP_G_API_KEY = env.REACT_APP_G_API_KEY;
 
 export default function MapGoogle(props) {
   const {center, userMarker, openInfoWindow, closeInfoWindow, activeRest, handleActiveRest,
@@ -41,7 +42,7 @@ export default function MapGoogle(props) {
     <div>
       <LoadScript
         id="script-loader"
-        googleMapsApiKey={process.env.REACT_APP_G_API}
+        googleMapsApiKey={REACT_APP_G_API_KEY}
       >
         <GoogleMap
           onLoad={map => {setMap(map)}}

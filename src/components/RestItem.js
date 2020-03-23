@@ -21,7 +21,7 @@ export default function RestItem(props) {
         setScrollFlag(false);
       }
     }
-  });
+  },[activeRest, scrollFlag, restaurant.id]);
 
   function handleAccordionClick(e, titleProps) {
     scrollToItem();

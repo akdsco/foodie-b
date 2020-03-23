@@ -1,3 +1,4 @@
+import runtimeEnv from "@mars/heroku-js-runtime-env";
 // Imports
 import React, {useState} from 'react';
 // Images
@@ -7,6 +8,10 @@ import useUpdate from "./hooks/useUpdate";
 // Dependencies
 import {Form, Checkbox, Button, Modal, Image, Header} from 'semantic-ui-react';
 
+// Deployment
+const development = true;
+const env = development ? runtimeEnv() : process.env;
+const REACT_APP_G_API_KEY = env.REACT_APP_G_API_KEY;
 // TODO investigate why {} is supplied to isTermsChecked state instead of boolean
 
 export default function AddRest(props) {
@@ -37,12 +42,12 @@ export default function AddRest(props) {
       "address": address,
       "lat": lat,
       "lng": lng,
-      "streetViewURL": `https://maps.googleapis.com/maps/api/streetview?`+
+      "streetViewURL": `/maps/api/streetview?`+
         `size=500x300`+
         `&location=${lat},${lng}`+
         `&heading=151.78`+
         `&pitch=-0.76`+
-        `&key=${process.env.REACT_APP_G_API}`,
+        `&key=${REACT_APP_G_API_KEY}`,
       "isFromFile": true,
       "place_id": "",
       "avgRating": 0,

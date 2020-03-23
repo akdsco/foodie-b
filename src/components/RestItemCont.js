@@ -1,3 +1,5 @@
+import runtimeEnv from "@mars/heroku-js-runtime-env";
+
 // Imports
 import React, {useEffect, useState} from 'react';
 // CSS
@@ -9,9 +11,10 @@ import {LeftColumnPlaceholder, RightColumnPlaceholder, ReviewsPlaceholder, Mobil
 // Dependencies
 import {Container, GridColumn, Grid, Image, Icon, Segment, Label} from "semantic-ui-react";
 
-import runtimeEnv from "@mars/heroku-js-runtime-env";
-// const env = runtimeEnv();
-// const REACT_APP_G_API = env.REACT_APP_G_API;
+// Deployment
+const development = true;
+const env = development ? runtimeEnv() : process.env;
+const REACT_APP_G_API_KEY = env.REACT_APP_G_API_KEY;
 
 export default function RestItemCont(props) {
   const [loadingData, setLoadingData] = useState(true);
@@ -73,7 +76,7 @@ export default function RestItemCont(props) {
     if(details) {
       if(details.photos) {
         let photoRef = details.photos[1] ? details.photos[1].photo_reference : (details.photos[0] ? details.photos[0].photo_reference : '');
-        url = 'https://maps.googleapis.com/maps/api/place/photo?maxwidth=800&photoreference=' + photoRef + '&key=' + process.env.REACT_APP_G_API;
+        url = `/maps/api/place/photo?maxwidth=800&photoreference=${photoRef}&key=${REACT_APP_G_API_KEY}`;
       } else if (typeof details.photoUrl !== 'undefined' && details.photoUrl !== '') {
         url = details.photoUrl;
       }
@@ -82,7 +85,12 @@ export default function RestItemCont(props) {
   }
 
   function getGoogleMapStaticUrl() {
-    return 'https://maps.googleapis.com/maps/api/staticmap?center='+ restaurant.lat + ',' + restaurant.lng + '&zoom=16&size=640x480&markers=color:red%7Clabel:Bronco%7C'+ restaurant.lat + ',' + restaurant.lng + '&key=' + process.env.REACT_APP_G_API
+    return `/maps/api/staticmap?`+
+      `center=${restaurant.lat},${restaurant.lng}`+
+      `&zoom=16`+
+      `&size=640x480`+
+      `&markers=color:red%7Clabel:Bronco%7C${restaurant.lat},${restaurant.lng}`+
+      `&key=${REACT_APP_G_API_KEY}`
   }
 
   return(
