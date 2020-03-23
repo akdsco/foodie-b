@@ -271,6 +271,7 @@ export default class App extends React.Component {
       `&radius=${searchRadius}`+
       `&type=restaurant`+
       `&key=${REACT_APP_G_API_KEY}`;
+    console.log(url);
     const restaurants = self.state.restaurants.slice().filter(restaurant => restaurant.isFromFile);
 
     // debug log

@@ -37,6 +37,5 @@
   },
   "devDependencies": {
     "recompose": "^0.30.0"
-  },
-  "proxy": "https://maps.googleapis.com/"
+  }
 }
