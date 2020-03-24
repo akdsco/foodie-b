@@ -14,7 +14,6 @@ import runtimeEnv from '@mars/heroku-js-runtime-env'
 
 // Production Environment
 const proxyPrefix = process.env.NODE_ENV === 'production' ? '/google-proxy' : '';
-const referrer = process.env.NODE_ENV === 'production' ? 'https://foodie-b.herokuapp.com/' : 'localhost:3000';
 const env = process.env.NODE_ENV === 'production' ? runtimeEnv() : process.env;
 const REACT_APP_G_API_KEY = env.REACT_APP_G_API_KEY;
 
@@ -280,8 +279,6 @@ export default class App extends React.Component {
 
     fetch(url, {
       method: 'GET',
-      referrerPolicy: "origin",
-      referrer: referrer
     }).then(response => {
       response.json().then(data => {
         let count = restaurants.length - 1;
@@ -341,8 +338,6 @@ export default class App extends React.Component {
 
         fetch(url, {
           method: 'GET',
-          // referrerPolicy: "origin",
-          // referrer: referrer
         }).then(response => {
           response.json().then(data => {
             if(data.status === 'OK') {
