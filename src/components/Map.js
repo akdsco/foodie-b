@@ -11,9 +11,8 @@ import Geocode from "react-geocode";
 import {Button, Icon} from "semantic-ui-react";
 import useObjectState from "./hooks/useObjectState";
 
-// Deployment
-const development = true;
-const env = development ? runtimeEnv() : process.env;
+// Production Environment
+const env = process.env.NODE_ENV === 'production' ? runtimeEnv() : process.env;
 const REACT_APP_G_API_KEY = env.REACT_APP_G_API_KEY;
 
 export default function Map(props) {

@@ -11,9 +11,9 @@ import {LeftColumnPlaceholder, RightColumnPlaceholder, ReviewsPlaceholder, Mobil
 // Dependencies
 import {Container, GridColumn, Grid, Image, Icon, Segment, Label} from "semantic-ui-react";
 
-// Deployment
-const development = true;
-const env = development ? runtimeEnv() : process.env;
+// Production Environment
+const proxyPrefix = process.env.NODE_ENV === 'production' ? '/google-proxy' : '';
+const env = process.env.NODE_ENV === 'production' ? runtimeEnv() : process.env;
 const REACT_APP_G_API_KEY = env.REACT_APP_G_API_KEY;
 
 export default function RestItemCont(props) {
@@ -76,7 +76,7 @@ export default function RestItemCont(props) {
     if(details) {
       if(details.photos) {
         let photoRef = details.photos[1] ? details.photos[1].photo_reference : (details.photos[0] ? details.photos[0].photo_reference : '');
-        url = `/google-proxy/maps/api/place/photo?maxwidth=800&photoreference=${photoRef}&key=${REACT_APP_G_API_KEY}`;
+        url = `${proxyPrefix}/maps/api/place/photo?maxwidth=800&photoreference=${photoRef}&key=${REACT_APP_G_API_KEY}`;
       } else if (typeof details.photoUrl !== 'undefined' && details.photoUrl !== '') {
         url = details.photoUrl;
       }
@@ -85,7 +85,7 @@ export default function RestItemCont(props) {
   }
 
   function getGoogleMapStaticUrl() {
-    return `/maps/api/staticmap?`+
+    return `${proxyPrefix}/maps/api/staticmap?`+
       `center=${restaurant.lat},${restaurant.lng}`+
       `&zoom=16`+
       `&size=640x480`+

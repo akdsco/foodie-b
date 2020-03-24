@@ -8,10 +8,11 @@ import useUpdate from "./hooks/useUpdate";
 // Dependencies
 import {Form, Checkbox, Button, Modal, Image, Header} from 'semantic-ui-react';
 
-// Deployment
-const development = true;
-const env = development ? runtimeEnv() : process.env;
+// Production Environment
+const proxyPrefix = process.env.NODE_ENV === 'production' ? '/google-proxy' : '';
+const env = process.env.NODE_ENV === 'production' ? runtimeEnv() : process.env;
 const REACT_APP_G_API_KEY = env.REACT_APP_G_API_KEY;
+
 // TODO investigate why {} is supplied to isTermsChecked state instead of boolean
 
 export default function AddRest(props) {
@@ -42,7 +43,7 @@ export default function AddRest(props) {
       "address": address,
       "lat": lat,
       "lng": lng,
-      "streetViewURL": `/google-proxy/maps/api/streetview?`+
+      "streetViewURL": `${proxyPrefix}/maps/api/streetview?`+
         `size=500x300`+
         `&location=${lat},${lng}`+
         `&heading=151.78`+

@@ -13,9 +13,8 @@ import markerCenterIcon from "../img/marker-center.png";
 // Map Style
 const styles = require('../data/GoogleMapStyles.json');
 
-// Deployment
-const development = true;
-const env = development ? runtimeEnv() : process.env;
+// Production Environment
+const env = process.env.NODE_ENV === 'production' ? runtimeEnv() : process.env;
 const REACT_APP_G_API_KEY = env.REACT_APP_G_API_KEY;
 
 export default function MapGoogle(props) {

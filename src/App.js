@@ -12,9 +12,10 @@ import DataDisplay from "./components/DataDisplay";
 import {Dimmer, Loader, Container, Grid, GridColumn} from "semantic-ui-react";
 import runtimeEnv from '@mars/heroku-js-runtime-env'
 
-const development = true;
-
-const env = development ? runtimeEnv() : process.env;
+// Production Environment
+const proxyPrefix = process.env.NODE_ENV === 'production' ? '/google-proxy' : '';
+const referrer = process.env.NODE_ENV === 'production' ? 'https://foodie-b.herokuapp.com/' : 'localhost:3000';
+const env = process.env.NODE_ENV === 'production' ? runtimeEnv() : process.env;
 const REACT_APP_G_API_KEY = env.REACT_APP_G_API_KEY;
 
 /* TODO The way I'd like to change the app flow:
@@ -266,7 +267,7 @@ export default class App extends React.Component {
   loadGooglePlacesRestaurants = () => {
     const {center, searchRadius} = this.state;
     const self = this;
-    const url = `google-proxy/maps/api/place/nearbysearch/json?`+
+    const url = `${proxyPrefix}/maps/api/place/nearbysearch/json?`+
       `location=${center.lat},${center.lng}`+
       `&radius=${searchRadius}`+
       `&type=restaurant`+
@@ -279,6 +280,8 @@ export default class App extends React.Component {
 
     fetch(url, {
       method: 'GET',
+      referrerPolicy: "origin",
+      referrer: referrer
     }).then(response => {
       response.json().then(data => {
         let count = restaurants.length - 1;
@@ -287,7 +290,7 @@ export default class App extends React.Component {
             count++;
             let restaurantObject = {
               "id": count,
-              "streetViewURL": `google-proxy/maps/api/streetview?`+
+              "streetViewURL": `${proxyPrefix}/maps/api/streetview?`+
                 `size=500x300`+
                 `&location=${r.geometry.location.lat},${r.geometry.location.lng}`+
                 `&heading=151.78`+
@@ -332,12 +335,14 @@ export default class App extends React.Component {
       // console.log('First time query, fetching placeID: ' + placeID);
 
       if(placeID) {
-        let url = `google-proxy/maps/api/place/details/json?`+
+        let url = `${proxyPrefix}/maps/api/place/details/json?`+
           `placeid=${placeID}`+
           `&key=${REACT_APP_G_API_KEY}`;
 
         fetch(url, {
           method: 'GET',
+          // referrerPolicy: "origin",
+          // referrer: referrer
         }).then(response => {
           response.json().then(data => {
             if(data.status === 'OK') {
