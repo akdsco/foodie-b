@@ -17,6 +17,8 @@ const functions = require("firebase/functions");
 // Map Style
 const styles = require("../data/GoogleMapStyles.json");
 
+//TODO firebase cloud function to get data from GoogleMaps API -> Change in this file needed
+
 export default function MapGoogle({
   center,
   userMarker,
