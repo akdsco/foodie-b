@@ -4,6 +4,7 @@
 /.idea
 deploy-plan.md
 DevCode.txt
+.firebase/
 
 # dependencies
 /node_modules
