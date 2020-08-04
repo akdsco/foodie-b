@@ -1,33 +1,41 @@
 // Imports
-import React from 'react'
+import React from "react";
 // CSS
-import '../css/style.css';
+import "../css/style.css";
 // Components
 import RestItem from "./RestItem";
 // Dependencies
-import {Dimmer, Loader} from "semantic-ui-react";
+import { Dimmer, Loader } from "semantic-ui-react";
 
-export default function RestList(props) {
+export default function RestList({
+  activeRest,
+  handleNewData,
+  flags,
+  restaurants,
+  windowWidth,
+  handleActiveRest,
+}) {
+  const { isLoadingRestaurants } = flags;
 
   function sortRestaurants() {
     // converts object into array (add sorting if you'd like)
-    return Object.keys(props.restaurants).map(id => props.restaurants[id])
+    return Object.keys(restaurants).map((id) => restaurants[id]);
   }
 
-  // Component Props
-  const {activeRest, handleNewData, flags, restaurants, windowWidth, handleActiveRest} = props;
-  const {isLoadingRestaurants} = props.flags;
-
-  return(
+  return (
     <div>
-      <Dimmer.Dimmable dimmed={typeof flags === 'undefined' ? true : isLoadingRestaurants}>
-        <Dimmer active={typeof flags === 'undefined' ? true : isLoadingRestaurants} inverted>
+      <Dimmer.Dimmable
+        dimmed={typeof flags === "undefined" ? true : isLoadingRestaurants}
+      >
+        <Dimmer
+          active={typeof flags === "undefined" ? true : isLoadingRestaurants}
+          inverted
+        >
           <Loader>Loading Restaurants</Loader>
         </Dimmer>
 
         <p> Shortlisted Restaurants: {restaurants.length} </p>
-        {
-        sortRestaurants().map(restaurant =>
+        {sortRestaurants().map((restaurant) => (
           <RestItem
             key={restaurant.id}
             restaurant={restaurant}
@@ -35,9 +43,9 @@ export default function RestList(props) {
             windowWidth={windowWidth}
             handleNewData={handleNewData}
             handleActiveRest={handleActiveRest}
-          />)
-        }
+          />
+        ))}
       </Dimmer.Dimmable>
     </div>
-  )
+  );
 }
