@@ -5,6 +5,7 @@
 deploy-plan.md
 DevCode.txt
 .firebase/
+functions/react-reviews-website-service.json
 
 # dependencies
 /node_modules
