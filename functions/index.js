@@ -3,13 +3,12 @@ const admin = require("firebase-admin");
 
 //Cloud functions for user interaction
 const loadRestaurants = require("./func/loadRestaurants");
+const loadRestaurantDetails = require("./func/loadRestaurantDetails");
 
 //Initialize the app
 admin.initializeApp();
 
 exports.loadRestaurants = functions.https.onRequest(loadRestaurants);
-
-// exports.helloWorld = functions.https.onRequest((request, response) => {
-//   functions.logger.info("Hello logs!", {structuredData: true});
-//   response.send("Hello from Firebase!");
-// });
+exports.loadRestaurantDetails = functions.https.onRequest(
+  loadRestaurantDetails
+);

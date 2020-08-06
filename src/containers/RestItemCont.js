@@ -134,7 +134,7 @@ export default function RestItemCont({
       `&zoom=16` +
       `&size=640x480` +
       `&markers=color:red%7Clabel:Bronco%7C${restaurant.lat},${restaurant.lng}` +
-      `&key=${functions.config().foodieb.mapskey}`
+      `&key=`
     );
   }
 

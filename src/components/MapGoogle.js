@@ -12,8 +12,6 @@ import RestMarker from "./RestMarker";
 // Icons
 import markerUserIcon from "../img/marker-user.png";
 import markerCenterIcon from "../img/marker-center.png";
-//Firebase
-const functions = require("firebase/functions");
 // Map Style
 const styles = require("../data/GoogleMapStyles.json");
 
@@ -50,11 +48,12 @@ export default function MapGoogle({
     }
   }
 
+  //TODO change this to use cloud function?
   return (
     <div>
       <LoadScript
         id="script-loader"
-        googleMapsApiKey={functions.config().foodieb.mapskey}
+        googleMapsApiKey="AIzaSyCnsXb23ade5cPti1lAGVRMGPVE90LFkhc"
       >
         <GoogleMap
           onLoad={(map) => {

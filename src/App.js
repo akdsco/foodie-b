@@ -9,21 +9,16 @@ import Map from "./components/Map";
 import DataDisplay from "./components/DataDisplay";
 // Dependencies
 import { Dimmer, Loader, Container, Grid, GridColumn } from "semantic-ui-react";
-// Production Environment
-const proxyPrefix =
-  process.env.NODE_ENV === "production" ? "/google-proxy" : "";
-// Firebase
-import firebase from "firebase/app";
-import "firebase/functions";
 
 // TODO fix open_now as the API has changed?
 
 // TODO add prop-types library and use it throughout the application to make it more robust
 //  https://reactjs.org/docs/typechecking-with-proptypes.html#proptypes
 
-//TODO update to production
 const FIREBASE_LOAD_RESTAURANTS =
-  "http://localhost:5001/akds-portfolio/us-central1/loadRestaurants";
+  "https://us-central1-akds-portfolio.cloudfunctions.net/loadRestaurants";
+const FIREBASE_LOAD_RESTAURANT_DETAILS =
+  "https://us-central1-akds-portfolio.cloudfunctions.net/loadRestaurantDetails";
 
 export default class App extends Component {
   state = {
@@ -275,155 +270,70 @@ export default class App extends Component {
   }
 
   loadGooglePlacesRestaurants = () => {
-    const { center, searchRadius } = this.state;
-    const self = this;
-    // const url =
-    //   `${proxyPrefix}/maps/api/place/nearbysearch/json?` +
-    //   `location=${center.lat},${center.lng}` +
-    //   `&radius=${searchRadius}` +
-    //   `&type=restaurant` +
-    //   `&key=${REACT_APP_G_API_KEY}`;
-    // console.log(url);
-    const restaurants = self.state.restaurants
+    const { center, searchRadius, restaurants } = this.state;
+    const restaurantsFromFile = restaurants
       .slice()
       .filter((restaurant) => restaurant.isFromFile);
-    console.log(restaurants);
 
-    // debug log
+    // debug
     // console.log('Restaurants before loading Google Places: ', restaurants);
     fetch(FIREBASE_LOAD_RESTAURANTS, {
       method: "POST",
       body: JSON.stringify({
         center: center,
         searchRadius: searchRadius,
-        restaurants: restaurants,
+        count: restaurantsFromFile.length,
       }),
-    }).then((data) => {
-      console.log(data);
-      // self.setState((prevState) => ({
-      //   restaurants: restaurants,
-      //   flags: {
-      //     ...prevState.flags,
-      //     isLoadingRestaurants: false,
-      //   },
-      // }));
-    });
-
-    // fetch(url, {
-    //   method: "GET",
-    // }).then(
-    //   (response) => {
-    //     response.json().then((data) => {
-    //       let count = restaurants.length - 1;
-    //
-    //       data.results.forEach((r) => {
-    //         count++;
-    //         let restaurantObject = {
-    //           id: count,
-    //           streetViewURL:
-    //             `${proxyPrefix}/maps/api/streetview?` +
-    //             `size=500x300` +
-    //             `&location=${r.geometry.location.lat},${r.geometry.location.lng}` +
-    //             `&heading=151.78` +
-    //             `&pitch=-0.76` +
-    //             `&key=${REACT_APP_G_API_KEY}`,
-    //           place_id: r.place_id,
-    //           isFromFile: false,
-    //           numberOfReviews:
-    //             r.user_ratings_total > 5 ? 5 : r.user_ratings_total,
-    //           avgRating: r.rating,
-    //           restaurantName: r.name,
-    //           address: r.vicinity,
-    //           lat: r.geometry.location.lat,
-    //           lng: r.geometry.location.lng,
-    //           open: r.opening_hours ? r.opening_hours.open_now : true,
-    //           loadedDetails: false,
-    //         };
-    //         restaurants.push(restaurantObject);
-    //       });
-    //
-    //       self.setState((prevState) => ({
-    //         restaurants: restaurants,
-    //         flags: {
-    //           ...prevState.flags,
-    //           isLoadingRestaurants: false,
-    //         },
-    //       }));
-    //     });
-    //   },
-    //   (error) => {
-    //     console.log("Failed to load Google Places Restaurants", error);
-    //   }
-    // );
+    })
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        const { restaurants } = JSON.parse(data.body);
+        this.setState((prevState) => ({
+          restaurants: [...restaurantsFromFile, ...restaurants],
+          flags: {
+            ...prevState.flags,
+            isLoadingRestaurants: false,
+          },
+        }));
+      })
+      .catch((err) =>
+        console.log(
+          "Error in loadGooglePlacesRestaurants fetch function: ",
+          err
+        )
+      );
   };
 
   loadGooglePlaceDetails = (index) => {
-    const self = this;
-    const currentRestaurantsState = [...self.state.restaurants];
+    const currentRestaurantsState = [...this.state.restaurants];
     const placeID = this.state.restaurants[index].place_id;
 
     // if details already fetched previously --> don't fetch again
     if (!currentRestaurantsState[index].details) {
-      // debug log
-      // console.log('First time query, fetching placeID: ' + placeID);
-
+      // if restaurant comes from google, not from file
       if (placeID) {
-        let url =
-          `${proxyPrefix}/maps/api/place/details/json?` +
-          `placeid=${placeID}` +
-          `&key=${REACT_APP_G_API_KEY}`;
-
-        fetch(url, {
-          method: "GET",
-        }).then(
-          (response) => {
-            response.json().then((data) => {
-              if (data.status === "OK") {
-                // debug log
-                // console.log('PlaceID details ', data);
-
-                const revs = () => {
-                  let array = [];
-
-                  data.result.reviews.forEach((r, id) =>
-                    array.push({
-                      id: id,
-                      name: r.author_name,
-                      stars: r.rating,
-                      comment: r.text,
-                      image_url: r.profile_photo_url,
-                    })
-                  );
-                  return array;
-                };
-
-                const details = {
-                  fullAddress: data.result.adr_address,
-                  reviews: revs(),
-                  services: data.result.types,
-                  photos: data.result.photos,
-                  link: data.result.website,
-                  openingHours: data.result.opening_hours
-                    ? data.result.opening_hours
-                    : { weekday_text: ["Open 24 / 7"] },
-                  phoneNumber: data.result.international_phone_number,
-                };
-
-                const updatedRestaurants = [...self.state.restaurants];
-                updatedRestaurants[index].details = details;
-                updatedRestaurants[index].loadedDetails = true;
-                self.setState({
-                  restaurants: updatedRestaurants,
-                });
-              } else {
-                console.log("API call unsuccessful");
-              }
+        fetch(FIREBASE_LOAD_RESTAURANT_DETAILS, {
+          method: "POST",
+          body: JSON.stringify({
+            placeID: placeID,
+          }),
+        })
+          .then((response) => {
+            return response.json();
+          })
+          .then((data) => {
+            const updatedRestaurants = [...this.state.restaurants];
+            const { details } = JSON.parse(data.body);
+            updatedRestaurants[index].details = details;
+            updatedRestaurants[index].loadedDetails = true;
+            this.setState({
+              restaurants: updatedRestaurants,
             });
-          },
-          (error) => {
-            console.log("Failed to load Google Place Details: ", error);
-          }
-        );
+          });
+        //  call cloud function sending placeID in body
+        //  cloud function returns data, setState with it
       } else {
         console.log("Sorry no placeID supplied.");
       }
