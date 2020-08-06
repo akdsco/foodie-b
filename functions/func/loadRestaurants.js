@@ -1,3 +1,4 @@
+const functions = require("firebase-functions");
 const express = require("express");
 const fetch = require("node-fetch");
 const send = require("../send.js");
@@ -7,17 +8,37 @@ function loadRestaurants(req, res) {
   const { center, searchRadius, count } = JSON.parse(req.body);
   const { lat, lng } = center;
 
-  // noinspection SpellCheckingInspection
-  const url =
+  async function fetchGoogleImage(data) {
+    return await Promise.all(
+      data.map(async (restaurant) => {
+        const googlePhotoUrl =
+          `https://maps.googleapis.com/maps/api/place/photo?` +
+          `maxwidth=150` +
+          `&photoreference=${restaurant.photo_reference}` +
+          `&key=${functions.config().foodieb.mapkey}`;
+
+        const res = await fetch(googlePhotoUrl, {
+          method: "GET",
+        });
+        const { photo_reference, ...rest } = restaurant;
+        return {
+          ...rest,
+          thumb_photo_url: res.url,
+        };
+      })
+    );
+  }
+
+  const googlePlaceUrl =
     `https://maps.googleapis.com/maps/api/place/nearbysearch/json?` +
     `location=${lat},${lng}` +
     `&radius=${searchRadius}` +
     `&type=restaurant` +
-    `&key=AIzaSyCnsXb23ade5cPti1lAGVRMGPVE90LFkhc`;
+    `&key=${functions.config().foodieb.mapkey}`;
 
   function fetchGoogleData() {
     let idNumber = count - 1;
-    return fetch(url, {
+    return fetch(googlePlaceUrl, {
       method: "GET",
     })
       .then((response) => {
@@ -28,13 +49,7 @@ function loadRestaurants(req, res) {
           idNumber += 1;
           return {
             id: idNumber,
-            streetViewURL:
-              `https://maps.googleapis.com/maps/api/streetview?` +
-              `size=500x300` +
-              `&location=${r.geometry.location.lat},${r.geometry.location.lng}` +
-              `&heading=151.78` +
-              `&pitch=-0.76` +
-              `&key=`,
+            photo_reference: r.photos[0] ? r.photos[0].photo_reference : "",
             place_id: r.place_id,
             isFromFile: false,
             numberOfReviews:
@@ -53,10 +68,12 @@ function loadRestaurants(req, res) {
         console.log("Problem when fetching from Google Places API: ", err);
       });
   }
+  1;
 
   async function getData() {
-    const data = await fetchGoogleData();
-    await send(res, 200, { restaurants: data });
+    const googleRestaurants = await fetchGoogleData();
+    const restaurantsWithImageLink = await fetchGoogleImage(googleRestaurants);
+    send(res, 200, { restaurants: restaurantsWithImageLink });
   }
 
   getData()

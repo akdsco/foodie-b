@@ -34,6 +34,8 @@ export default function RestItem({
     handleActiveRest(index);
   }
 
+  //TODO change this to use JS Promises and update loading after data is loaded
+
   function scrollToItem() {
     setTimeout(
       () =>
@@ -57,7 +59,7 @@ export default function RestItem({
         >
           <RestTitle
             active={activeRest === id}
-            item={restaurant}
+            restaurant={restaurant}
             avgRating={avgRating}
           />
         </Accordion.Title>

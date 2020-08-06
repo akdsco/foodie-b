@@ -1,3 +1,4 @@
+const functions = require("firebase-functions");
 const express = require("express");
 const fetch = require("node-fetch");
 const send = require("../send.js");
@@ -9,7 +10,7 @@ function loadRestaurantDetails(req, res) {
   let url =
     `https://maps.googleapis.com/maps/api/place/details/json?` +
     `placeid=${placeID}` +
-    `&key=AIzaSyCnsXb23ade5cPti1lAGVRMGPVE90LFkhc`;
+    `&key=${functions.config().foodieb.mapkey}`;
 
   function getGoogleData() {
     return fetch(url, {

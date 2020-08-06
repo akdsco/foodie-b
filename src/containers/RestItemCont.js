@@ -22,9 +22,6 @@ import {
   Label,
 } from "semantic-ui-react";
 
-//Firebase
-const functions = require("firebase/functions");
-
 const PLACEHOLDER_URL = "https://bit.ly/2JnrFZ6";
 
 //TODO firebase cloud function to get data from GoogleMaps API -> Change in this file needed
@@ -114,9 +111,11 @@ export default function RestItemCont({
           : details.photos[0]
           ? details.photos[0].photo_reference
           : "";
-        url = `https://maps.googleapis.com/maps/api/place/photo?maxwidth=800&photoreference=${photoRef}&key=${
-          functions.config().foodieb.mapskey
-        }`;
+        url =
+          `https://maps.googleapis.com/maps/api/place/photo?` +
+          `maxwidth=800` +
+          `&photoreference=${photoRef}` +
+          `&key=`;
       } else if (
         typeof details.photoUrl !== "undefined" &&
         details.photoUrl !== ""
