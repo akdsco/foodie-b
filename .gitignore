@@ -4,7 +4,12 @@
 /.idea
 deploy-plan.md
 DevCode.txt
+src/notes.md
+
+#firebase
 .firebase/
+functions/ui-debug.log
+ui-debug.log
 functions/react-reviews-website-service.json
 
 # dependencies
