@@ -7,22 +7,24 @@ import ReviewItem from "../components/ReviewItem";
 import { AddReviewModal, MoreReviews } from "../components/Modals";
 import {
   LeftColumnPlaceholder,
-  RightColumnPlaceholder,
-  ReviewsPlaceholder,
   MobilePlaceholder,
+  ReviewsPlaceholder,
+  RightColumnPlaceholder,
 } from "../components/Placeholders";
 // Dependencies
 import {
   Container,
-  GridColumn,
   Grid,
-  Image,
+  GridColumn,
   Icon,
-  Segment,
+  Image,
   Label,
+  Segment,
 } from "semantic-ui-react";
 
 const PLACEHOLDER_URL = "https://bit.ly/2JnrFZ6";
+const FIREBASE_LOAD_RESTAURANT_IMAGE =
+  "https://us-central1-akds-portfolio.cloudfunctions.net/loadRestaurantImage";
 
 const genericOpeningTimes = [
   <p key={0} className="mb-2">
@@ -59,14 +61,21 @@ export default function RestItemCont({
   const { details, isFromFile, open } = restaurant;
   const [restOpeningTimes, setRestOpeningTimes] = useState(genericOpeningTimes);
   const [restPhoneNum, setRestPhoneNum] = useState("");
+  const [restImage, setRestImage] = useState("");
+  const [restWebUrl, setRestWebUrl] = useState("");
 
   useEffect(() => {
-    if (details && !isFromFile) {
-      setRestOpeningTimes(getRestOpeningTimes);
-      setRestPhoneNum(details.phoneNumber);
-      setTimeout(() => {
-        setLoadingData(false);
-      }, 500);
+    if (details) {
+      const loadDetails = async () => {
+        setRestOpeningTimes(getRestOpeningTimes);
+        setRestPhoneNum(details.phoneNumber);
+        setRestImage(await getRestPhotoUrl(details.photos));
+        setRestWebUrl(details.link);
+        setTimeout(() => {
+          setLoadingData(false);
+        }, 500);
+      };
+      loadDetails().then(() => console.log("Restaurant details data loaded.."));
     }
   }, [details, isFromFile]);
 
@@ -77,7 +86,7 @@ export default function RestItemCont({
 
   const getRestOpeningTimes = () => {
     let openingTimes;
-    if (details.openingHours) {
+    if (details.openingHours && !isFromFile) {
       openingTimes = details.openingHours.weekday_text.map((day, index) => (
         <p key={index} className="mb-2">
           {day}
@@ -89,28 +98,28 @@ export default function RestItemCont({
     return openingTimes;
   };
 
-  function getRestPhotoUrl() {
-    let url = PLACEHOLDER_URL;
-
-    if (details && details.photos) {
-      let photoRef = details.photos[1]
-        ? details.photos[1].photo_reference
-        : details.photos[0]
-        ? details.photos[0].photo_reference
-        : "";
-      url =
-        `https://maps.googleapis.com/maps/api/place/photo?` +
-        `maxwidth=800` +
-        `&photoreference=${photoRef}` +
-        `&key=`;
-    } else if (
-      typeof details.photoUrl !== "undefined" &&
-      details.photoUrl !== ""
-    ) {
-      url = details.photoUrl;
+  const getRestPhotoUrl = async (photosArray) => {
+    if (!isFromFile) {
+      return new Promise((resolve) => {
+        fetch(FIREBASE_LOAD_RESTAURANT_IMAGE, {
+          method: "POST",
+          body: JSON.stringify({
+            photosArray: photosArray,
+          }),
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            const { restPhotoUrl } = JSON.parse(data.body);
+            resolve(restPhotoUrl);
+          })
+          .catch((err) => {
+            console.log("Error when fetching from Google API: ", err);
+          });
+      });
+    } else {
+      return PLACEHOLDER_URL;
     }
-    return url;
-  }
+  };
 
   function getGoogleMapStaticUrl() {
     return (
@@ -144,7 +153,7 @@ export default function RestItemCont({
                   <a
                     target="_blank"
                     rel="noopener noreferrer"
-                    href={details && details.link}
+                    href={restWebUrl}
                   >
                     Visit Website
                   </a>
@@ -163,14 +172,13 @@ export default function RestItemCont({
               </Segment>
             ) : (
               <div>
-                <Image src={details && getRestPhotoUrl()} fluid />
+                <Image src={restImage} fluid />
               </div>
             )}
           </GridColumn>
         </Grid.Row>
 
         {/* Restaurant information - Mobile Screens */}
-
         {windowWidth < 768 && loadingData ? (
           <MobilePlaceholder />
         ) : (
@@ -188,7 +196,7 @@ export default function RestItemCont({
                   <a
                     target="_blank"
                     rel="noopener noreferrer"
-                    href={details && details.link}
+                    href={restWebUrl}
                   >
                     Visit Website
                   </a>
@@ -209,7 +217,6 @@ export default function RestItemCont({
         )}
 
         {/* Reviews */}
-
         <Grid.Row>
           <GridColumn>
             {loadingData ? (
@@ -218,7 +225,7 @@ export default function RestItemCont({
               />
             ) : (
               <div>
-                <h3>Most helpful reviews</h3>
+                <h3>Most recent reviews</h3>
                 {details &&
                   details.reviews.map((review, id) => {
                     return (
@@ -237,13 +244,12 @@ export default function RestItemCont({
         </Grid.Row>
 
         {/* More Reviews and Add Review Modals */}
-
         <Grid.Row>
           <GridColumn className="rest-item-buttons">
             {details && <MoreReviews />}
             {details && (
               <AddReviewModal
-                photoUrl={getRestPhotoUrl()}
+                photoUrl={restImage}
                 restaurant={restaurant}
                 handleNewData={handleNewData}
               />

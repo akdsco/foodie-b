@@ -68,7 +68,6 @@ function loadRestaurants(req, res) {
         console.log("Problem when fetching from Google Places API: ", err);
       });
   }
-  1;
 
   async function getData() {
     const googleRestaurants = await fetchGoogleData();
