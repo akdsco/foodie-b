@@ -1,5 +1,5 @@
 // Imports
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 // CSS
 import "../css/style.css";
 // Components
@@ -59,8 +59,8 @@ export default function RestItemCont({
   handleNewData,
   windowWidth,
 }) {
-  const [loadingData, setLoadingData] = useState(true);
   const { details, isFromFile, open } = restaurant;
+  const [loadingData, setLoadingData] = useState(true);
   const [restOpeningTimes, setRestOpeningTimes] = useState(genericOpeningTimes);
   const [reviews, setReviews] = useState("No reviews yet..");
   const [restPhoneNum, setRestPhoneNum] = useState("");
@@ -68,29 +68,7 @@ export default function RestItemCont({
   const [restWebUrl, setRestWebUrl] = useState("");
   const [mapUrl, setMapUrl] = useState("");
 
-  useEffect(() => {
-    if (details) {
-      const loadDetails = async () => {
-        setReviews(getReviews(details.reviews));
-        setRestOpeningTimes(getRestOpeningTimes);
-        setRestPhoneNum(details.phoneNumber);
-        setRestImage(await getRestPhotoUrl(details.photos));
-        setRestWebUrl(details.link);
-        setMapUrl(await getGoogleMapStaticUrl(restaurant));
-        setTimeout(() => {
-          setLoadingData(false);
-        }, 500);
-      };
-      loadDetails().then(() => console.log("Restaurant details data loaded.."));
-    }
-  }, [details, isFromFile]);
-
-  /* =============================
-   *   Content Loading Functions
-  _* =============================
-*/
-
-  const getRestOpeningTimes = () => {
+  const getRestOpeningTimes = useCallback(() => {
     let openingTimes;
     if (details.openingHours && !isFromFile) {
       openingTimes = details.openingHours.weekday_text.map((day, index) => (
@@ -102,32 +80,35 @@ export default function RestItemCont({
       openingTimes = genericOpeningTimes;
     }
     return openingTimes;
-  };
+  }, [details.openingHours, isFromFile]);
 
-  const getRestPhotoUrl = (photosArray) => {
-    if (!isFromFile) {
-      return new Promise((resolve) => {
-        fetch(FIREBASE_LOAD_RESTAURANT_IMAGE, {
-          method: "POST",
-          body: JSON.stringify({
-            photosArray: photosArray,
-          }),
-        })
-          .then((response) => response.json())
-          .then((data) => {
-            const { restPhotoUrl } = JSON.parse(data.body);
-            resolve(restPhotoUrl);
+  const getRestPhotoUrl = useCallback(
+    (photosArray) => {
+      if (!isFromFile) {
+        return new Promise((resolve) => {
+          fetch(FIREBASE_LOAD_RESTAURANT_IMAGE, {
+            method: "POST",
+            body: JSON.stringify({
+              photosArray: photosArray,
+            }),
           })
-          .catch((err) => {
-            console.log("Error when fetching from Google API: ", err);
-          });
-      });
-    } else {
-      return PLACEHOLDER_URL;
-    }
-  };
+            .then((response) => response.json())
+            .then((data) => {
+              const { restPhotoUrl } = JSON.parse(data.body);
+              resolve(restPhotoUrl);
+            })
+            .catch((err) => {
+              console.log("Error when fetching from Google API: ", err);
+            });
+        });
+      } else {
+        return PLACEHOLDER_URL;
+      }
+    },
+    [isFromFile]
+  );
 
-  const getGoogleMapStaticUrl = (restaurant) => {
+  const getGoogleMapStaticUrl = useCallback((restaurant) => {
     return new Promise((resolve) => {
       fetch(FIREBASE_LOAD_RESTAURANT_MAP, {
         method: "POST",
@@ -144,19 +125,47 @@ export default function RestItemCont({
           console.log("Error when fetching from Google API: ", err);
         });
     });
-  };
+  }, []);
 
-  const getReviews = (reviews) => {
-    return reviews.map((review, id) => (
-      <Grid key={id}>
-        <Grid.Row centered>
-          <GridColumn width={15}>
-            <ReviewItem item={review} fromFile={isFromFile} />
-          </GridColumn>
-        </Grid.Row>
-      </Grid>
-    ));
-  };
+  const getReviews = useCallback(
+    (reviews) => {
+      return reviews.map((review, id) => (
+        <Grid key={id}>
+          <Grid.Row centered>
+            <GridColumn width={15}>
+              <ReviewItem item={review} fromFile={isFromFile} />
+            </GridColumn>
+          </Grid.Row>
+        </Grid>
+      ));
+    },
+    [isFromFile]
+  );
+
+  useEffect(() => {
+    if (details) {
+      const loadDetails = async () => {
+        setReviews(getReviews(details.reviews));
+        setRestOpeningTimes(getRestOpeningTimes);
+        setRestPhoneNum(details.phoneNumber);
+        setRestImage(await getRestPhotoUrl(details.photos));
+        setRestWebUrl(details.link);
+        setMapUrl(await getGoogleMapStaticUrl(restaurant));
+        setTimeout(() => {
+          setLoadingData(false);
+        }, 500);
+      };
+      loadDetails().then(() => console.log("Restaurant details data loaded.."));
+    }
+  }, [
+    details,
+    isFromFile,
+    restaurant,
+    getRestOpeningTimes,
+    getGoogleMapStaticUrl,
+    getRestPhotoUrl,
+    getReviews,
+  ]);
 
   return (
     <Container className="rest-item-cont">

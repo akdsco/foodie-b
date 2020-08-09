@@ -13,13 +13,15 @@ export default function RestTitle({ avgRating, active, restaurant }) {
   const { restaurantName, thumb_photo_url, details, address } = restaurant;
   const [photo, setPhoto] = useState(foodPlate);
 
+  console.log(details);
+
   useEffect(() => {
-    if (thumb_photo_url) {
-      setPhoto(thumb_photo_url);
-    } else {
+    if (details) {
       setPhoto(details.photoUrl);
+    } else if (thumb_photo_url) {
+      setPhoto(thumb_photo_url);
     }
-  }, [setPhoto, thumb_photo_url]);
+  }, [setPhoto, thumb_photo_url, details]);
 
   return (
     <Item>
