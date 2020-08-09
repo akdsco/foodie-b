@@ -14,12 +14,12 @@ export default function RestTitle({ avgRating, active, restaurant }) {
   const [photo, setPhoto] = useState(foodPlate);
 
   useEffect(() => {
-    if (thumb_photo_url) {
-      setPhoto(thumb_photo_url);
-    } else {
+    if (details) {
       setPhoto(details.photoUrl);
+    } else if (thumb_photo_url) {
+      setPhoto(thumb_photo_url);
     }
-  }, [setPhoto, thumb_photo_url]);
+  }, [setPhoto, thumb_photo_url, details]);
 
   return (
     <Item>
