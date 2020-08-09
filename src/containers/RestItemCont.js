@@ -24,6 +24,30 @@ import {
 
 const PLACEHOLDER_URL = "https://bit.ly/2JnrFZ6";
 
+const genericOpeningTimes = [
+  <p key={0} className="mb-2">
+    Mon: 11am - 10pm
+  </p>,
+  <p key={1} className="mb-2">
+    Tue: 11am - 10pm
+  </p>,
+  <p key={2} className="mb-2">
+    Wed: 11am - 10pm
+  </p>,
+  <p key={3} className="mb-2">
+    Thu: 11am - 10pm
+  </p>,
+  <p key={4} className="mb-2">
+    Fri: 11am - 10pm
+  </p>,
+  <p key={5} className="mb-2">
+    Sat: 11am - 10pm
+  </p>,
+  <p key={6} className="mb-2">
+    Sun: 11am - 10pm
+  </p>,
+];
+
 //TODO firebase cloud function to get data from GoogleMaps API -> Change in this file needed
 
 export default function RestItemCont({
@@ -33,95 +57,57 @@ export default function RestItemCont({
 }) {
   const [loadingData, setLoadingData] = useState(true);
   const { details, isFromFile, open } = restaurant;
-
-  //TODO change this to use JS Promises and update loading after data is loaded
+  const [restOpeningTimes, setRestOpeningTimes] = useState(genericOpeningTimes);
+  const [restPhoneNum, setRestPhoneNum] = useState("");
 
   useEffect(() => {
-    setTimeout(() => setLoadingData(false), 1250);
-  }, []);
+    if (details && !isFromFile) {
+      setRestOpeningTimes(getRestOpeningTimes);
+      setRestPhoneNum(details.phoneNumber);
+      setTimeout(() => {
+        setLoadingData(false);
+      }, 500);
+    }
+  }, [details, isFromFile]);
 
   /* =============================
    *   Content Loading Functions
   _* =============================
 */
 
-  function getRestOpeningTimes() {
-    let openingTimes = [];
-
-    if (isFromFile) {
-      openingTimes = [
-        <p key={0} className="mb-2">
-          Mon: 11am - 10pm
-        </p>,
-        <p key={1} className="mb-2">
-          Tue: 11am - 10pm
-        </p>,
-        <p key={2} className="mb-2">
-          Wed: 11am - 10pm
-        </p>,
-        <p key={3} className="mb-2">
-          Thu: 11am - 10pm
-        </p>,
-        <p key={4} className="mb-2">
-          Fri: 11am - 10pm
-        </p>,
-        <p key={5} className="mb-2">
-          Sat: 11am - 10pm
-        </p>,
-        <p key={6} className="mb-2">
-          Sun: 11am - 10pm
-        </p>,
-      ];
+  const getRestOpeningTimes = () => {
+    let openingTimes;
+    if (details.openingHours) {
+      openingTimes = details.openingHours.weekday_text.map((day, index) => (
+        <p key={index} className="mb-2">
+          {day}
+        </p>
+      ));
     } else {
-      if (details) {
-        let counter = -1;
-        if (details.openingHours) {
-          openingTimes = details.openingHours.weekday_text.map((day) => {
-            counter++;
-            return (
-              <p key={counter} className="mb-2">
-                {day}
-              </p>
-            );
-          });
-        }
-      }
+      openingTimes = genericOpeningTimes;
     }
     return openingTimes;
-  }
-
-  function getRestPhoneNum() {
-    let number = "";
-
-    if (details) {
-      if (details.phoneNumber) {
-        number = details.phoneNumber;
-      }
-    }
-    return number;
-  }
+  };
 
   function getRestPhotoUrl() {
     let url = PLACEHOLDER_URL;
 
-    if (details) {
-      if (details.photos) {
-        let photoRef = details.photos[1]
-          ? details.photos[1].photo_reference
-          : details.photos[0]
-          ? details.photos[0].photo_reference
-          : "";
-        url =
-          `https://maps.googleapis.com/maps/api/place/photo?` +
-          `maxwidth=800` +
-          `&photoreference=${photoRef}` +
-          `&key=`;
-      } else if (
-        typeof details.photoUrl !== "undefined" &&
-        details.photoUrl !== ""
-      ) {
-        url = details.photoUrl;
-      }
+    if (details && details.photos) {
+      let photoRef = details.photos[1]
+        ? details.photos[1].photo_reference
+        : details.photos[0]
+        ? details.photos[0].photo_reference
+        : "";
+      url =
+        `https://maps.googleapis.com/maps/api/place/photo?` +
+        `maxwidth=800` +
+        `&photoreference=${photoRef}` +
+        `&key=`;
+    } else if (
+      typeof details.photoUrl !== "undefined" &&
+      details.photoUrl !== ""
+    ) {
+      url = details.photoUrl;
     }
     return url;
   }
@@ -151,7 +137,7 @@ export default function RestItemCont({
               <div>
                 <div key={0} className="mb-1">
                   <Icon name="phone" />
-                  <a href={"tel:" + getRestPhoneNum()}>{getRestPhoneNum()}</a>
+                  <a href={"tel:" + restPhoneNum}>{restPhoneNum}</a>
                 </div>
                 <div key={1} className="mb-2">
                   <Icon name="linkify" />
@@ -164,8 +150,7 @@ export default function RestItemCont({
                   </a>
                 </div>
                 <div key={2}>
-                  <h4 className="mb-2">Opening Times</h4>{" "}
-                  {getRestOpeningTimes()}
+                  <h4 className="mb-2">Opening Times</h4> {restOpeningTimes}
                 </div>
               </div>
             )}
@@ -194,8 +179,8 @@ export default function RestItemCont({
               <div className="my-2">
                 <div className="display-inline">
                   <Icon name="phone" />
-                  <a className="mr-2" href={"tel:" + getRestPhoneNum()}>
-                    {getRestPhoneNum()}
+                  <a className="mr-2" href={"tel:" + restPhoneNum}>
+                    {restPhoneNum}
                   </a>
                 </div>
                 <div className="display-inline">

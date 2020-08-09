@@ -15,6 +15,7 @@ export default function RestItem({
 }) {
   const [scrollFlag, setScrollFlag] = useState(true);
   const restItemRef = useRef(null);
+  const { id, avgRating } = restaurant;
 
   useEffect(() => {
     if (activeRest === -1) {
@@ -46,8 +47,6 @@ export default function RestItem({
       220
     );
   }
-
-  const { id, avgRating } = restaurant;
 
   return (
     <div ref={restItemRef}>
