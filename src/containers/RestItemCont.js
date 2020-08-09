@@ -23,6 +23,8 @@ import {
 } from "semantic-ui-react";
 
 const PLACEHOLDER_URL = "https://bit.ly/2JnrFZ6";
+const FIREBASE_LOAD_RESTAURANT_MAP =
+  "https://us-central1-akds-portfolio.cloudfunctions.net/loadRestaurantStaticMap";
 const FIREBASE_LOAD_RESTAURANT_IMAGE =
   "https://us-central1-akds-portfolio.cloudfunctions.net/loadRestaurantImage";
 
@@ -60,17 +62,21 @@ export default function RestItemCont({
   const [loadingData, setLoadingData] = useState(true);
   const { details, isFromFile, open } = restaurant;
   const [restOpeningTimes, setRestOpeningTimes] = useState(genericOpeningTimes);
+  const [reviews, setReviews] = useState("No reviews yet..");
   const [restPhoneNum, setRestPhoneNum] = useState("");
   const [restImage, setRestImage] = useState("");
   const [restWebUrl, setRestWebUrl] = useState("");
+  const [mapUrl, setMapUrl] = useState("");
 
   useEffect(() => {
     if (details) {
       const loadDetails = async () => {
+        setReviews(getReviews(details.reviews));
         setRestOpeningTimes(getRestOpeningTimes);
         setRestPhoneNum(details.phoneNumber);
         setRestImage(await getRestPhotoUrl(details.photos));
         setRestWebUrl(details.link);
+        setMapUrl(await getGoogleMapStaticUrl(restaurant));
         setTimeout(() => {
           setLoadingData(false);
         }, 500);
@@ -98,7 +104,7 @@ export default function RestItemCont({
     return openingTimes;
   };
 
-  const getRestPhotoUrl = async (photosArray) => {
+  const getRestPhotoUrl = (photosArray) => {
     if (!isFromFile) {
       return new Promise((resolve) => {
         fetch(FIREBASE_LOAD_RESTAURANT_IMAGE, {
@@ -121,16 +127,36 @@ export default function RestItemCont({
     }
   };
 
-  function getGoogleMapStaticUrl() {
-    return (
-      `https://maps.googleapis.com/maps/api/staticmap?` +
-      `center=${restaurant.lat},${restaurant.lng}` +
-      `&zoom=16` +
-      `&size=640x480` +
-      `&markers=color:red%7Clabel:Bronco%7C${restaurant.lat},${restaurant.lng}` +
-      `&key=`
-    );
-  }
+  const getGoogleMapStaticUrl = (restaurant) => {
+    return new Promise((resolve) => {
+      fetch(FIREBASE_LOAD_RESTAURANT_MAP, {
+        method: "POST",
+        body: JSON.stringify({
+          restaurant: restaurant,
+        }),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          const { restMapUrl } = JSON.parse(data.body);
+          resolve(restMapUrl);
+        })
+        .catch((err) => {
+          console.log("Error when fetching from Google API: ", err);
+        });
+    });
+  };
+
+  const getReviews = (reviews) => {
+    return reviews.map((review, id) => (
+      <Grid key={id}>
+        <Grid.Row centered>
+          <GridColumn width={15}>
+            <ReviewItem item={review} fromFile={isFromFile} />
+          </GridColumn>
+        </Grid.Row>
+      </Grid>
+    ));
+  };
 
   return (
     <Container className="rest-item-cont">
@@ -211,7 +237,7 @@ export default function RestItemCont({
               </div>
             </GridColumn>
             <GridColumn width={16}>
-              <Image src={getGoogleMapStaticUrl()} fluid />
+              <Image src={mapUrl} fluid />
             </GridColumn>
           </Grid.Row>
         )}
@@ -226,18 +252,7 @@ export default function RestItemCont({
             ) : (
               <div>
                 <h3>Most recent reviews</h3>
-                {details &&
-                  details.reviews.map((review, id) => {
-                    return (
-                      <Grid key={id}>
-                        <Grid.Row centered>
-                          <GridColumn width={15}>
-                            <ReviewItem item={review} fromFile={isFromFile} />
-                          </GridColumn>
-                        </Grid.Row>
-                      </Grid>
-                    );
-                  })}
+                {reviews}
               </div>
             )}
           </GridColumn>

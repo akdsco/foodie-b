@@ -4,33 +4,30 @@ const fetch = require("node-fetch");
 const send = require("../send.js");
 const cors = require("cors")({ origin: "*" });
 
-function loadRestaurantImage(req, res) {
-  const { photosArray } = JSON.parse(req.body);
+function loadRestaurantStaticMap(req, res) {
+  const { restaurant } = JSON.parse(req.body);
+  const { lat, lng } = restaurant;
 
-  const photoRef = photosArray[1]
-    ? photosArray[1].photo_reference
-    : photosArray[0]
-    ? photosArray[0].photo_reference
-    : "";
-
-  const googlePhotoUrl =
-    `https://maps.googleapis.com/maps/api/place/photo?` +
-    `maxwidth=800` +
-    `&photoreference=${photoRef}` +
+  const googleStaticMapUrl =
+    `https://maps.googleapis.com/maps/api/staticmap?` +
+    `center=${lat},${lng}` +
+    `&zoom=16` +
+    `&size=640x480` +
+    `&markers=color:red%7Clabel:We are here%7C${lat},${lng}` +
     `&key=${functions.config().foodieb.mapkey}`;
 
-  const fetchGoogleImage = async () => {
-    const response = await fetch(googlePhotoUrl, {
+  const fetchGoogleStaticMap = async () => {
+    const response = await fetch(googleStaticMapUrl, {
       method: "GET",
     });
     send(res, 200, {
-      restPhotoUrl: response.url,
+      restMapUrl: response.url,
     });
   };
 
-  fetchGoogleImage()
-    .then(() => console.log("Loading restaurant image succesful"))
-    .catch((err) => console.log("Error when loading restaurant image: ", err));
+  fetchGoogleStaticMap()
+    .then(() => console.log("Loading restaurant map succesful"))
+    .catch((err) => console.log("Error when loading restaurant map: ", err));
 }
 
 const app = express();
@@ -38,7 +35,7 @@ app.use(cors);
 app.post("/", (req, res) => {
   // Catch any unexpected errors to prevent crashing
   try {
-    loadRestaurantImage(req, res);
+    loadRestaurantStaticMap(req, res);
   } catch (err) {
     console.log("Error in express catch: ", err);
     send(res, 500, {
